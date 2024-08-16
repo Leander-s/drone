@@ -15,9 +15,9 @@
               "state": {
                 "file": "drone.canvas",
                 "viewState": {
-                  "x": 1286.6245057145884,
-                  "y": -872.7154367784174,
-                  "zoom": -1.6666666666666667
+                  "x": 863.1036065722953,
+                  "y": -247.48938450862977,
+                  "zoom": -0.9999999999999999
                 }
               }
             }
@@ -72,8 +72,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 248.5,
-    "collapsed": true
+    "width": 248.5
   },
   "right": {
     "id": "3e7153746b81e7a5",
@@ -150,15 +149,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "71bde0f14cef4365",
+  "active": "8f4e1a206c3a2a6d",
   "lastOpenFiles": [
+    "Untitled.canvas",
+    "drone.canvas",
     "Pasted image 20240811215309.png",
     "Pasted image 20240811215008.png",
     "Pasted image 20240811211422.png",
     "Pasted image 20240811211340.png",
     "Pasted image 20240811211239.png",
     "Pasted image 20240811210357.png",
-    "drone.canvas",
     "create a link.md",
     "Welcome.md"
   ]
