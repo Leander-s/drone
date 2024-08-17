@@ -12,7 +12,6 @@
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
-#include <time.h>
 #endif
 
 #define BUFFER_SIZE 1024
