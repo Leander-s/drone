@@ -842,24 +842,10 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/stdio.c.s"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/stdio.c -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/stdio.c.s
 
-CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj: CMakeFiles/test.dir/flags.make
-CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c
-CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj"
-	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c
-
-CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.i"
-	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c > CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.i
-
-CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.s"
-	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.s
-
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.i: cmake_force
@@ -873,7 +859,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.i: cmake_force
@@ -887,7 +873,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.i: cmake_force
@@ -901,7 +887,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.i: cmake_force
@@ -915,7 +901,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.i: cmake_force
@@ -929,7 +915,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.i: cmake_force
@@ -943,7 +929,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.i: cmake_force
@@ -957,7 +943,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.c.i: cmake_force
@@ -971,7 +957,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_control.c.i: cmake_force
@@ -985,7 +971,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.i: cmake_force
@@ -999,7 +985,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.i: cmake_force
@@ -1013,7 +999,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.i: cmake_force
@@ -1027,7 +1013,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.i: cmake_force
@@ -1041,7 +1027,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.i: cmake_force
@@ -1055,7 +1041,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.i: cmake_force
@@ -1069,7 +1055,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.i: cmake_force
@@ -1083,7 +1069,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.i: cmake_force
@@ -1097,7 +1083,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.i: cmake_force
@@ -1111,7 +1097,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.i: cmake_force
@@ -1125,7 +1111,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.i: cmake_force
@@ -1139,7 +1125,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/video/video_device.c.i: cmake_force
@@ -1153,7 +1139,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.i: cmake_force
@@ -1167,7 +1153,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.i: cmake_force
@@ -1181,7 +1167,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.i: cmake_force
@@ -1195,7 +1181,7 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj: CMakeFiles/test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c
 
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.i: cmake_force
@@ -1205,6 +1191,20 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.s"
 	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.s
+
+CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj: CMakeFiles/test.dir/flags.make
+CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c
+CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj: CMakeFiles/test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leander/prog/drone/code/pico_test/pico_side/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building C object CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj"
+	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj -MF CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj.d -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj -c /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c
+
+CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.i"
+	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c > CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.i
+
+CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.s"
+	/usr/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c -o CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.s
 
 # Object files for target test
 test_OBJECTS = \
@@ -1264,7 +1264,6 @@ test_OBJECTS = \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_crt0/crt0.S.obj" \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.obj" \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj" \
-"CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj" \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj" \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj" \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj" \
@@ -1289,7 +1288,8 @@ test_OBJECTS = \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.c.obj" \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj" \
 "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj" \
-"CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj"
+"CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj" \
+"CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj"
 
 # External object files for target test
 test_EXTERNAL_OBJECTS =
@@ -1350,7 +1350,6 @@ test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/sr
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_crt0/crt0.S.obj
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.obj
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
-test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj
@@ -1376,6 +1375,7 @@ test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/li
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj
 test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
+test.elf: CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
 test.elf: CMakeFiles/test.dir/build.make
 test.elf: pico-sdk/src/rp2040/boot_stage2/bs2_default_padded_checksummed.S
 test.elf: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_crt0/rp2040/memmap_default.ld

@@ -41,8 +41,6 @@ void nrf24_send(uint8_t *data, int len){
     spi_write_blocking(SPI_PORT, &cmd, 1);
     gpio_put(PIN_CS, 1);
 
-    gpio_put(25, 0);
-
     cmd = W_TX_PAYLOAD;
     gpio_put(PIN_CS, 0);
     spi_write_blocking(SPI_PORT, &cmd, 1);
@@ -53,8 +51,6 @@ void nrf24_send(uint8_t *data, int len){
     spi_write_blocking(SPI_PORT, &cmd, 1);
     spi_write_blocking(SPI_PORT, data, len);
     gpio_put(PIN_CS, 1);
-
-    gpio_put(25, 1);
 
     gpio_put(PIN_CS, 1);
     sleep_ms(10);

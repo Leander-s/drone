@@ -116,3 +116,11 @@ int readPort(int port, char* buffer, int amount){
     return read(port, buffer, amount);
 }
 #endif
+
+int pico_write(int port, char* writeBuffer){
+    return writePort(port, writeBuffer);
+}
+
+int pico_read(int port, char* readBuffer, int amount){
+    return readPort(port, readBuffer, amount);
+}

@@ -62,7 +62,6 @@ CMakeFiles/test.dir/src/main.c.obj: \
  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_resets/include/hardware/resets.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/resets.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/resets.h \
- /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb.h \
  /usr/include/newlib/stdio.h /usr/include/newlib/sys/reent.h \
  /usr/include/newlib/_ansi.h /usr/include/newlib/sys/_types.h \

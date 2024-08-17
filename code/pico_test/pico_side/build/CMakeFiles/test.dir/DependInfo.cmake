@@ -57,7 +57,6 @@ set(CMAKE_TARGET_DEFINITIONS_ASM
   "LIB_PICO_STANDARD_BINARY_INFO=1"
   "LIB_PICO_STANDARD_LINK=1"
   "LIB_PICO_STDIO=1"
-  "LIB_PICO_STDIO_UART=1"
   "LIB_PICO_STDIO_USB=1"
   "LIB_PICO_STDLIB=1"
   "LIB_PICO_SYNC=1"
@@ -128,7 +127,6 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_binary_info/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_printf/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/include"
-  "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/include"
@@ -142,6 +140,7 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/common/boot_picobin_headers/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/include"
+  "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/include"
   )
 
 # The set of dependency files which are needed:
@@ -180,6 +179,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/gpio.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/irq.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj.d"
+  "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj.d"
@@ -208,7 +208,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_stack_guard.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_stack_guard.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_stack_guard.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/stdio.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj.d"
-  "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.obj.d"
