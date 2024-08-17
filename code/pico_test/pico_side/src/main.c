@@ -24,18 +24,18 @@ void setup() {
 void loop() {
   while (1) {
       static char message[128];
-      stdio_get_until(message, 1, 50);
+      int result = stdio_get_until(message, 1, 20000);
+      if(result == PICO_ERROR_TIMEOUT){
+          gpio_put(LED_PIN, 0);
+          continue;
+      }
       if(strcmp(message, "q") == 0){
         break;
       }
       if(!tud_cdc_connected()){
         break;
       }
-      if(strcmp(message, "") != 0){
-        gpio_put(LED_PIN, 1);
-      }else{
-        gpio_put(LED_PIN, 0);
-      }
+      gpio_put(LED_PIN, 1);
       memset(message, '\0', 128);
   }
 }

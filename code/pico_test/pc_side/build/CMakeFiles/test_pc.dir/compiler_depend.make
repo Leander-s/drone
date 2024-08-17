@@ -25,6 +25,7 @@ CMakeFiles/test_pc.dir/src/connection.c.o: /home/leander/prog/drone/code/pico_te
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/termios.h \
+  /usr/include/time.h \
   /usr/include/unistd.h \
   /usr/include/x86_64-linux-gnu/asm/errno.h \
   /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
@@ -64,6 +65,7 @@ CMakeFiles/test_pc.dir/src/connection.c.o: /home/leander/prog/drone/code/pico_te
   /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
   /usr/include/x86_64-linux-gnu/bits/termios.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
+  /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
   /usr/include/x86_64-linux-gnu/bits/timesize.h \
   /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -80,8 +82,10 @@ CMakeFiles/test_pc.dir/src/connection.c.o: /home/leander/prog/drone/code/pico_te
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
   /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
   /usr/include/x86_64-linux-gnu/bits/typesizes.h \
@@ -124,6 +128,7 @@ CMakeFiles/test_pc.dir/src/input_poll.c.o: /home/leander/prog/drone/code/pico_te
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/termios.h \
+  /usr/include/time.h \
   /usr/include/unistd.h \
   /usr/include/x86_64-linux-gnu/asm/errno.h \
   /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
@@ -163,6 +168,7 @@ CMakeFiles/test_pc.dir/src/input_poll.c.o: /home/leander/prog/drone/code/pico_te
   /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
   /usr/include/x86_64-linux-gnu/bits/termios.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
+  /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
   /usr/include/x86_64-linux-gnu/bits/timesize.h \
   /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -179,8 +185,10 @@ CMakeFiles/test_pc.dir/src/input_poll.c.o: /home/leander/prog/drone/code/pico_te
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
   /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
   /usr/include/x86_64-linux-gnu/bits/typesizes.h \
@@ -224,6 +232,7 @@ CMakeFiles/test_pc.dir/src/main.c.o: /home/leander/prog/drone/code/pico_test/pc_
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/termios.h \
+  /usr/include/time.h \
   /usr/include/unistd.h \
   /usr/include/x86_64-linux-gnu/asm/errno.h \
   /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
@@ -263,6 +272,7 @@ CMakeFiles/test_pc.dir/src/main.c.o: /home/leander/prog/drone/code/pico_test/pc_
   /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
   /usr/include/x86_64-linux-gnu/bits/termios.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
+  /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
   /usr/include/x86_64-linux-gnu/bits/timesize.h \
   /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -279,8 +289,10 @@ CMakeFiles/test_pc.dir/src/main.c.o: /home/leander/prog/drone/code/pico_test/pc_
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
   /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
   /usr/include/x86_64-linux-gnu/bits/typesizes.h \
@@ -322,6 +334,7 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/termios.h \
+  /usr/include/time.h \
   /usr/include/unistd.h \
   /usr/include/x86_64-linux-gnu/asm/errno.h \
   /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
@@ -361,6 +374,7 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
   /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
   /usr/include/x86_64-linux-gnu/bits/termios.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
+  /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
   /usr/include/x86_64-linux-gnu/bits/timesize.h \
   /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -377,8 +391,10 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
   /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
   /usr/include/x86_64-linux-gnu/bits/typesizes.h \
@@ -419,6 +435,8 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
@@ -447,10 +465,6 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
 
 /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h:
 
-/usr/include/x86_64-linux-gnu/bits/confname.h:
-
-/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
-
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/x86_64-linux-gnu/bits/environments.h:
@@ -459,13 +473,29 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
 
 /usr/include/X11/Xosdefs.h:
 
+/usr/include/time.h:
+
+/home/leander/prog/drone/code/pico_test/pc_side/src/connection.c:
+
+/home/leander/prog/drone/code/pico_test/pc_side/src/input_poll.h:
+
+/usr/include/fcntl.h:
+
 /usr/include/strings.h:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
+/home/leander/prog/drone/code/pico_test/pc_side/src/util.c:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
 /usr/include/string.h:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
 
@@ -489,17 +519,7 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
 
 /usr/include/errno.h:
 
-/home/leander/prog/drone/code/pico_test/pc_side/src/connection.c:
-
-/home/leander/prog/drone/code/pico_test/pc_side/src/input_poll.h:
-
-/usr/include/fcntl.h:
-
-/home/leander/prog/drone/code/pico_test/pc_side/src/util.c:
-
-/usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+/usr/include/x86_64-linux-gnu/bits/time.h:
 
 /usr/include/termios.h:
 
@@ -539,6 +559,10 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
 
 /usr/include/x86_64-linux-gnu/bits/termios-baud.h:
 
+/usr/include/x86_64-linux-gnu/bits/confname.h:
+
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
@@ -554,6 +578,10 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
 /usr/include/stdio.h:
 
 /usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
+
+/usr/include/x86_64-linux-gnu/bits/termios-misc.h:
+
+/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
 
@@ -596,7 +624,3 @@ CMakeFiles/test_pc.dir/src/util.c.o: /home/leander/prog/drone/code/pico_test/pc_
 /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h:
 
 /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h:
-
-/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
-
-/usr/include/x86_64-linux-gnu/bits/termios-misc.h:
