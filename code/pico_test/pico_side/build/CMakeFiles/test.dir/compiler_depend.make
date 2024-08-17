@@ -1710,6 +1710,47 @@ CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_comm
   /usr/lib/gcc/arm-none-eabi/13.2.1/include/stddef.h \
   /usr/lib/gcc/arm-none-eabi/13.2.1/include/stdint.h
 
+CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/boards/include/boards/pico.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/assert.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/config.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/error.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/types.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/platform_defs.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/addressmap.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/clocks.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dreq.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/resets.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/sio.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/spi.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/clocks.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/resets.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/spi.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/pico_platform/include/pico/platform.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_base/include/hardware/address_mapped.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_resets/include/hardware/resets.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_compiler/include/pico/platform/compiler.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_panic/include/pico/platform/panic.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h \
+  generated/pico_base/pico/config_autogen.h \
+  generated/pico_base/pico/version.h \
+  /usr/include/newlib/_ansi.h \
+  /usr/include/newlib/_newlib_version.h \
+  /usr/include/newlib/assert.h \
+  /usr/include/newlib/machine/_default_types.h \
+  /usr/include/newlib/machine/ieeefp.h \
+  /usr/include/newlib/newlib.h \
+  /usr/include/newlib/sys/cdefs.h \
+  /usr/include/newlib/sys/config.h \
+  /usr/include/newlib/sys/features.h \
+  /usr/lib/gcc/arm-none-eabi/13.2.1/include/stdbool.h \
+  /usr/lib/gcc/arm-none-eabi/13.2.1/include/stddef.h \
+  /usr/lib/gcc/arm-none-eabi/13.2.1/include/stdint.h
+
 CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj: /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/boards/include/boards/pico.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/hardware_claim/include/hardware/claim.h \
@@ -3293,6 +3334,7 @@ CMakeFiles/test.dir/src/main.c.obj: /home/leander/prog/drone/code/pico_test/pico
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/types.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/code.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/structure.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_stdlib_headers/include/pico/stdlib.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/include/pico/critical_section.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/include/pico/lock_core.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/include/pico/mutex.h \
@@ -3300,37 +3342,152 @@ CMakeFiles/test.dir/src/main.c.obj: /home/leander/prog/drone/code/pico_test/pico
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_time/include/pico/time.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/platform_defs.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/addressmap.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dreq.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/intctrl.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/io_bank0.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/m0plus.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/pads_bank0.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/resets.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/sio.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/spi.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/timer.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/uart.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/interp.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/io_bank0.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/m0plus.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/nvic.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/pads_bank0.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/resets.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/scb.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/sio.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/spi.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/timer.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/uart.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/pico_platform/include/pico/platform.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/pico_platform/include/pico/platform/cpu_regs.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_base/include/hardware/address_mapped.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/include/hardware/irq.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_resets/include/hardware/resets.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/include/hardware/sync.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync_spin_lock/include/hardware/sync/spin_lock.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_timer/include/hardware/timer.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_uart/include/hardware/uart.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_compiler/include/pico/platform/compiler.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_panic/include/pico/platform/panic.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/include/pico/stdio.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb.h \
   /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/include/tusb_config.h \
   generated/pico_base/pico/config_autogen.h \
   generated/pico_base/pico/version.h \
+  /home/leander/prog/drone/code/pico_test/pico_side/src/config.h \
+  /home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.h \
+  /usr/include/newlib/_ansi.h \
+  /usr/include/newlib/_newlib_version.h \
+  /usr/include/newlib/assert.h \
+  /usr/include/newlib/inttypes.h \
+  /usr/include/newlib/machine/_default_types.h \
+  /usr/include/newlib/machine/_types.h \
+  /usr/include/newlib/machine/ieeefp.h \
+  /usr/include/newlib/newlib.h \
+  /usr/include/newlib/stdio.h \
+  /usr/include/newlib/string.h \
+  /usr/include/newlib/strings.h \
+  /usr/include/newlib/sys/_intsup.h \
+  /usr/include/newlib/sys/_locale.h \
+  /usr/include/newlib/sys/_types.h \
+  /usr/include/newlib/sys/cdefs.h \
+  /usr/include/newlib/sys/config.h \
+  /usr/include/newlib/sys/features.h \
+  /usr/include/newlib/sys/lock.h \
+  /usr/include/newlib/sys/reent.h \
+  /usr/include/newlib/sys/stdio.h \
+  /usr/include/newlib/sys/string.h \
+  /usr/lib/gcc/arm-none-eabi/13.2.1/include/stdarg.h \
+  /usr/lib/gcc/arm-none-eabi/13.2.1/include/stdbool.h \
+  /usr/lib/gcc/arm-none-eabi/13.2.1/include/stddef.h \
+  /usr/lib/gcc/arm-none-eabi/13.2.1/include/stdint.h
+
+CMakeFiles/test.dir/src/nrf24.c.obj: /home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.c \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_common.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_compiler.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_debug.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_fifo.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_mcu.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_types.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/common/tusb_verify.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/osal/osal.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/osal/osal_pico.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/tusb_option.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/boards/include/boards/pico.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/assert.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/config.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/error.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico/types.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/code.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/structure.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_stdlib_headers/include/pico/stdlib.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/include/pico/critical_section.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/include/pico/lock_core.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/include/pico/mutex.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/include/pico/sem.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_time/include/pico/time.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/platform_defs.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/addressmap.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dreq.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/intctrl.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/io_bank0.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/m0plus.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/pads_bank0.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/resets.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/sio.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/spi.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/timer.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/uart.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/interp.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/io_bank0.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/m0plus.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/nvic.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/pads_bank0.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/resets.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/scb.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/sio.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/spi.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/timer.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/uart.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/pico_platform/include/pico/platform.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/pico_platform/include/pico/platform/cpu_regs.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_base/include/hardware/address_mapped.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/include/hardware/irq.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_resets/include/hardware/resets.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/include/hardware/sync.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync_spin_lock/include/hardware/sync/spin_lock.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_timer/include/hardware/timer.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_uart/include/hardware/uart.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_compiler/include/pico/platform/compiler.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_panic/include/pico/platform/panic.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio/include/pico/stdio.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb.h \
+  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/include/tusb_config.h \
+  generated/pico_base/pico/config_autogen.h \
+  generated/pico_base/pico/version.h \
+  /home/leander/prog/drone/code/pico_test/pico_side/src/config.h \
+  /home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.h \
   /usr/include/newlib/_ansi.h \
   /usr/include/newlib/_newlib_version.h \
   /usr/include/newlib/assert.h \
@@ -3358,7 +3515,13 @@ CMakeFiles/test.dir/src/main.c.obj: /home/leander/prog/drone/code/pico_test/pico
   /usr/lib/gcc/arm-none-eabi/13.2.1/include/stdint.h
 
 
+/home/leander/prog/drone/code/pico_test/pico_side/src/config.h:
+
 /home/leander/prog/drone/code/pico_test/pico_side/src/main.c:
+
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c:
+
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_time_adapter/include/pico/time_adapter.h:
 
@@ -3472,6 +3635,12 @@ CMakeFiles/test.dir/src/main.c.obj: /home/leander/prog/drone/code/pico_test/pico
 
 /usr/include/newlib/machine/_default_types.h:
 
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/include/pico/unique_id.h:
+
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/resets.h:
+
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/structure.h:
+
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd_pvt.h:
@@ -3495,8 +3664,6 @@ generated/pico_base/pico/version.h:
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/ssi.h:
 
 /usr/include/newlib/sys/string.h:
-
-/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/sem.c:
 
@@ -3584,6 +3751,8 @@ generated/pico_base/pico/config_autogen.h:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/include/tusb_config.h:
 
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c:
+
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_bootrom/include/pico/bootrom.h:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_base/include/hardware/address_mapped.h:
@@ -3594,13 +3763,13 @@ generated/pico_base/pico/config_autogen.h:
 
 /usr/include/newlib/sys/cdefs.h:
 
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/spi.h:
+
 /usr/include/newlib/sys/config.h:
 
 /usr/include/newlib/string.h:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_sync/include/pico/sem.h:
-
-/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico.h:
 
@@ -3623,6 +3792,8 @@ generated/pico_base/pico/config_autogen.h:
 /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc.h:
+
+/home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.h:
 
@@ -3766,12 +3937,6 @@ generated/pico_base/pico/config_autogen.h:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_flash/include/hardware/flash.h:
 
-/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/resets.h:
-
-/home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/structure.h:
-
-/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/include/pico/unique_id.h:
-
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_bootrom/include/pico/bootrom_constants.h:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_platform_panic/panic.c:
@@ -3779,6 +3944,14 @@ generated/pico_base/pico/config_autogen.h:
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_usb_reset_interface_headers/include/pico/usb_reset_interface.h:
+
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dreq.h:
+
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c:
+
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/spi.h:
+
+/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h:
 
 /usr/include/newlib/sys/lock.h:
 
@@ -3793,10 +3966,6 @@ generated/pico_base/pico/config_autogen.h:
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_timer/timer.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h:
-
-/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dreq.h:
-
-/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c:
 
 /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/dcd.h:
 
@@ -3845,6 +4014,8 @@ generated/pico_base/pico/config_autogen.h:
 /usr/include/newlib/sys/unistd.h:
 
 /usr/include/newlib/c++/13.2.1/arm-none-eabi/thumb/v6-m/nofp/bits/c++config.h:
+
+/home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.h:
 
 /usr/include/newlib/c++/13.2.1/arm-none-eabi/thumb/v6-m/nofp/bits/cpu_defines.h:
 

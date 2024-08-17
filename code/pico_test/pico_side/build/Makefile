@@ -1050,6 +1050,30 @@ home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c.s
 .PHONY : home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c.s
 
+home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.obj: home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
+.PHONY : home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.obj
+
+# target to build an object file
+home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
+.PHONY : home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
+
+home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.i: home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.i
+.PHONY : home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.i
+
+# target to preprocess a source file
+home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.i
+.PHONY : home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.i
+
+home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.s: home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.s
+.PHONY : home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.s
+
+# target to generate assembly for a file
+home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.s
+.PHONY : home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.s
+
 home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.obj: home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj
 .PHONY : home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.obj
 
@@ -1938,6 +1962,30 @@ src/main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/main.c.s
 .PHONY : src/main.c.s
 
+src/nrf24.obj: src/nrf24.c.obj
+.PHONY : src/nrf24.obj
+
+# target to build an object file
+src/nrf24.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/nrf24.c.obj
+.PHONY : src/nrf24.c.obj
+
+src/nrf24.i: src/nrf24.c.i
+.PHONY : src/nrf24.i
+
+# target to preprocess a source file
+src/nrf24.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/nrf24.c.i
+.PHONY : src/nrf24.c.i
+
+src/nrf24.s: src/nrf24.c.s
+.PHONY : src/nrf24.s
+
+# target to generate assembly for a file
+src/nrf24.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/nrf24.c.s
+.PHONY : src/nrf24.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -2059,6 +2107,9 @@ help:
 	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.obj"
 	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.i"
 	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.s"
+	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.obj"
+	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.i"
+	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.s"
 	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.obj"
 	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.i"
 	@echo "... home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.s"
@@ -2170,6 +2221,9 @@ help:
 	@echo "... src/main.obj"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/nrf24.obj"
+	@echo "... src/nrf24.i"
+	@echo "... src/nrf24.s"
 .PHONY : help
 
 

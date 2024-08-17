@@ -24,6 +24,7 @@ set(CMAKE_TARGET_DEFINITIONS_ASM
 
 # The include file search paths:
 set(CMAKE_ASM_TARGET_INCLUDE_PATH
+  "/home/leander/prog/drone/code/pico_test/pico_side/../pico-sdk/src/rp2_common/hardware_spi/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/boot_stage2/asminclude"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/hardware_regs/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_base/include"

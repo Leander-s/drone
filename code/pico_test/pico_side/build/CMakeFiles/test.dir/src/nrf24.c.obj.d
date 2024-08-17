@@ -1,5 +1,5 @@
-CMakeFiles/test.dir/src/main.c.obj: \
- /home/leander/prog/drone/code/pico_test/pico_side/src/main.c \
+CMakeFiles/test.dir/src/nrf24.c.obj: \
+ /home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.c \
  /home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.h \
  /home/leander/prog/drone/code/pico_test/pico_side/src/config.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h \

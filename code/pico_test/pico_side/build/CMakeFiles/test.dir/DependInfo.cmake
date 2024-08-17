@@ -85,6 +85,7 @@ set(CMAKE_TARGET_DEFINITIONS_ASM
 
 # The include file search paths:
 set(CMAKE_ASM_TARGET_INCLUDE_PATH
+  "/home/leander/prog/drone/code/pico_test/pico_side/../pico-sdk/src/rp2_common/hardware_spi/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_atomic/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_stdlib_headers/include"
@@ -140,6 +141,7 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2040/boot_stage2/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/common/boot_picobin_headers/include"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/include"
+  "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/include"
   )
 
 # The set of dependency files which are needed:
@@ -179,6 +181,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/gpio.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/irq.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj.d"
+  "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_ticks/ticks.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.obj.d"
@@ -212,6 +215,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico_side/src/main.c" "CMakeFiles/test.dir/src/main.c.obj" "gcc" "CMakeFiles/test.dir/src/main.c.obj.d"
+  "/home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.c" "CMakeFiles/test.dir/src/nrf24.c.obj" "gcc" "CMakeFiles/test.dir/src/nrf24.c.obj.d"
   "/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp.obj" "gcc" "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp.obj.d"
   )
 

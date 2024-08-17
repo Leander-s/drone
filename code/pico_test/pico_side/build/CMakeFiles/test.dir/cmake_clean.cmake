@@ -71,6 +71,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj"
   "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj"
   "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj.d"
+  "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj"
+  "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj.d"
   "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj"
   "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj.d"
   "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.obj"
@@ -148,6 +150,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/test.dir/home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj.d"
   "CMakeFiles/test.dir/src/main.c.obj"
   "CMakeFiles/test.dir/src/main.c.obj.d"
+  "CMakeFiles/test.dir/src/nrf24.c.obj"
+  "CMakeFiles/test.dir/src/nrf24.c.obj.d"
   "test.elf"
   "test.pdb"
 )
