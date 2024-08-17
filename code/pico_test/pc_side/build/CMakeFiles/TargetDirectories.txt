@@ -1,0 +1,3 @@
+/home/leander/prog/drone/code/pico_test/pc_side/build/CMakeFiles/test_pc.dir
+/home/leander/prog/drone/code/pico_test/pc_side/build/CMakeFiles/edit_cache.dir
+/home/leander/prog/drone/code/pico_test/pc_side/build/CMakeFiles/rebuild_cache.dir
