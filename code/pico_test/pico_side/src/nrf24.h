@@ -1,4 +1,5 @@
 #include "config.h"
+#include "util.h"
 
 #define SPI_PORT spi0
 #define PIN_MISO 4

@@ -96,4 +96,5 @@ CMakeFiles/test.dir/src/nrf24.c.obj: \
  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc.h \
- /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.h
+ /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.h \
+ /home/leander/prog/drone/code/pico_test/pico_side/src/util.h

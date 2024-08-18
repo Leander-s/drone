@@ -1,6 +1,6 @@
-CMakeFiles/test.dir/src/main.c.obj: \
- /home/leander/prog/drone/code/pico_test/pico_side/src/main.c \
- /home/leander/prog/drone/code/pico_test/pico_side/src/nrf24.h \
+CMakeFiles/test.dir/src/util.c.obj: \
+ /home/leander/prog/drone/code/pico_test/pico_side/src/util.c \
+ /home/leander/prog/drone/code/pico_test/pico_side/src/util.h \
  /home/leander/prog/drone/code/pico_test/pico_side/src/config.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/src/common/pico_base_headers/include/pico.h \
@@ -96,5 +96,4 @@ CMakeFiles/test.dir/src/main.c.obj: \
  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/device/usbd.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.h \
  /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/cdc/cdc.h \
- /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.h \
- /home/leander/prog/drone/code/pico_test/pico_side/src/util.h
+ /home/leander/prog/drone/code/pico_test/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.h

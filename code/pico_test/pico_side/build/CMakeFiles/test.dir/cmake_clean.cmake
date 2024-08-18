@@ -152,6 +152,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/test.dir/src/main.c.obj.d"
   "CMakeFiles/test.dir/src/nrf24.c.obj"
   "CMakeFiles/test.dir/src/nrf24.c.obj.d"
+  "CMakeFiles/test.dir/src/util.c.obj"
+  "CMakeFiles/test.dir/src/util.c.obj.d"
   "test.elf"
   "test.pdb"
 )

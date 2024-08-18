@@ -11,11 +11,13 @@ pico_sdk_init()
 set(SOURCES
     src/main.c
     src/nrf24.c
+    src/util.c
 )
 
 set(HEADERS
     src/config.h
     src/nrf24.h
+    src/util.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
