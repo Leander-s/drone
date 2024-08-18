@@ -1,5 +1,0 @@
-/home/leander/prog/drone/code/pico_test/pico_side/build/_deps/picotool/picotool
-/home/leander/prog/drone/code/pico_test/pico_side/build/_deps/picotool/picotoolTargets.cmake
-/home/leander/prog/drone/code/pico_test/pico_side/build/_deps/picotool/picotoolTargets-release.cmake
-/home/leander/prog/drone/code/pico_test/pico_side/build/_deps/picotool/picotoolConfig.cmake
-/home/leander/prog/drone/code/pico_test/pico_side/build/_deps/picotool/picotoolConfigVersion.cmake
