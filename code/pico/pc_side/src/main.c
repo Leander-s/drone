@@ -2,7 +2,7 @@
 #include "input_poll.h"
 
 int main() {
-  int port = initConnection("/dev/ttyACM0");
+  int port = initConnection("/dev/ttyACM1");
 
   inputHandler *handler = createInputHandler();
   char pico_debug_message[128];

@@ -9,16 +9,18 @@ void setup() {
     sleep_ms(100);
   }
 
-  gpio_init(LED_PIN);
-  gpio_set_dir(LED_PIN, GPIO_OUT);
-
   while (!tud_cdc_connected()) {
     sleep_ms(100);
   }
+
   pico_print("Pico connected");
+
+  gpio_init(LED_PIN);
+  gpio_set_dir(LED_PIN, GPIO_OUT);
   gpio_put(LED_PIN, 0);
 
   nrf24_init();
+  nrf24_setup();
 }
 
 void loop() {
@@ -39,7 +41,7 @@ void loop() {
     gpio_put(LED_PIN, 1);
     pico_print(message);
     int length = strlen(message);
-    nrf24_send((uint8_t*)message, length);
+    nrf24_send((uint8_t *)message, length);
     memset(message, '\0', 128);
     stdio_flush();
   }

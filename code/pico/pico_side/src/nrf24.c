@@ -92,6 +92,8 @@ void nrf24_read(uint8_t *data, int len){
     spi_write_blocking(SPI_PORT, &cmd, 1);
     spi_read_blocking(SPI_PORT, 0, data, len);
     gpio_put(PIN_CS, 1);
+
+    nrf24_flush_rx();
 }
 
 void nrf24_flush_rx(){
