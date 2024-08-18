@@ -4,38 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "125bb73ea9a29044",
+        "id": "ffbcf435bd1c525d",
         "type": "tabs",
         "children": [
           {
-            "id": "71bde0f14cef4365",
+            "id": "3b6294818ebc3958",
             "type": "leaf",
             "state": {
-              "type": "canvas",
-              "state": {
-                "file": "drone.canvas",
-                "viewState": {
-                  "x": 3782.857279698784,
-                  "y": -930.0130610468483,
-                  "zoom": 1
-                }
-              }
-            }
-          },
-          {
-            "id": "9f248f89f1bff833",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Raspberry pi pico.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -101,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Raspberry pi pico.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Raspberry pi pico.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -140,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Raspberry pi pico.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -162,10 +138,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "9f248f89f1bff833",
+  "active": "3b6294818ebc3958",
   "lastOpenFiles": [
     "drone.canvas",
     "Raspberry pi pico.md",
+    "Pasted image 20240818115108.png",
     "Untitled.canvas",
     "Pasted image 20240811215309.png",
     "Pasted image 20240811215008.png",
