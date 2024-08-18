@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/test_pc.dir/src/main.c.o CMakeFiles/test_pc.dir/src/util.c.o CMakeFiles/test_pc.dir/src/input_poll.c.o CMakeFiles/test_pc.dir/src/connection.c.o -o test_pc  -lX11 
