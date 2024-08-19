@@ -1,6 +1,5 @@
-#include "nrf24.h"
+#include <nrf24.h>
 
-const uint LED_PIN = 25;
 
 void setup() {
   stdio_usb_init();
@@ -15,20 +14,15 @@ void setup() {
 
   pico_print("Pico connected");
 
-  gpio_init(LED_PIN);
-  gpio_set_dir(LED_PIN, GPIO_OUT);
-  gpio_put(LED_PIN, 0);
-
   nrf24_init();
   nrf24_setup();
 }
 
 void loop() {
   while (1) {
-    static char message[128];
-    int result = pico_read(message, 128);
+    static char message[32];
+    int result = pico_read(message, 32);
     if (strcmp(message, "") == 0) {
-      gpio_put(LED_PIN, 0);
       continue;
     }
     if (strcmp(message, "q") == 0) {
@@ -38,11 +32,9 @@ void loop() {
     if (!tud_cdc_connected()) {
       break;
     }
-    gpio_put(LED_PIN, 1);
     pico_print(message);
-    int length = strlen(message);
-    nrf24_send((uint8_t *)message, length);
-    memset(message, '\0', 128);
+    nrf24_send(message, 32);
+    memset(message, 0, 32);
     stdio_flush();
   }
 }

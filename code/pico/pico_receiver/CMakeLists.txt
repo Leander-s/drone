@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 include(pico_sdk_import.cmake)
-include_directories("../pico-sdk/src/rp2_common/hardware_spi/include")
+include_directories("../pico-sdk/src/rp2_common/hardware_spi/include" "../nrf24/")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -10,14 +10,12 @@ pico_sdk_init()
 
 set(SOURCES
     src/main.c
-    src/nrf24.c
-    src/util.c
+    ../nrf24/nrf24.c
+    ../nrf24/util.c
 )
 
 set(HEADERS
     src/config.h
-    src/nrf24.h
-    src/util.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

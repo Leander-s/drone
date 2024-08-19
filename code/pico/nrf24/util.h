@@ -1,4 +1,4 @@
-#include "config.h"
+#include "nrf24_config.h"
 
 int pico_read(char* readBuffer, int size);
 
