@@ -1,5 +1,4 @@
 #include "nrf24.h"
-#include "nrf24_config.h"
 
 void nrf24_init() {
   spi_init(spi0, 1000000);
