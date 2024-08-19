@@ -5,7 +5,7 @@ include_directories("../pico-sdk/src/rp2_common/hardware_spi/include" "../nrf24/
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
-project(test C CXX ASM)
+project(pico_side C CXX ASM)
 pico_sdk_init()
 
 set(SOURCES
