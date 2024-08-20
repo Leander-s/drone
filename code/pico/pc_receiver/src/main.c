@@ -13,7 +13,8 @@ int main() {
       if (strlen(message) < 1) {
         continue;
       }
-      printf("Received: %s\n", message);
+      printf("%s", message);
+      printf("\n");
       memset(message, 0, 32);
     } else if (read_bytes < 0) {
       printf("Error while reading\n");

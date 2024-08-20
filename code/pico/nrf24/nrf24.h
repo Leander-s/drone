@@ -77,6 +77,8 @@ void nrf24_send(char *data, int len);
 
 void nrf24_read(char *data, int len);
 
+void nrf24_flush_tx();
+
 void nrf24_flush_rx();
 
 bool nrf24_data_available();

@@ -22,7 +22,6 @@ void loop() {
     char data[32];
     memset(data, 0, 32);
     nrf24_read(data, 32);
-    pico_print("Data:");
     pico_print(data);
   }
 }

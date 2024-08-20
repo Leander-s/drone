@@ -30,6 +30,9 @@ void nrf24_setup() {
   nrf24_write_register(RF_SETUP, 0x0D);
   nrf24_write_register(RX_PW_P0, 0x20);
   nrf24_write_register(FEATURE, 0x01);
+
+  nrf24_flush_rx();
+  nrf24_flush_tx();
 }
 
 void set_mode(uint8_t mode) {
@@ -78,27 +81,22 @@ void nrf24_write_register(uint8_t reg, uint8_t value) {
 }
 
 void nrf24_send(char *data, int len) {
-  gpio_put(LED_PIN, 1);
-
   gpio_put(PIN_CE, 0);
 
   set_mode(TX_MODE);
 
-  uint8_t cmd = FLUSH_TX;
-  gpio_put(PIN_CS, 0);
-  spi_write_blocking(SPI_PORT, &cmd, 1);
-  gpio_put(PIN_CS, 1);
+  nrf24_flush_tx();
 
-  cmd = W_TX_PAYLOAD;
+  uint8_t cmd = W_TX_PAYLOAD;
   gpio_put(PIN_CS, 0);
   spi_write_blocking(SPI_PORT, &cmd, 1);
   spi_write_blocking(SPI_PORT, data, len);
   gpio_put(PIN_CS, 1);
 
+  gpio_put(LED_PIN, 1);
   gpio_put(PIN_CE, 1);
   sleep_us(10);
   gpio_put(PIN_CE, 0);
-
   gpio_put(LED_PIN, 0);
 }
 
@@ -118,7 +116,6 @@ void nrf24_read(char *data, int len) {
   uint8_t dummy[32];
   gpio_put(PIN_CS, 0);
   spi_write_blocking(SPI_PORT, &cmd, 1);
-  spi_write_blocking(SPI_PORT, dummy, len);
   spi_read_blocking(SPI_PORT, 0, data, len);
   gpio_put(PIN_CS, 1);
   sleep_us(10);
@@ -128,6 +125,13 @@ void nrf24_read(char *data, int len) {
   nrf24_flush_rx();
 
   gpio_put(LED_PIN, 1);
+}
+
+void nrf24_flush_tx(){
+  uint8_t cmd = FLUSH_TX;
+  gpio_put(PIN_CS, 0);
+  spi_write_blocking(SPI_PORT, &cmd, 1);
+  gpio_put(PIN_CS, 1);
 }
 
 void nrf24_flush_rx() {
