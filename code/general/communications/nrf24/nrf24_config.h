@@ -7,5 +7,6 @@
 #include <pico/stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <tusb.h>
 
 #define LED_PIN 25

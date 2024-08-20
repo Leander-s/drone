@@ -1,4 +1,5 @@
 #include <nrf24.h>
+#include <debugging_util.h>
 
 void setup() {
   stdio_usb_init();
@@ -31,7 +32,7 @@ void loop() {
       break;
     }
     pico_print(message);
-    nrf24_send(message, 32);
+    nrf24_send((uint8_t*)message, 32);
     memset(message, 0, 32);
     stdio_flush();
   }
