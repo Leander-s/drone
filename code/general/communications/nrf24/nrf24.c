@@ -78,7 +78,7 @@ void nrf24_write_register(uint8_t reg, uint8_t value) {
   gpio_put(PIN_CS, 1);
 }
 
-void nrf24_send(char *data, int len) {
+void nrf24_send(uint8_t *data, uint32_t len) {
   gpio_put(PIN_CE, 0);
 
   set_mode(TX_MODE);
@@ -100,7 +100,7 @@ void nrf24_send(char *data, int len) {
   sleep_us(10000);
 }
 
-void nrf24_read(char *data, int len) {
+void nrf24_read(uint8_t *data, uint32_t len) {
   set_mode(RX_MODE);
 
   gpio_put(PIN_CE, 1);

@@ -1,4 +1,4 @@
-#include "config.h"
+#include "drone_protocol_config.h"
 
 /*
  * Message layout
@@ -25,16 +25,14 @@ typedef struct {
   uint32_t bufferSize;
   char *sendBuffer;
   char *readBuffer;
-  uint32_t (*send)(char *buffer, uint32_t len);
-  uint32_t (*recv)(char *buffer, uint32_t len);
-  void (*terminate)();
+  void (*send)(uint8_t *buffer, uint32_t len);
+  void (*recv)(uint8_t *buffer, uint32_t len);
 } DroneTransceiver;
 
 typedef struct {
   void (*init)();
-  uint32_t (*send)(char *buffer, uint32_t len);
-  uint32_t (*recv)(char *buffer, uint32_t len);
-  void (*terminate)();
+  void (*send)(uint8_t *buffer, uint32_t len);
+  void (*recv)(uint8_t *buffer, uint32_t len);
   uint32_t bufferSize;
 } DroneTransceiverCreateInfo;
 
@@ -43,7 +41,7 @@ void drone_protocol_run(DroneTransceiver *transceiver);
 void drone_protocol_handle_message(DroneTransceiver *transceiver);
 void drone_protocol_terminate(DroneTransceiver *transceiver);
 
-uint32_t drone_send(DroneTransceiver *transceiver);
-uint32_t drone_read(DroneTransceiver *transceiver);
+void drone_send(DroneTransceiver *transceiver);
+void drone_read(DroneTransceiver *transceiver);
 void drone_flush_tx(DroneTransceiver *transceiver);
 void drone_flush_rx(DroneTransceiver *transceiver);

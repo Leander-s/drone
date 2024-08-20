@@ -10,21 +10,19 @@ DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
   result->sendBuffer = malloc(result->bufferSize);
   result->send = createInfo->send;
   result->recv = createInfo->recv;
-  result->terminate = createInfo->terminate;
 
   return result;
 }
 
 void drone_protocol_run(DroneTransceiver *transceiver) {
   while (1) {
-    uint32_t result = drone_read(transceiver);
-    if (result == 0)
-      continue;
-    if (strcmp(transceiver->readBuffer, "") == 0)
+    drone_read(transceiver);
+    if (transceiver->readBuffer[0] == 0)
       continue;
     drone_protocol_handle_message(transceiver);
     drone_send(transceiver);
   }
+  drone_protocol_terminate(transceiver);
 }
 
 // Set actions depending on received message
@@ -46,6 +44,16 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   transceiver->action->pitch = message[1];
   transceiver->action->roll = message[2];
   transceiver->action->yaw = message[3];
+
+  // flush readBuffer
+  drone_flush_rx(transceiver);  
+
+  // flush writeBuffer
+  drone_flush_tx(transceiver);
+  char *return_message = transceiver->sendBuffer;
+
+  // testing
+  memcpy(return_message, (uint8_t*)"Hello", strlen("Hello"));
 }
 
 void drone_protocol_terminate(DroneTransceiver *transceiver) {
@@ -54,18 +62,18 @@ void drone_protocol_terminate(DroneTransceiver *transceiver) {
   free(transceiver);
 }
 
-uint32_t drone_send(DroneTransceiver *transceiver) {
-  return transceiver->send(transceiver->sendBuffer, transceiver->bufferSize);
+void drone_send(DroneTransceiver *transceiver) {
+  transceiver->send(transceiver->sendBuffer, transceiver->bufferSize);
 }
 
-uint32_t drone_read(DroneTransceiver *transceiver) {
-  return transceiver->recv(transceiver->readBuffer, transceiver->bufferSize);
+void drone_read(DroneTransceiver *transceiver) {
+  transceiver->recv(transceiver->readBuffer, transceiver->bufferSize);
 }
 
 void drone_flush_rx(DroneTransceiver *transceiver) {
-  memset(transceiver->readBuffer, '\0', transceiver->bufferSize);
+  memset(transceiver->readBuffer, 0, transceiver->bufferSize);
 }
 
 void drone_flush_tx(DroneTransceiver *transceiver) {
-  memset(transceiver->sendBuffer, '\0', transceiver->bufferSize);
+  memset(transceiver->sendBuffer, 0, transceiver->bufferSize);
 }

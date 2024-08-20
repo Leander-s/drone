@@ -15,7 +15,6 @@ void setup() {
   pico_print("Pico connected");
 
   nrf24_init();
-  nrf24_setup();
 }
 
 void loop() {

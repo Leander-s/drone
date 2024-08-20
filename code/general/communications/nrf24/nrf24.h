@@ -1,4 +1,4 @@
-#include "util.h"
+#include "nrf24_config.h"
 
 // PINs
 #define SPI_PORT spi0
@@ -64,8 +64,8 @@
 #define RX_MODE_NO_CRC (PRIM_RX | PWR_UP)
 
 void nrf24_init();
-void nrf24_send(char *data, int len);
-void nrf24_read(char *data, int len);
+void nrf24_send(uint8_t *data, uint32_t len);
+void nrf24_read(uint8_t *data, uint32_t len);
 
 void set_mode(uint8_t mode);
 uint8_t nrf24_read_register(uint8_t reg);
