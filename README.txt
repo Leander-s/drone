@@ -1,7 +1,10 @@
 TODO:
 
-General communication protocol:
-    Swap out hardware/low-level abstractions -> still works
+Windows compatibility:
+    connection.h/.c
+    groundreceiver (path_to_port only)
+    build scripts/git script
+        make all scripts in python
 
 Foamboard frame
 

@@ -18,13 +18,13 @@ typedef struct {
   uint8_t roll;
   uint8_t yaw;
   uint8_t throttle;
-} DroneAction;
+} DroneState;
 
 typedef struct {
-  DroneAction *action;
+  DroneState currentState;
   uint32_t bufferSize;
-  char *sendBuffer;
-  char *readBuffer;
+  uint8_t *sendBuffer;
+  uint8_t *readBuffer;
   void (*send)(uint8_t *buffer, uint32_t len);
   void (*recv)(uint8_t *buffer, uint32_t len);
 } DroneTransceiver;
