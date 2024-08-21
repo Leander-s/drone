@@ -39,13 +39,15 @@ def build():
         os.mkdir("pico_build")
 
     if platform.system() == "Windows":
-        os.system("copy ./pc_side/build/libground_protocol_pc.a ./pc_build/")
-        os.system("copy ./pc_side/build/ground_protocol_pc_test ./pc_build/")
-        os.system("copy ./pico_side/build/ground_protocol_pico.uf2 ./pico_build/")
+        os.system("copy .\\pc_side\\build\\libground_protocol_pc.a .\\pc_build\\")
+        os.system("copy .\\pc_side\\build\\ground_protocol_pc_test.exe .\\pc_build\\")
+        os.system(
+            "copy .\\pico_side\\build\\ground_protocol_pico.uf2 .\\pico_build\\")
     else:
-        os.system("cp ./pc_side/build/libground_protocol_pc.a ./pc_build/")
-        os.system("cp ./pc_side/build/ground_protocol_pc_test ./pc_build/")
-        os.system("cp ./pico_side/build/ground_protocol_pico.uf2 ./pico_build/")
+        os.system("cp .\\pc_side\\build\\libground_protocol_pc.a .\\pc_build\\")
+        os.system("cp .\\pc_side\\build\\ground_protocol_pc_test .\\pc_build\\")
+        os.system(
+            "cp .\\pico_side\\build\\ground_protocol_pico.uf2 .\\pico_build\\")
 
 
 if __name__ == '__main__':
