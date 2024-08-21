@@ -1,8 +1,8 @@
 #include "connection.h"
 
 #ifdef _WIN32
-int initConnection(const char* path){
-    HANDLE hComm = CreateFile(L"\\\\.\\COM12",                // Port name
+HANDLE initConnection(const char* path){
+    HANDLE hComm = CreateFile(path,                // Port name
         GENERIC_READ | GENERIC_WRITE, // Read/Write
         0,                            // No sharing
         NULL,                         // No security
@@ -11,8 +11,8 @@ int initConnection(const char* path){
         NULL);                        // Null for Comm devices
 
     if (hComm == INVALID_HANDLE_VALUE) {
-        std::cerr << "Error opening COM port" << std::endl;
-        return 1;
+        perror("Error opening COM port");
+        return NULL;
     }
 
     // Set COM port parameters
@@ -20,9 +20,9 @@ int initConnection(const char* path){
     dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
 
     if (!GetCommState(hComm, &dcbSerialParams)) {
-        std::cerr << "Error getting COM port state" << std::endl;
+        perror("Error getting COM port state");
         CloseHandle(hComm);
-        return 1;
+        return NULL;
     }
 
     dcbSerialParams.BaudRate = CBR_115200;  // Baud rate
@@ -31,9 +31,9 @@ int initConnection(const char* path){
     dcbSerialParams.Parity = NOPARITY;    // Parity
 
     if (!SetCommState(hComm, &dcbSerialParams)) {
-        std::cerr << "Error setting COM port state" << std::endl;
+        perror("Error setting COM port state");
         CloseHandle(hComm);
-        return 1;
+        return NULL;
     }
 
     // Set COM port timeouts
@@ -43,27 +43,27 @@ int initConnection(const char* path){
     timeouts.ReadTotalTimeoutMultiplier = 10;
 
     if (!SetCommTimeouts(hComm, &timeouts)) {
-        std::cerr << "Error setting COM port timeouts" << std::endl;
+        perror("Error setting COM port timeouts");
         CloseHandle(hComm);
-        return 1;
+        return NULL;
     }
     return hComm;
 }
 
 int writePort(HANDLE port, uint8_t* buffer){
-    int amount;
+    unsigned long amount;
     if(!WriteFile(port, buffer, strlen(buffer), &amount, NULL)){
         return -1;
     }
-    return amount;
+    return (int)amount;
 }
 
-int readPort(HANDLE port, uint8_t* buffer, int amount){
-    int amount;
+int readPort(HANDLE port, uint8_t* buffer, int placeholder){
+    unsigned long amount;
     if(!ReadFile(port, buffer, strlen(buffer), &amount, NULL)){
         return -1;
     }
-    return amount;
+    return (int)amount;
 }
 #else
 int initConnection(const char *path) {
@@ -109,18 +109,10 @@ int initConnection(const char *path) {
 }
 
 int writePort(int port, uint8_t* buffer){
-    return write(port, buffer, strlen(buffer));
+    return write(port, buffer, strlen((char*)buffer));
 }
 
 int readPort(int port, uint8_t* buffer, int amount){
     return read(port, buffer, amount);
 }
 #endif
-
-int pico_write(int port, uint8_t* writeBuffer){
-    return writePort(port, writeBuffer);
-}
-
-int pico_read(int port, uint8_t* readBuffer, int amount){
-    return readPort(port, readBuffer, amount);
-}

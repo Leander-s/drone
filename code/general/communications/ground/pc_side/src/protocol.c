@@ -8,6 +8,10 @@ ground_transceiver_create(GroundTransceiverCreateInfo *info) {
   result->port = initConnection(info->path_to_port);
   result->bufferSize = info->bufferSize;
   result->currentState = (DroneState){};
+
+  ground_transceiver_read(result);
+  printf("%s", result->recvBuffer);
+
   return result;
 }
 
@@ -72,10 +76,24 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 }
 
 int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
+  // data[0] is code
+  // data[0] == 1 => debug/error message -> just print it
+  // data[0] == 2 => terminate
+  // data[0] == ...
   uint8_t *data = transceiver->recvBuffer;
-  printf("%s\n", (char *)data);
 
-  if (data[0] == 42) {
+  if(data[0] == 0){
+      return 0;
+  }
+
+  if (data[0] == 1) {
+    for (int i = 0; i < transceiver->bufferSize; i++) {
+      printf("%c", data[i]);
+    }
+    printf("\n");
+  }
+
+  if (data[0] == 2) {
     return 1;
   }
 
@@ -89,10 +107,9 @@ void ground_transceiver_destroy(GroundTransceiver *transceiver) {
 }
 
 void ground_transceiver_send(GroundTransceiver *transceiver) {
-  pico_write(transceiver->port, transceiver->sendBuffer);
+  writePort(transceiver->port, transceiver->sendBuffer);
 }
 
 void ground_transceiver_read(GroundTransceiver *transceiver) {
-  pico_read(transceiver->port, transceiver->recvBuffer,
-            transceiver->bufferSize);
+  readPort(transceiver->port, transceiver->recvBuffer, transceiver->bufferSize);
 }

@@ -12,7 +12,9 @@ void setup() {
     sleep_ms(100);
   }
 
-  pico_print("Pico connected");
+  char *message = "\0Pico connected";
+  message[0] = 1;
+  pico_print(message);
 
   nrf24_init();
 }
@@ -20,20 +22,22 @@ void setup() {
 void loop() {
   while (1) {
     static char message[32];
+    memset(message, 0, 32);
     int result = pico_read(message, 32);
     if (strcmp(message, "") == 0) {
       continue;
     }
     if (strcmp(message, "q") == 0) {
-      printf("Quitting");
+      pico_print("Quitting");
       break;
     }
     if (!tud_cdc_connected()) {
       break;
     }
-    pico_print(message);
     nrf24_send((uint8_t*)message, 32);
     memset(message, 0, 32);
+    nrf24_read((uint8_t*)message, 32);
+    pico_print(message);
     stdio_flush();
   }
 }

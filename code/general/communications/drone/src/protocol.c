@@ -1,15 +1,15 @@
 #include "protocol.h"
 
 DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
-  createInfo->init();
+  (*createInfo->init)();
 
   DroneTransceiver *result = malloc(sizeof(DroneTransceiver));
   result->currentState = (DroneState){};
   result->bufferSize = createInfo->bufferSize;
   result->readBuffer = malloc(result->bufferSize);
   result->sendBuffer = malloc(result->bufferSize);
-  result->send = createInfo->send;
-  result->recv = createInfo->recv;
+  result->send = *createInfo->send;
+  result->recv = *createInfo->recv;
 
   return result;
 }
@@ -53,7 +53,8 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   uint8_t *return_message = transceiver->sendBuffer;
 
   // testing
-  memcpy(return_message, "Hello", strlen("Hello"));
+  memcpy(return_message + 1, "Hello", strlen("Hello"));
+  return_message[0] = 1;
 }
 
 void drone_protocol_terminate(DroneTransceiver *transceiver) {
