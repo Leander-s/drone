@@ -48,6 +48,8 @@ ground_targets = {
 def copy_drone_files():
     for folder in drone_includes:
         files = Path(folder).glob('*.h')
+        for file in Path(drone_targets['include']).glob('*'):
+            os.remove(file)
         for file in files:
             if windows:
                 os.system(f"copy {file} {drone_targets['include']}")
@@ -57,12 +59,49 @@ def copy_drone_files():
                 continue
     for build in drone_libs:
         files = Path(build).glob('*.a')
+        for file in Path(drone_targets['lib']).glob('*'):
+            os.remove(file)
         for file in files:
             if windows:
                 os.system(f"copy {file} {drone_targets['lib']}")
                 continue
             if linux:
                 os.system(f"cp {file} {drone_targets['lib']}")
+                continue
+
+
+def copy_ground_files():
+    for folder in ground_includes:
+        if "pico" in folder:
+            ground_target = 'pico_include'
+        else:
+            ground_target = 'pc_include'
+        files = Path(folder).glob('*.h')
+        for file in Path(ground_targets[ground_target]).glob('*'):
+            os.remove(file)
+        for file in files:
+            if windows:
+                os.system(f"copy {file} {ground_targets[ground_target]}")
+            if linux:
+                os.system(f"cp {file} {ground_targets[ground_target]}")
+
+    for build in ground_libs:
+        if "pico" in build:
+            ground_target = 'pico_lib'
+            files = Path(build).glob('*.uf2')
+        else:
+            ground_target = 'pc_lib'
+            files = Path(build).glob('*.a')
+        for file in Path(ground_targets[ground_target]).glob('*'):
+            os.remove(file)
+        for file in files:
+            if windows:
+                os.system(f"copy {file} {
+                          ground_targets[ground_target]}")
+                continue
+            if linux:
+                os.system(f"cp {file} {
+                          ground_targets[ground_target]}")
                 continue
 
 
@@ -82,36 +121,6 @@ def ensure_targets_exist():
         os.mkdir("./ground/pc/include")
     if not os.path.isdir("./ground/pc/lib"):
         os.mkdir("./ground/pc/lib")
-
-
-def copy_ground_files():
-    for folder in ground_includes:
-        if "pico" in folder:
-            ground_target = 'pico_include'
-        else:
-            ground_target = 'pc_include'
-        files = Path(folder).glob('*.h')
-        for file in files:
-            if windows:
-                os.system(f"copy {file} {ground_targets[ground_target]}")
-            if linux:
-                os.system(f"cp {file} {ground_targets[ground_target]}")
-
-    for build in ground_libs:
-        if "pico" in build:
-            ground_target = 'pico_lib'
-        else:
-            ground_target = 'pc_lib'
-        files = Path(build).glob('*.a')
-        for file in files:
-            if windows:
-                os.system(f"copy {file} {
-                          ground_targets[ground_target]}")
-                continue
-            if linux:
-                os.system(f"cp {file} {
-                          ground_targets[ground_target]}")
-                continue
 
 
 def copy_files():
