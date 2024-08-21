@@ -1,6 +1,6 @@
 TODO:
 
-Windows compatibility:
+Windows compatibility (done?):
     connection.h/.c
     groundreceiver (path_to_port only)
     build scripts/git script

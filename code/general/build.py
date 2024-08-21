@@ -66,6 +66,24 @@ def copy_drone_files():
                 continue
 
 
+def ensure_targets_exist():
+    # drone targets
+    if not os.path.isdir("./drone/include"):
+        os.mkdir("./drone/include")
+    if not os.path.isdir("./drone/lib"):
+        os.mkdir("./drone/lib")
+
+    # ground targets
+    if not os.path.isdir("./ground/pico/include"):
+        os.mkdir("./ground/pico/include")
+    if not os.path.isdir("./ground/pico/lib"):
+        os.mkdir("./ground/pico/lib")
+    if not os.path.isdir("./ground/pc/include"):
+        os.mkdir("./ground/pc/include")
+    if not os.path.isdir("./ground/pc/lib"):
+        os.mkdir("./ground/pc/lib")
+
+
 def copy_ground_files():
     for folder in ground_includes:
         if "pico" in folder:
@@ -159,6 +177,8 @@ def main():
         build_files()
     else:
         rebuild_files()
+
+    ensure_targets_exist()
     copy_files()
 
 
