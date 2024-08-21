@@ -13,7 +13,7 @@ file(GLOB HEADERS
 )
 
 include(pico_sdk_import.cmake)
-project(drone C CXX ASM)
+project(pico_transceiver C CXX ASM)
 pico_sdk_init()
 
 

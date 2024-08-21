@@ -12,13 +12,9 @@ file(GLOB HEADERS
     "./src/*.h"
 )
 
-include(pico_sdk_import.cmake)
-project(drone C CXX ASM)
-pico_sdk_init()
+project(pc_app C)
 
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-pico_enable_stdio_usb(${PROJECT_NAME} 1)
-pico_add_extra_outputs(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} ${LIBRARY_FILES})
 target_include_directories(${PROJECT_NAME} ${INCLUDE_DIR})
