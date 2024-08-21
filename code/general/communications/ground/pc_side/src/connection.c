@@ -50,17 +50,17 @@ HANDLE initConnection(const char* path){
     return hComm;
 }
 
-int writePort(HANDLE port, uint8_t* buffer){
+int writePort(HANDLE port, uint8_t* buffer, unsigned long toWrite){
     unsigned long amount;
-    if(!WriteFile(port, buffer, strlen(buffer), &amount, NULL)){
+    if(!WriteFile(port, buffer, toWrite, &amount, NULL)){
         return -1;
     }
     return (int)amount;
 }
 
-int readPort(HANDLE port, uint8_t* buffer, int placeholder){
+int readPort(HANDLE port, uint8_t* buffer, unsigned long toRead){
     unsigned long amount;
-    if(!ReadFile(port, buffer, strlen(buffer), &amount, NULL)){
+    if(!ReadFile(port, buffer, toRead, &amount, NULL)){
         return -1;
     }
     return (int)amount;
@@ -108,8 +108,8 @@ int initConnection(const char *path) {
   return port;
 }
 
-int writePort(int port, uint8_t* buffer){
-    return write(port, buffer, strlen((char*)buffer));
+int writePort(int port, uint8_t* buffer, int amount){
+    return write(port, buffer, amount);
 }
 
 int readPort(int port, uint8_t* buffer, int amount){

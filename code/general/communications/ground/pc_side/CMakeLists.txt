@@ -27,10 +27,14 @@ set(COMMUNICATIONS_TEST_SOURCES
 )
 
 add_library(${PROJECT_NAME} ${COMMUNICATIONS_SOURCES} ${COMMUNICATIONS_HEADERS})
+if(UNIX)
 target_link_libraries(${PROJECT_NAME} X11)
+endif(UNIX)
 
 add_executable("ground_protocol_pc_test" ${COMMUNICATIONS_TEST_SOURCES} ${COMMUNICATIONS_TEST_HEADERS})
+if(UNIX)
 target_link_libraries("ground_protocol_pc_test" X11)
+endif(UNIX)
 
 #[[install(TARGETS ${PROJECT_NAME} 
     LIBRARY DESTINATION lib

@@ -107,7 +107,7 @@ void ground_transceiver_destroy(GroundTransceiver *transceiver) {
 }
 
 void ground_transceiver_send(GroundTransceiver *transceiver) {
-  writePort(transceiver->port, transceiver->sendBuffer);
+  writePort(transceiver->port, transceiver->sendBuffer, transceiver->bufferSize);
 }
 
 void ground_transceiver_read(GroundTransceiver *transceiver) {

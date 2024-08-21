@@ -52,7 +52,8 @@ def copy_drone_files():
             os.remove(file)
         for file in files:
             if windows:
-                os.system(f"copy {file} {drone_targets['include']}")
+                os.system(f"copy {file} {
+                          drone_targets['include'].replace('/', '\\')}")
                 continue
             if linux:
                 os.system(f"cp {file} {drone_targets['include']}")
@@ -63,7 +64,8 @@ def copy_drone_files():
             os.remove(file)
         for file in files:
             if windows:
-                os.system(f"copy {file} {drone_targets['lib']}")
+                os.system(f"copy {file} {
+                          drone_targets['lib'].replace('/', '\\')}")
                 continue
             if linux:
                 os.system(f"cp {file} {drone_targets['lib']}")
@@ -81,7 +83,8 @@ def copy_ground_files():
             os.remove(file)
         for file in files:
             if windows:
-                os.system(f"copy {file} {ground_targets[ground_target]}")
+                os.system(f"copy {file} {
+                    ground_targets[ground_target].replace('/', '\\')}")
             if linux:
                 os.system(f"cp {file} {ground_targets[ground_target]}")
 
@@ -97,7 +100,7 @@ def copy_ground_files():
         for file in files:
             if windows:
                 os.system(f"copy {file} {
-                          ground_targets[ground_target]}")
+                          ground_targets[ground_target].replace('/', '\\')}")
                 continue
             if linux:
                 os.system(f"cp {file} {
@@ -132,7 +135,10 @@ def build_drone_files():
     root = os.getcwd()
     for project_folder in drone_projects:
         os.chdir(project_folder)
-        os.system("python3 build.py")
+        if (platform.system() == "Linux"):
+            os.system("python3 build.py")
+        else:
+            os.system("python build.py")
         os.chdir(root)
 
 
@@ -140,7 +146,10 @@ def rebuild_drone_files():
     root = os.getcwd()
     for project_folder in drone_projects:
         os.chdir(project_folder)
-        os.system("python3 rebuild.py")
+        if (platform.system() == "Linux"):
+            os.system("python3 rebuild.py")
+        else:
+            os.system("python rebuild.py")
         os.chdir(root)
 
 
@@ -148,7 +157,10 @@ def build_ground_files():
     root = os.getcwd()
     for project_folder in ground_projects:
         os.chdir(project_folder)
-        os.system("python3 build.py")
+        if (platform.system() == "Linux"):
+            os.system("python3 build.py")
+        else:
+            os.system("python build.py")
         os.chdir(root)
 
 
@@ -156,7 +168,10 @@ def rebuild_ground_files():
     root = os.getcwd()
     for project_folder in ground_projects:
         os.chdir(project_folder)
-        os.system("python3 rebuild.py")
+        if (platform.system() == "Linux"):
+            os.system("python3 rebuild.py")
+        else:
+            os.system("python rebuild.py")
         os.chdir(root)
 
 

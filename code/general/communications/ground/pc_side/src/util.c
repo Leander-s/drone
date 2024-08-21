@@ -1,5 +1,7 @@
 #include "util.h"
 
+#ifdef _WIN32
+#else
 void disable_terminal_input(struct termios *original){
     struct termios new_settings;
 
@@ -16,3 +18,4 @@ void restore_terminal_input(struct termios *original){
     tcflush(STDIN_FILENO, TCIFLUSH);
     tcsetattr(STDIN_FILENO, TCSANOW, original);
 }
+#endif

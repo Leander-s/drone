@@ -2,14 +2,18 @@
 #include "input_poll.h"
 
 typedef struct {
-    uint8_t pitch;
-    uint8_t roll;
-    uint8_t yaw;
-    uint8_t throttle;
+  uint8_t pitch;
+  uint8_t roll;
+  uint8_t yaw;
+  uint8_t throttle;
 } DroneState;
 
 typedef struct {
+#ifdef _WIN32
+  HANDLE port;
+#else
   uint32_t port;
+#endif
   uint32_t bufferSize;
   DroneState currentState;
   uint8_t *sendBuffer;
@@ -17,7 +21,7 @@ typedef struct {
 } GroundTransceiver;
 
 typedef struct {
-  char* path_to_port;
+  char *path_to_port;
   uint32_t bufferSize;
 } GroundTransceiverCreateInfo;
 
