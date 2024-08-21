@@ -10,11 +10,13 @@ def main():
     os.system("git add .")
     os.system("git status")
 
-    valid_input = ["y", "ye", "yes", "n", "no"]
+    valid_input = ["", "y", "ye", "yes", "n", "no"]
     x = input(
-        "Do you want to commit these changes? (y)es to continue, (n)o to reset.")
+            "Do you want to commit these changes? (y)es or enter to continue, (n)o to reset.\n")
     while not (x in valid_input):
         print("Invalid input")
+        x = input(
+            "Do you want to commit these changes? (y)es or enter to continue, (n)o to reset.\n")
     if x == "n" or x == "no":
         os.system("git reset")
         return
