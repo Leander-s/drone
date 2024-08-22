@@ -26,13 +26,13 @@ typedef struct {
   uint8_t *sendBuffer;
   uint8_t *readBuffer;
   void (*send)(uint8_t *buffer, uint32_t len);
-  void (*recv)(uint8_t *buffer, uint32_t len);
+  void (*recv)(uint8_t *buffer, uint32_t len, int timeout_us);
 } DroneTransceiver;
 
 typedef struct {
   void (*init)();
   void (*send)(uint8_t *buffer, uint32_t len);
-  void (*recv)(uint8_t *buffer, uint32_t len);
+  void (*recv)(uint8_t *buffer, uint32_t len, int timeout_us);
   uint32_t bufferSize;
 } DroneTransceiverCreateInfo;
 

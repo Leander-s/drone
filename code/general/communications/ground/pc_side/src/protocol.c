@@ -7,8 +7,9 @@ ground_transceiver_create(GroundTransceiverCreateInfo *info) {
   result->recvBuffer = malloc(info->bufferSize);
   result->port = initConnection(info->path_to_port);
   result->bufferSize = info->bufferSize;
-  result->currentState =
-      (DroneState){.throttle = 0, .pitch = 127, .roll = 127, .yaw = 127};
+  *result->controlState =
+      (DroneControlState){.throttle = 0, .pitch = 127, .roll = 127, .yaw = 127};
+  *result->sensorState = (DroneSensorState){};
 
   ground_transceiver_read(result);
   printf("%s\n", result->recvBuffer);
@@ -16,40 +17,48 @@ ground_transceiver_create(GroundTransceiverCreateInfo *info) {
   return result;
 }
 
+// this is for unit testing and multithreading
+// Multithreading would still require a way to synchronize data since the structs
+// are shared memory
 void ground_transceiver_run(GroundTransceiver *transceiver) {
   printf("Ground transceiver running\n");
   // input handler initialized here because it should not be in this file
   // forever
+  // The ground_transceiver_protocol should only serialize the data from the
+  // DroneControlState, send it to the drone, and the deserialize the reply
+  // into the DroneSensorState
   inputHandler *input = createInputHandler();
+
   while (1) {
-    DroneState state = transceiver->currentState;
+    DroneControlState *controlState = transceiver->controlState;
+    DroneSensorState *sensorState = transceiver->sensorState;
     uint32_t bufferSize = transceiver->bufferSize;
     uint8_t *sendBuffer = transceiver->sendBuffer;
     memset(sendBuffer, 1, transceiver->bufferSize);
 
     // inputs should be done somewhere else in future
-    state.pitch = 127;
-    state.roll = 127;
-    state.yaw = 127;
-    state.throttle = state.throttle;
+    controlState->pitch = 127;
+    controlState->roll = 127;
+    controlState->yaw = 127;
+    controlState->throttle = controlState->throttle;
     if (key_down(input, XK_W))
-      state.pitch = 0;
+      controlState->pitch = 0;
     if (key_down(input, XK_S))
-      state.pitch = 254;
+      controlState->pitch = 254;
     if (key_down(input, XK_A))
-      state.roll = 0;
+      controlState->roll = 0;
     if (key_down(input, XK_D))
-      state.roll = 254;
+      controlState->roll = 254;
     if (key_down(input, XK_Q))
-      state.yaw = 0;
+      controlState->yaw = 0;
     if (key_down(input, XK_E))
-      state.yaw = 254;
+      controlState->yaw = 254;
     if (key_down(input, XK_Shift_L))
-      state.throttle += 1;
+      controlState->throttle += 1;
     if (key_down(input, XK_Control_L))
-      state.throttle -= 1;
+      controlState->throttle -= 1;
 
-    state.throttle = clamp(state.throttle, 0, 254);
+    controlState->throttle = clamp(controlState->throttle, 0, 254);
 
     // quit on P
     if (key_down(input, XK_P)) {
@@ -59,11 +68,10 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 
     // sending/receiving data
     // adding 1 everywhere so read() doesnt terminate early
-    sendBuffer[0] = 1 + state.throttle;
-    sendBuffer[1] = 1 + state.pitch;
-    sendBuffer[2] = 1 + state.roll;
-    sendBuffer[3] = 1 + state.yaw;
-    
+    sendBuffer[0] = 1 + controlState->throttle;
+    sendBuffer[1] = 1 + controlState->pitch;
+    sendBuffer[2] = 1 + controlState->roll;
+    sendBuffer[3] = 1 + controlState->yaw;
 
     ground_transceiver_send(transceiver);
 
@@ -83,6 +91,37 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 #endif
   }
   ground_transceiver_destroy(transceiver);
+}
+
+// This is for use in a main loop instead of multithreaded
+void ground_transceiver_update(GroundTransceiver *transceiver) {
+  DroneControlState *controlState = transceiver->controlState;
+  DroneSensorState *sensorState = transceiver->sensorState;
+  uint32_t bufferSize = transceiver->bufferSize;
+  uint8_t *sendBuffer = transceiver->sendBuffer;
+  memset(sendBuffer, 1, transceiver->bufferSize);
+
+  // sending/receiving data
+  // adding 1 everywhere so read() doesnt terminate early
+  sendBuffer[0] = 1 + controlState->throttle;
+  sendBuffer[1] = 1 + controlState->pitch;
+  sendBuffer[2] = 1 + controlState->roll;
+  sendBuffer[3] = 1 + controlState->yaw;
+
+  ground_transceiver_send(transceiver);
+
+  uint8_t *recvBuffer = transceiver->recvBuffer;
+  memset(recvBuffer, 0, transceiver->bufferSize);
+
+  ground_transceiver_read(transceiver);
+
+  ground_transceiver_handle_data(transceiver);
+
+#ifdef _WIN32
+  Sleep(10);
+#else
+  usleep(10000);
+#endif
 }
 
 int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
@@ -129,12 +168,12 @@ void ground_transceiver_read(GroundTransceiver *transceiver) {
   int readBytes = 0;
   int offset = 0;
   while (readBytes < 32) {
-    readBytes += readPort(transceiver->port, buffer + offset,
-                          transceiver->bufferSize);
+    readBytes +=
+        readPort(transceiver->port, buffer + offset, transceiver->bufferSize);
     offset += readBytes;
-    
-    if(buffer[offset] == 0){
-        return;
+
+    if (buffer[offset] == 0) {
+      return;
     }
 
     if (readBytes < 0) {
