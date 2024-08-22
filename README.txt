@@ -43,7 +43,7 @@ usb connection sometimes fails. Comes right back but not optimal.
         
 TODO:
 
-pc round controller ui
+pc ground controller ui
 
 kalman filter sensors
 get sensor data in sensor subproject
