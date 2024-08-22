@@ -1,6 +1,8 @@
 #include <debugging_util.h>
 #include <nrf24.h>
 
+#define READ_TIMEOUT_US 10000
+
 void setup() {
   stdio_usb_init();
 
@@ -22,7 +24,7 @@ void loop() {
     char message[32];
     memset(message, 0, 32);
     int result = pico_read(message, 32);
-    if (result == 0) {
+    if (result < 32) {
       continue;
     }
     if (!tud_cdc_connected()) {
@@ -30,7 +32,7 @@ void loop() {
     }
     nrf24_send((uint8_t *)message, 32);
     memset(message, 0, 32);
-    nrf24_read((uint8_t *)message, 32, -1);
+    nrf24_read((uint8_t *)message, 32, READ_TIMEOUT_US);
     pico_print(message, 32);
   }
 }

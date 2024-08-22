@@ -88,7 +88,7 @@ void drone_send(DroneTransceiver *transceiver) {
 }
 
 void drone_read(DroneTransceiver *transceiver) {
-  transceiver->recv(transceiver->readBuffer, transceiver->bufferSize, NRF_READ_TIMEOUT);
+  transceiver->recv(transceiver->readBuffer, transceiver->bufferSize, -1);
 }
 
 void drone_flush_rx(DroneTransceiver *transceiver) {

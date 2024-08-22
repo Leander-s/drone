@@ -1,7 +1,5 @@
 #include "drone_protocol_config.h"
 
-#define NRF_READ_TIMEOUT 100000
-
 /*
  * Message layout
  *
