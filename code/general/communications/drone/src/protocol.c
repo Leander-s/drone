@@ -1,25 +1,45 @@
 #include "protocol.h"
 
 DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
-  (*createInfo->init)();
+#ifdef NDEBUG
+#else
+    stdio_usb_init();
+    
+    while(!stdio_usb_connected()){
+        sleep_ms(100);
+    }
+
+    while(!tud_cdc_connected()){
+        sleep_ms(100);
+    }
+
+    LOG("Pico connected", 32);
+#endif
+
+  createInfo->init();
 
   DroneTransceiver *result = malloc(sizeof(DroneTransceiver));
   result->currentState = (DroneState){};
   result->bufferSize = createInfo->bufferSize;
   result->readBuffer = malloc(result->bufferSize);
   result->sendBuffer = malloc(result->bufferSize);
-  result->send = *createInfo->send;
-  result->recv = *createInfo->recv;
+  result->send = createInfo->send;
+  result->recv = createInfo->recv;
+
 
   return result;
 }
 
 void drone_protocol_run(DroneTransceiver *transceiver) {
+  LOG("Flushing buffers", 32);
+  drone_flush_rx(transceiver);
+  drone_flush_tx(transceiver);
   while (1) {
+    LOG("Reading", 32);
     drone_read(transceiver);
-    if (transceiver->readBuffer[0] == 0)
-      continue;
+    LOG("Handling message", 32);
     drone_protocol_handle_message(transceiver);
+    LOG("Sending", 32);
     drone_send(transceiver);
   }
   drone_protocol_terminate(transceiver);
@@ -46,7 +66,7 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   transceiver->currentState.yaw = message[3];
 
   // flush readBuffer
-  drone_flush_rx(transceiver);  
+  drone_flush_rx(transceiver);
 
   // flush writeBuffer
   drone_flush_tx(transceiver);
@@ -68,7 +88,7 @@ void drone_send(DroneTransceiver *transceiver) {
 }
 
 void drone_read(DroneTransceiver *transceiver) {
-  transceiver->recv(transceiver->readBuffer, transceiver->bufferSize);
+  transceiver->recv(transceiver->readBuffer, transceiver->bufferSize, NRF_READ_TIMEOUT);
 }
 
 void drone_flush_rx(DroneTransceiver *transceiver) {

@@ -1,10 +1,14 @@
-#include <stdio.h>
+#include "class/cdc/cdc_device.h"
+#include <pico/stdio_usb.h>
+#include <pico/time.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <debugging_util.h>
 
-#ifdef __NDEBUG
-#define LOG(x)
+#ifdef NDEBUG
+#define LOG(x,y)
 #else
-#define LOG(x) pico_print(x)
+#define LOG(x, y) pico_print(x, y)
 #endif

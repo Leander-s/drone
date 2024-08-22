@@ -65,7 +65,7 @@
 
 void nrf24_init();
 void nrf24_send(uint8_t *data, uint32_t len);
-void nrf24_read(uint8_t *data, uint32_t len);
+void nrf24_read(uint8_t *data, uint32_t len, int timeout_us);
 
 void set_mode(uint8_t mode);
 uint8_t nrf24_read_register(uint8_t reg);

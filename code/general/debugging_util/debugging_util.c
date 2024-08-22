@@ -14,6 +14,17 @@ int pico_read(char* readBuffer, int size){
     return result;
 }
 
-void pico_print(char *message){
-    printf("%s", message);
+void pico_print(char *message, int len){
+    int printedBytes = 0;
+    while(printedBytes == 0){
+        printedBytes = printf("%.*s", len, message);
+    }
+}
+
+void pico_debug_print(char *message, int len){
+    char debug_message[128];
+    memset(debug_message, 0, 128);
+    memcpy(debug_message + 1, message, strlen(message));
+    debug_message[0] = 1;
+    printf("%.*s", len + 1, debug_message);
 }

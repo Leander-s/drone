@@ -7,15 +7,17 @@ ground_transceiver_create(GroundTransceiverCreateInfo *info) {
   result->recvBuffer = malloc(info->bufferSize);
   result->port = initConnection(info->path_to_port);
   result->bufferSize = info->bufferSize;
-  result->currentState = (DroneState){};
+  result->currentState =
+      (DroneState){.throttle = 0, .pitch = 127, .roll = 127, .yaw = 127};
 
   ground_transceiver_read(result);
-  printf("%s", result->recvBuffer);
+  printf("%s\n", result->recvBuffer);
 
   return result;
 }
 
 void ground_transceiver_run(GroundTransceiver *transceiver) {
+  printf("Ground transceiver running\n");
   // input handler initialized here because it should not be in this file
   // forever
   inputHandler *input = createInputHandler();
@@ -82,12 +84,12 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   // data[0] == ...
   uint8_t *data = transceiver->recvBuffer;
 
-  if(data[0] == 0){
-      return 0;
+  if (data[0] == 0) {
+    return 0;
   }
 
   if (data[0] == 1) {
-    for (int i = 0; i < transceiver->bufferSize; i++) {
+    for (int i = 1; i < transceiver->bufferSize; i++) {
       printf("%c", data[i]);
     }
     printf("\n");
@@ -107,9 +109,17 @@ void ground_transceiver_destroy(GroundTransceiver *transceiver) {
 }
 
 void ground_transceiver_send(GroundTransceiver *transceiver) {
-  writePort(transceiver->port, transceiver->sendBuffer, transceiver->bufferSize);
+  int sentBytes = 0;
+  while (sentBytes == 0) {
+    sentBytes = writePort(transceiver->port, transceiver->sendBuffer,
+                          transceiver->bufferSize);
+  }
 }
 
 void ground_transceiver_read(GroundTransceiver *transceiver) {
-  readPort(transceiver->port, transceiver->recvBuffer, transceiver->bufferSize);
+  int readBytes = 0;
+  while (readBytes == 0) {
+    readBytes = readPort(transceiver->port, transceiver->recvBuffer,
+                         transceiver->bufferSize);
+  }
 }
