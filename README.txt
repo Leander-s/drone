@@ -42,7 +42,11 @@ nrf24:
         
 TODO:
 
-get nrf24 to work in general code
+make it possible to close pc controller, reopen and gain connection again
+pc round controller ui
+
+kalman filter sensors
+get sensor data in sensor subproject
 
 Windows compatibility (done?):
     connection.h/.c
