@@ -23,6 +23,9 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
   inputHandler *input = createInputHandler();
   while (1) {
     DroneState state = transceiver->currentState;
+    uint32_t bufferSize = transceiver->bufferSize;
+    uint8_t *sendBuffer = transceiver->sendBuffer;
+    memset(sendBuffer, 1, transceiver->bufferSize);
 
     // inputs should be done somewhere else in future
     state.pitch = 127;
@@ -32,30 +35,35 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
     if (key_down(input, XK_W))
       state.pitch = 0;
     if (key_down(input, XK_S))
-      state.pitch = 255;
+      state.pitch = 254;
     if (key_down(input, XK_A))
       state.roll = 0;
     if (key_down(input, XK_D))
-      state.roll = 255;
+      state.roll = 254;
     if (key_down(input, XK_Q))
       state.yaw = 0;
     if (key_down(input, XK_E))
-      state.yaw = 255;
+      state.yaw = 254;
     if (key_down(input, XK_Shift_L))
       state.throttle += 1;
     if (key_down(input, XK_Control_L))
       state.throttle -= 1;
 
+    state.throttle = clamp(state.throttle, 0, 254);
+
+    // quit on P
+    if (key_down(input, XK_P)) {
+      sendBuffer[31] = 2;
+      break;
+    }
+
     // sending/receiving data
-    uint32_t bufferSize = transceiver->bufferSize;
-
-    uint8_t *sendBuffer = transceiver->sendBuffer;
-    memset(sendBuffer, 0, transceiver->bufferSize);
-
-    sendBuffer[0] = state.throttle;
-    sendBuffer[1] = state.pitch;
-    sendBuffer[2] = state.roll;
-    sendBuffer[3] = state.yaw;
+    // adding 1 everywhere so read() doesnt terminate early
+    sendBuffer[0] = 1 + state.throttle;
+    sendBuffer[1] = 1 + state.pitch;
+    sendBuffer[2] = 1 + state.roll;
+    sendBuffer[3] = 1 + state.yaw;
+    
 
     ground_transceiver_send(transceiver);
 
@@ -117,9 +125,21 @@ void ground_transceiver_send(GroundTransceiver *transceiver) {
 }
 
 void ground_transceiver_read(GroundTransceiver *transceiver) {
+  uint8_t *buffer = transceiver->recvBuffer;
   int readBytes = 0;
-  while (readBytes == 0) {
-    readBytes = readPort(transceiver->port, transceiver->recvBuffer,
-                         transceiver->bufferSize);
+  int offset = 0;
+  while (readBytes < 32) {
+    readBytes += readPort(transceiver->port, buffer + offset,
+                          transceiver->bufferSize);
+    offset += readBytes;
+    
+    if(buffer[offset] == 0){
+        return;
+    }
+
+    if (readBytes < 0) {
+      printf("Error reading from pico\n");
+      return;
+    }
   }
 }

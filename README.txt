@@ -39,10 +39,10 @@ drone/code/general/communications/nrf24:
 nrf24:
     This is how the module should be wired https://coffeebreakpoint.com/wp-content/uploads/2021/05/pico-nrf24L01_wiring-768x763.png.
     
+usb connection sometimes fails. Comes right back but not optimal.
         
 TODO:
 
-make it possible to close pc controller, reopen and gain connection again
 pc round controller ui
 
 kalman filter sensors

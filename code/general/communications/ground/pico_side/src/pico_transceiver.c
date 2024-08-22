@@ -1,5 +1,6 @@
 #include <debugging_util.h>
 #include <nrf24.h>
+#include <pico/time.h>
 
 #define READ_TIMEOUT_US 10000
 
@@ -20,18 +21,30 @@ void setup() {
 }
 
 void loop() {
+  char message[32];
+  memset(message, 0, 32);
+  int result;
   while (1) {
-    char message[32];
-    memset(message, 0, 32);
-    int result = pico_read(message, 32);
+    result = pico_read(message, 32);
     if (result < 32) {
       continue;
     }
-    if (!tud_cdc_connected()) {
-      break;
+    if ((message[31] - 1) & 1) {
+      int blink = 0;
+      while (!stdio_usb_connected()) {
+        gpio_put(LED_PIN, blink);
+        blink = (blink + 1) % 2;
+        sleep_ms(100);
+      }
+      while (!tud_cdc_connected()) {
+        gpio_put(LED_PIN, blink);
+        blink = (blink + 1) % 2;
+        sleep_ms(100);
+      }
+      pico_debug_print("Pico connected", 32);
+      continue;
     }
     nrf24_send((uint8_t *)message, 32);
-    memset(message, 0, 32);
     nrf24_read((uint8_t *)message, 32, READ_TIMEOUT_US);
     pico_print(message, 32);
   }

@@ -31,15 +31,11 @@ DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
 }
 
 void drone_protocol_run(DroneTransceiver *transceiver) {
-  LOG("Flushing buffers", 32);
   drone_flush_rx(transceiver);
   drone_flush_tx(transceiver);
   while (1) {
-    LOG("Reading", 32);
     drone_read(transceiver);
-    LOG("Handling message", 32);
     drone_protocol_handle_message(transceiver);
-    LOG("Sending", 32);
     drone_send(transceiver);
   }
   drone_protocol_terminate(transceiver);

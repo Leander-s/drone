@@ -2,22 +2,23 @@
 
 int pico_read(char* readBuffer, int size){
     int result;
-    int offset = 0;
-    do{
-    result = stdio_get_until(readBuffer + offset, size - offset, 1000);
-    offset += result;
-    if(result == PICO_ERROR_TIMEOUT) break;
-    if(offset == 0) continue;
-    if(offset >= size) break;
-    if(readBuffer[offset - 1] == '\0') break;
-    }while(1);
-    return result;
+    int i = 0;
+    while (i < size){
+    readBuffer[i] = getchar();
+    i++;
+    if(result < 0) return -1;
+    }
+    return i;
 }
 
 void pico_print(char *message, int len){
     int printedBytes = 0;
     while(printedBytes == 0){
         printedBytes = printf("%.*s", len, message);
+    }
+    if(printedBytes < 0){
+        printf("Error while printing");
+        gpio_put(25,1);
     }
 }
 

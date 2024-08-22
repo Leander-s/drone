@@ -123,8 +123,8 @@ void nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
     current_cycle++;
     sleep_us(10);
   }
-  gpio_put(LED_PIN, 1);
   gpio_put(PIN_CE, 0);
+  gpio_put(LED_PIN, 1);
 
   uint8_t cmd = R_RX_PAYLOAD;
   uint8_t dummy[32];
