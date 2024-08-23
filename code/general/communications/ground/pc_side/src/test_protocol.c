@@ -1,4 +1,5 @@
 #include "protocol.h"
+#include "input_poll.h"
 
 GroundTransceiver *
 ground_transceiver_create(GroundTransceiverCreateInfo *info) {
@@ -22,6 +23,12 @@ ground_transceiver_create(GroundTransceiverCreateInfo *info) {
 // are shared memory
 void ground_transceiver_run(GroundTransceiver *transceiver) {
   printf("Ground transceiver running\n");
+  // input handler initialized here because it should not be in this file
+  // forever
+  // The ground_transceiver_protocol should only serialize the data from the
+  // DroneControlState, send it to the drone, and the deserialize the reply
+  // into the DroneSensorState
+  inputHandler *input = createInputHandler();
 
   while (1) {
     DroneControlState *controlState = transceiver->controlState;
@@ -29,6 +36,36 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
     uint32_t bufferSize = transceiver->bufferSize;
     uint8_t *sendBuffer = transceiver->sendBuffer;
     memset(sendBuffer, 1, transceiver->bufferSize);
+
+    // inputs should be done somewhere else in future
+    controlState->pitch = 127;
+    controlState->roll = 127;
+    controlState->yaw = 127;
+    controlState->throttle = controlState->throttle;
+    if (key_down(input, XK_W))
+      controlState->pitch = 0;
+    if (key_down(input, XK_S))
+      controlState->pitch = 254;
+    if (key_down(input, XK_A))
+      controlState->roll = 0;
+    if (key_down(input, XK_D))
+      controlState->roll = 254;
+    if (key_down(input, XK_Q))
+      controlState->yaw = 0;
+    if (key_down(input, XK_E))
+      controlState->yaw = 254;
+    if (key_down(input, XK_Shift_L))
+      controlState->throttle += 1;
+    if (key_down(input, XK_Control_L))
+      controlState->throttle -= 1;
+
+    controlState->throttle = clamp(controlState->throttle, 0, 254);
+
+    // quit on P
+    if (key_down(input, XK_P)) {
+      sendBuffer[31] = 2;
+      break;
+    }
 
     // sending/receiving data
     // adding 1 everywhere so read() doesnt terminate early

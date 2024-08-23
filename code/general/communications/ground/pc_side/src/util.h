@@ -1,4 +1,4 @@
-#include "ground_protocol_config.h"
+#include "test_config.h"
 
 #ifdef _WIN32
 #define LEFT_MOUSE 0x01

@@ -4,21 +4,18 @@ project(ground_protocol_pc)
 
 set(HEADERS
     src/util.h
-    src/input_poll.h
     src/config.h
 )
 
 set(SOURCE
     src/util.c
-    src/input_poll.c
+    src/main.c
 )
 
 add_library(${PROJECT_NAME} ${COMMUNICATIONS_SOURCES} ${COMMUNICATIONS_HEADERS})
-if(UNIX)
-target_link_libraries(${PROJECT_NAME} X11)
-endif(UNIX)
+target_link_directories(${CMAKE_LINK_DIRECTORIES_BEFORE} "./SDL/build") 
+target_link_libraries(${PROJECT_NAME} SDL3) 
 
 add_executable("pc_gui_test" ${COMMUNICATIONS_TEST_SOURCES} ${COMMUNICATIONS_TEST_HEADERS})
-if(UNIX)
-target_link_libraries("pc_gui_test" X11)
-endif(UNIX)
+target_link_directories(${CMAKE_LINK_DIRECTORIES_BEFORE} "./SDL/build") 
+target_link_libraries(${PROJECT_NAME} SDL3) 

@@ -77,7 +77,7 @@ void nrf24_write_register(uint8_t reg, uint8_t value) {
   gpio_put(PIN_CS, 1);
 }
 
-void nrf24_send(uint8_t *data, uint32_t len) {
+int nrf24_send(uint8_t *data, uint32_t len) {
   nrf24_flush_tx();
 
   gpio_put(PIN_CE, 0);
@@ -87,7 +87,7 @@ void nrf24_send(uint8_t *data, uint32_t len) {
   uint8_t cmd = W_TX_PAYLOAD;
   gpio_put(PIN_CS, 0);
   spi_write_blocking(SPI_PORT, &cmd, 1);
-  spi_write_blocking(SPI_PORT, data, len);
+  int bytesWritten = spi_write_blocking(SPI_PORT, data, len);
   gpio_put(PIN_CS, 1);
 
   gpio_put(LED_PIN, 1);
@@ -98,9 +98,11 @@ void nrf24_send(uint8_t *data, uint32_t len) {
   // no idea why this is necessary
   sleep_us(1000);
   gpio_put(LED_PIN, 0);
+
+  return bytesWritten;
 }
 
-void nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
+int nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   set_mode(RX_MODE);
 
   gpio_put(PIN_CE, 1);
@@ -117,7 +119,7 @@ void nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   while (!data_available) {
     if (current_cycle > max_cycles) {
       gpio_put(PIN_CE, 0);
-      return;
+      return 0;
     }
     data_available = nrf24_data_available();
     current_cycle++;
@@ -127,10 +129,10 @@ void nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   gpio_put(LED_PIN, 1);
 
   uint8_t cmd = R_RX_PAYLOAD;
-  uint8_t dummy[32];
+  //uint8_t dummy[32];
   gpio_put(PIN_CS, 0);
   spi_write_blocking(SPI_PORT, &cmd, 1);
-  spi_read_blocking(SPI_PORT, 0, data, len);
+  int bytesRead = spi_read_blocking(SPI_PORT, 0, data, len);
   gpio_put(PIN_CS, 1);
   sleep_us(10);
 
@@ -139,6 +141,7 @@ void nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   nrf24_flush_rx();
 
   gpio_put(LED_PIN, 0);
+  return bytesRead;
 }
 
 void nrf24_flush_tx() {

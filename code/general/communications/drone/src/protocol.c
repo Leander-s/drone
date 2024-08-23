@@ -79,12 +79,12 @@ void drone_protocol_terminate(DroneTransceiver *transceiver) {
   free(transceiver);
 }
 
-void drone_send(DroneTransceiver *transceiver) {
-  transceiver->send(transceiver->sendBuffer, transceiver->bufferSize);
+int drone_send(DroneTransceiver *transceiver) {
+  return transceiver->send(transceiver->sendBuffer, transceiver->bufferSize);
 }
 
-void drone_read(DroneTransceiver *transceiver) {
-  transceiver->recv(transceiver->readBuffer, transceiver->bufferSize, -1);
+int drone_read(DroneTransceiver *transceiver) {
+  return transceiver->recv(transceiver->readBuffer, transceiver->bufferSize, -1);
 }
 
 void drone_flush_rx(DroneTransceiver *transceiver) {

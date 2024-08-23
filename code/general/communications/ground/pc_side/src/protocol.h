@@ -1,5 +1,4 @@
 #include "connection.h"
-#include "input_poll.h"
 
 typedef struct {
   uint8_t pitch;
