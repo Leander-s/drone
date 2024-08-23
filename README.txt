@@ -11,12 +11,15 @@ Requirements:
         arm-none-eabi compilers (see raspberrypi pico setup)
         gcc
 
+Init:
+    run init.py
+
 Build:
     from "drone/code/general/" directory run "python build.py b" to build the output
     from "drone/code/general/" directory run "python build.py r" to rebuild the files 
         (deletes all previously built files and rebuilds them)
 
-    3 Output files (empty as of now):
+    3 Output files:
         drone/code/general/drone/build -> *.uf2 goes in the drones pico
         drone/code/general/ground/pc/build -> *.exe/*(unix executable) for pc
         drone/code/general/ground/pico/build -> *.uf2 goes in pico connected to pc as transceiver

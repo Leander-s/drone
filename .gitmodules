@@ -1,3 +1,6 @@
 [submodule "code/pico/pico-sdk"]
 	path = code/pico/pico-sdk
 	url = git@github.com:raspberrypi/pico-sdk.git
+[submodule "code/general/gui/SDL"]
+	path = code/general/gui/SDL
+	url = https://github.com/libsdl-org/SDL
