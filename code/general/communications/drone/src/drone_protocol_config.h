@@ -3,8 +3,8 @@
 #include <pico/stdio_usb.h>
 #include <pico/time.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #ifdef NDEBUG

@@ -2,24 +2,9 @@
 #include <hardware/timer.h>
 #include <nrf24.h>
 #include <pico/time.h>
+#include <diagnostics.h>
 
 #define READ_TIMEOUT_US 10000
-
-typedef union {
-  float f;
-  uint8_t bytes[4];
-} FloatBytes;
-
-typedef union {
-  int i;
-  uint8_t bytes[4];
-} IntBytes;
-
-typedef struct {
-  FloatBytes transmissionsPerSecond;
-  IntBytes readTimeouts;
-  IntBytes usbDisconnects;
-} SystemLog;
 
 void setup() {
   stdio_usb_init();
@@ -43,7 +28,7 @@ void loop() {
   memset(fromPC, 1, 64);
   memset(toPC, 0, 64);
   int result;
-  SystemLog log = {
+  PicoSystemLog log = {
       .transmissionsPerSecond.f = 0, .readTimeouts.i = 0, .usbDisconnects.i = 0};
   while (1) {
     uint64_t start_time = time_us_64();
