@@ -26,29 +26,9 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
   printf("Ground transceiver running\n");
 
   while (1) {
-    DroneControlState *controlState = transceiver->controlState;
-    DroneSensorState *sensorState = transceiver->sensorState;
-    uint32_t bufferSize = transceiver->bufferSize;
-    uint8_t *sendBuffer = transceiver->sendBuffer;
-    memset(sendBuffer, 1, transceiver->bufferSize);
-
-    // sending/receiving data
-    // adding 1 everywhere so read() doesnt terminate early
-    sendBuffer[0] = 1 + controlState->throttle;
-    sendBuffer[1] = 1 + controlState->pitch;
-    sendBuffer[2] = 1 + controlState->roll;
-    sendBuffer[3] = 1 + controlState->yaw;
-
-    ground_transceiver_send(transceiver);
-
-    uint8_t *recvBuffer = transceiver->recvBuffer;
-    memset(recvBuffer, 0, transceiver->bufferSize);
-
-    ground_transceiver_read(transceiver);
-
-    if (ground_transceiver_handle_data(transceiver)) {
-      break;
-    }
+      if(ground_transceiver_update(transceiver)){
+          break;
+      }
 
 #ifdef _WIN32
     Sleep(10);
@@ -60,7 +40,7 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 }
 
 // This is for use in a main loop instead of multithreaded
-void ground_transceiver_update(GroundTransceiver *transceiver) {
+int ground_transceiver_update(GroundTransceiver *transceiver) {
   DroneControlState *controlState = transceiver->controlState;
   DroneSensorState *sensorState = transceiver->sensorState;
   uint32_t bufferSize = transceiver->bufferSize;
@@ -74,20 +54,21 @@ void ground_transceiver_update(GroundTransceiver *transceiver) {
   sendBuffer[2] = 1 + controlState->roll;
   sendBuffer[3] = 1 + controlState->yaw;
 
-  ground_transceiver_send(transceiver);
+  int result;
+  result = ground_transceiver_send(transceiver);
+  if(result < 0){
+      transceiver->log.usbWriteErrors++;
+  }
 
   uint8_t *recvBuffer = transceiver->recvBuffer;
   memset(recvBuffer, 0, transceiver->bufferSize);
 
-  ground_transceiver_read(transceiver);
+  result = ground_transceiver_read(transceiver);
+  if(result < 0){
+      transceiver->log.usbReadErrors++;
+  }
 
-  ground_transceiver_handle_data(transceiver);
-
-#ifdef _WIN32
-  Sleep(10);
-#else
-  usleep(10000);
-#endif
+  return ground_transceiver_handle_data(transceiver);
 }
 
 int ground_transceiver_handle_data(GroundTransceiver *transceiver) {

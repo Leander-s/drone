@@ -33,7 +33,7 @@ typedef struct {
 
 GroundTransceiver *ground_transceiver_create(GroundTransceiverCreateInfo *info);
 void ground_transceiver_run(GroundTransceiver *transceiver);
-void ground_transceiver_update(GroundTransceiver *transceiver);
+int ground_transceiver_update(GroundTransceiver *transceiver);
 void ground_transceiver_destroy(GroundTransceiver *transceiver);
 
 int ground_transceiver_send(GroundTransceiver *transceiver);
