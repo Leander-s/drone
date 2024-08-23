@@ -1,2 +1,5 @@
-#include <stdint.h>
-#include <X11/Xlib.h>
+// sdl
+#include <SDL3/SDL.h>
+
+// standard
+#include <stdio.h>
