@@ -7,14 +7,16 @@ ground_transceiver_create(GroundTransceiverCreateInfo *info) {
       .transmissionsPerSecond = 0,
       .usbDisconnects = 0,
       .picoReadTimeouts = 0,
+      .usbReadErrors = 0,
+      .usbWriteErrors = 0,
   };
   result->sendBuffer = malloc(info->bufferSize);
   result->recvBuffer = malloc(info->bufferSize);
   result->port = initConnection(info->path_to_port);
   result->bufferSize = info->bufferSize;
-  *result->controlState =
+  result->controlState =
       (DroneControlState){.throttle = 0, .pitch = 127, .roll = 127, .yaw = 127};
-  *result->sensorState = (DroneSensorState){};
+  result->sensorState = (DroneSensorState){};
 
   ground_transceiver_read(result);
   printf("%s\n", result->recvBuffer);
@@ -44,18 +46,18 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 
 // This is for use in a main loop instead of multithreaded
 int ground_transceiver_update(GroundTransceiver *transceiver) {
-  DroneControlState *controlState = transceiver->controlState;
-  DroneSensorState *sensorState = transceiver->sensorState;
+  DroneControlState controlState = transceiver->controlState;
+  DroneSensorState sensorState = transceiver->sensorState;
   uint32_t bufferSize = transceiver->bufferSize;
   uint8_t *sendBuffer = transceiver->sendBuffer;
   memset(sendBuffer, 1, transceiver->bufferSize);
 
   // sending/receiving data
   // adding 1 everywhere so read() doesnt terminate early
-  sendBuffer[0] = 1 + controlState->throttle;
-  sendBuffer[1] = 1 + controlState->pitch;
-  sendBuffer[2] = 1 + controlState->roll;
-  sendBuffer[3] = 1 + controlState->yaw;
+  sendBuffer[0] = 1 + controlState.throttle;
+  sendBuffer[1] = 1 + controlState.pitch;
+  sendBuffer[2] = 1 + controlState.roll;
+  sendBuffer[3] = 1 + controlState.yaw;
 
   int result;
   result = ground_transceiver_send(transceiver);
@@ -91,6 +93,7 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   }
 
   if (data[0] == 1) {
+    printf("AHHHAHA");
     for (int i = 1; i < transceiver->bufferSize; i++) {
       printf("%c", data[i]);
     }
@@ -104,17 +107,18 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   if (data[0] == 3) {
     // update sensor state
     // ...
-
-    // update log
-    PicoSystemLog picoLog;
-    read_int_bytes_b(&picoLog.usbDisconnects, &data[32]);
-    read_int_bytes_b(&picoLog.readTimeouts, &data[36]);
-    read_float_bytes_b(&picoLog.transmissionsPerSecond, &data[40]);
-
-    transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
-    transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
-    transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
   }
+
+  // update log
+  PicoSystemLog picoLog;
+  read_int_bytes_b(&picoLog.usbDisconnects, &data[32]);
+  read_int_bytes_b(&picoLog.readTimeouts, &data[36]);
+  read_float_bytes_b(&picoLog.transmissionsPerSecond, &data[40]);
+
+  transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
+  transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
+  transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
+  printf("TPS : %f\n", transceiver->log.transmissionsPerSecond);
 
   return 0;
 }

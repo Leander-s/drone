@@ -1,8 +1,9 @@
 #include "config.h"
+#include "gui_app.h"
 
 int main() {
-    DroneSensorState *sensorData;
-    DroneControlState *controlState;
+  DroneSensorState sensorData;
+  DroneControlState controlState;
 
   // Setting up transceiver
   GroundTransceiverCreateInfo createInfo;
@@ -12,8 +13,8 @@ int main() {
   createInfo.bufferSize = 32;
   // States need to be here in the main program, they will be what we control/
   // read throughout
-  createInfo.controlState = controlState;
-  createInfo.sensorState = sensorData;
+  createInfo.controlState = &controlState;
+  createInfo.sensorState = &sensorData;
 
   // might want to do this in a seperate thread in the future
   GroundTransceiver *link = ground_transceiver_create(&createInfo);
@@ -21,12 +22,15 @@ int main() {
   GUIData guiData;
   guiData.log = &link->log;
 
-  GUI *gui = gui_create(800, 600);  
+  GUI *gui = gui_create(800, 600);
 
-  while(1){
-      // sending to drone/receiving from drone
-      ground_transceiver_update(link);
+  while (!gui->shouldQuit) {
+    // sending to drone/receiving from drone
+    ground_transceiver_update(link);
 
-      gui_update(gui, &guiData);
+    gui_update(gui, &guiData);
   }
+
+  ground_transceiver_destroy(link);
+  gui_destroy(gui);
 }

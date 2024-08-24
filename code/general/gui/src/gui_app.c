@@ -44,6 +44,7 @@ void gui_update(GUI *gui, const GUIData *data) {
   SDL_PollEvent(&event);
   switch (event.type) {
   case SDL_EVENT_QUIT:
+    printf("Quitting\n");
     gui->shouldQuit = 1;
     return;
   case SDL_EVENT_WINDOW_RESIZED:
@@ -73,7 +74,7 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
   rect_draw(renderer, x, y, width, height, &GREY);
 
   text_draw(renderer, textX, yOffset, "System logs", 30, &LIGHT_GREY);
-  yOffset += padding;
+  yOffset += 30;
 
   // maybe abstract this away into a pure function that takes the data and
   // returns the text pointer
@@ -85,26 +86,29 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
   yOffset += padding;
 
   char picoTimeoutsBuffer[64];
-  sprintf(picoTimeoutsBuffer, "Pico read timeouts: %d", data->log->picoReadTimeouts);
-  const char* picoTimeoutsText = picoTimeoutsBuffer;
+  sprintf(picoTimeoutsBuffer, "Pico read timeouts: %d",
+          data->log->picoReadTimeouts);
+  const char *picoTimeoutsText = picoTimeoutsBuffer;
   text_draw(renderer, textX, yOffset, picoTimeoutsText, 20, &LIGHT_GREY);
   yOffset += padding;
 
   char usbDisconnectsBuffer[64];
-  sprintf(usbDisconnectsBuffer, "USB disconnects: %d", data->log->usbDisconnects);
-  const char* usbDisconnectsText = usbDisconnectsBuffer;
-  text_draw(renderer, textX, yOffset, usbDisconnectsText , 20, &LIGHT_GREY);
+  sprintf(usbDisconnectsBuffer, "USB disconnects: %d",
+          data->log->usbDisconnects);
+  const char *usbDisconnectsText = usbDisconnectsBuffer;
+  text_draw(renderer, textX, yOffset, usbDisconnectsText, 20, &LIGHT_GREY);
   yOffset += padding;
 
   char usbReadErrorsBuffer[64];
   sprintf(usbReadErrorsBuffer, "USB read errors: %d", data->log->usbReadErrors);
-  const char* usbReadErrorsText = usbReadErrorsBuffer;
+  const char *usbReadErrorsText = usbReadErrorsBuffer;
   text_draw(renderer, textX, yOffset, usbReadErrorsText, 20, &LIGHT_GREY);
   yOffset += padding;
 
   char usbWriteErrorsBuffer[64];
-  sprintf(usbWriteErrorsBuffer, "USB write errors: %d", data->log->usbWriteErrors);
-  const char* usbWriteErrorsText = usbWriteErrorsBuffer;
+  sprintf(usbWriteErrorsBuffer, "USB write errors: %d",
+          data->log->usbWriteErrors);
+  const char *usbWriteErrorsText = usbWriteErrorsBuffer;
   text_draw(renderer, textX, yOffset, usbWriteErrorsText, 20, &LIGHT_GREY);
   yOffset += padding;
 }

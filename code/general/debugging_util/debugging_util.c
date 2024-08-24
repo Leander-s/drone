@@ -11,15 +11,13 @@ int pico_read(char* readBuffer, int size){
     return i;
 }
 
-void pico_print(char *message, int len){
-    int printedBytes = 0;
-    while(printedBytes == 0){
-        printedBytes = printf("%.*s", len, message);
-    }
+int pico_print(char *message, int len){
+    int printedBytes = printf("%.*s", len, message);
     if(printedBytes < 0){
         printf("Error while printing");
         gpio_put(25,1);
     }
+    return printedBytes;
 }
 
 void pico_debug_print(char *message, int len){

@@ -4,13 +4,20 @@
 GroundTransceiver *
 ground_transceiver_create(GroundTransceiverCreateInfo *info) {
   GroundTransceiver *result = malloc(sizeof(GroundTransceiver));
+  result->log = (PCSystemLog){
+      .transmissionsPerSecond = 0,
+      .usbDisconnects = 0,
+      .picoReadTimeouts = 0,
+      .usbReadErrors = 0,
+      .usbWriteErrors = 0,
+  };
   result->sendBuffer = malloc(info->bufferSize);
   result->recvBuffer = malloc(info->bufferSize);
   result->port = initConnection(info->path_to_port);
   result->bufferSize = info->bufferSize;
-  *result->controlState =
+  result->controlState =
       (DroneControlState){.throttle = 0, .pitch = 127, .roll = 127, .yaw = 127};
-  *result->sensorState = (DroneSensorState){};
+  result->sensorState = (DroneSensorState){};
 
   ground_transceiver_read(result);
   printf("%s\n", result->recvBuffer);
@@ -31,35 +38,35 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
   inputHandler *input = createInputHandler();
 
   while (1) {
-    DroneControlState *controlState = transceiver->controlState;
-    DroneSensorState *sensorState = transceiver->sensorState;
+    DroneControlState controlState = transceiver->controlState;
+    DroneSensorState sensorState = transceiver->sensorState;
     uint32_t bufferSize = transceiver->bufferSize;
     uint8_t *sendBuffer = transceiver->sendBuffer;
     memset(sendBuffer, 1, transceiver->bufferSize);
 
     // inputs should be done somewhere else in future
-    controlState->pitch = 127;
-    controlState->roll = 127;
-    controlState->yaw = 127;
-    controlState->throttle = controlState->throttle;
+    controlState.pitch = 127;
+    controlState.roll = 127;
+    controlState.yaw = 127;
+    controlState.throttle = controlState.throttle;
     if (key_down(input, XK_W))
-      controlState->pitch = 0;
+      controlState.pitch = 0;
     if (key_down(input, XK_S))
-      controlState->pitch = 254;
+      controlState.pitch = 254;
     if (key_down(input, XK_A))
-      controlState->roll = 0;
+      controlState.roll = 0;
     if (key_down(input, XK_D))
-      controlState->roll = 254;
+      controlState.roll = 254;
     if (key_down(input, XK_Q))
-      controlState->yaw = 0;
+      controlState.yaw = 0;
     if (key_down(input, XK_E))
-      controlState->yaw = 254;
+      controlState.yaw = 254;
     if (key_down(input, XK_Shift_L))
-      controlState->throttle += 1;
+      controlState.throttle += 1;
     if (key_down(input, XK_Control_L))
-      controlState->throttle -= 1;
+      controlState.throttle -= 1;
 
-    controlState->throttle = clamp(controlState->throttle, 0, 254);
+    controlState.throttle = clamp(controlState.throttle, 0, 254);
 
     // quit on P
     if (key_down(input, XK_P)) {
@@ -69,17 +76,24 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 
     // sending/receiving data
     // adding 1 everywhere so read() doesnt terminate early
-    sendBuffer[0] = 1 + controlState->throttle;
-    sendBuffer[1] = 1 + controlState->pitch;
-    sendBuffer[2] = 1 + controlState->roll;
-    sendBuffer[3] = 1 + controlState->yaw;
+    sendBuffer[0] = 1 + controlState.throttle;
+    sendBuffer[1] = 1 + controlState.pitch;
+    sendBuffer[2] = 1 + controlState.roll;
+    sendBuffer[3] = 1 + controlState.yaw;
 
-    ground_transceiver_send(transceiver);
+    int result;
+    result = ground_transceiver_send(transceiver);
+    if (result < 0) {
+      transceiver->log.usbWriteErrors++;
+    }
 
     uint8_t *recvBuffer = transceiver->recvBuffer;
     memset(recvBuffer, 0, transceiver->bufferSize);
 
-    ground_transceiver_read(transceiver);
+    result = ground_transceiver_read(transceiver);
+    if (result < 0) {
+      transceiver->log.usbReadErrors++;
+    }
 
     if (ground_transceiver_handle_data(transceiver)) {
       break;
@@ -92,31 +106,6 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 #endif
   }
   ground_transceiver_destroy(transceiver);
-}
-
-// This is for use in a main loop instead of multithreaded
-int ground_transceiver_update(GroundTransceiver *transceiver) {
-  DroneControlState *controlState = transceiver->controlState;
-  DroneSensorState *sensorState = transceiver->sensorState;
-  uint32_t bufferSize = transceiver->bufferSize;
-  uint8_t *sendBuffer = transceiver->sendBuffer;
-  memset(sendBuffer, 1, transceiver->bufferSize);
-
-  // sending/receiving data
-  // adding 1 everywhere so read() doesnt terminate early
-  sendBuffer[0] = 1 + controlState->throttle;
-  sendBuffer[1] = 1 + controlState->pitch;
-  sendBuffer[2] = 1 + controlState->roll;
-  sendBuffer[3] = 1 + controlState->yaw;
-
-  ground_transceiver_send(transceiver);
-
-  uint8_t *recvBuffer = transceiver->recvBuffer;
-  memset(recvBuffer, 0, transceiver->bufferSize);
-
-  ground_transceiver_read(transceiver);
-
-  return ground_transceiver_handle_data(transceiver);
 }
 
 int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
@@ -132,6 +121,7 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   uint8_t *data = transceiver->recvBuffer;
 
   if (data[0] == 0) {
+    printf("No data\n");
     return 0;
   }
 
@@ -143,23 +133,25 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   }
 
   if (data[0] == 2) {
+    printf("Leaving\n");
     return 1;
   }
 
   if (data[0] == 3) {
     // update sensor state
     // ...
-
-    // update log
-    PicoSystemLog picoLog;
-    read_int_bytes_b(&picoLog.usbDisconnects, &data[32]);
-    read_int_bytes_b(&picoLog.readTimeouts, &data[36]);
-    read_float_bytes_b(&picoLog.transmissionsPerSecond, &data[40]);
-
-    transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
-    transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
-    transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
   }
+
+  // update log
+  PicoSystemLog picoLog;
+  read_int_bytes_b(&picoLog.usbDisconnects, &data[32]);
+  read_int_bytes_b(&picoLog.readTimeouts, &data[36]);
+  read_float_bytes_b(&picoLog.transmissionsPerSecond, &data[40]);
+
+  transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
+  transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
+  transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
+  printf("%f\n", transceiver->log.transmissionsPerSecond);
 
   return 0;
 }
