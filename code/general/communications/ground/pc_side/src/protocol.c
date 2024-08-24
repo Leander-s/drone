@@ -144,12 +144,12 @@ int ground_transceiver_read(GroundTransceiver *transceiver) {
   uint8_t *buffer = transceiver->recvBuffer;
   int readBytes = 0;
   int offset = 0;
-  while (readBytes < 32) {
-    readBytes +=
+  while (offset < 32) {
+    readBytes =
         readPort(transceiver->port, buffer + offset, transceiver->bufferSize);
     offset += readBytes;
 
-    if (buffer[offset] == 0) {
+    if (readBytes == 0) {
       return 0;
     }
 
@@ -158,5 +158,5 @@ int ground_transceiver_read(GroundTransceiver *transceiver) {
       return -1;
     }
   }
-  return readBytes;
+  return offset;
 }

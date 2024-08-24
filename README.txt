@@ -46,6 +46,13 @@ usb connection sometimes fails. Comes right back but not optimal.
         
 TODO:
 
+bytestream needs to be terminated but I want to just convert int/float to bytes and send
+=> Every byte that is zero is incremented by 1. We happen to be sending 32 bytes,
+that means we can store if a byte was 0 or not, in one integer, and use a bit mask to
+read out the bytes. after receiving, subtract one from every byte, where the corresponding bit is 1 in the integer at the end.
+Problem: Integer also cannot have bytes that are 0 => we are losing 4 bytes. unlucky
+
+
 pc ground controller ui
 
 kalman filter sensors
