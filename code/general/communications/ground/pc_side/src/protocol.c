@@ -93,8 +93,10 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   }
 
   if (data[0] == 1) {
-    printf("AHHHAHA");
     for (int i = 1; i < transceiver->bufferSize; i++) {
+      if (data[i] == 0) {
+        printf("[ ]");
+      }
       printf("%c", data[i]);
     }
     printf("\n");

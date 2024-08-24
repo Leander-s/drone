@@ -29,7 +29,7 @@ void loop() {
   memset(toPC, 0, 64);
   int result;
   PicoSystemLog log = {
-      .transmissionsPerSecond.f = 0, .readTimeouts.i = 0, .usbDisconnects.i = 0};
+      .transmissionsPerSecond.f = 10, .readTimeouts.i = 0, .usbDisconnects.i = 0};
   while (1) {
     uint64_t start_time = time_us_64();
     result = pico_read(fromPC, 64);
@@ -72,7 +72,6 @@ void loop() {
     if (bytesReceived == 0) {
       log.readTimeouts.i++;
     }
-    uint64_t end_time = time_us_64();
     for(int i = 0; i < 4; i++){
         toPC[32 + i] = log.usbDisconnects.bytes[i];
     }
@@ -81,6 +80,7 @@ void loop() {
         toPC[36 + i] = log.readTimeouts.bytes[i];
     }
 
+    uint64_t end_time = time_us_64();
     log.transmissionsPerSecond.f = 1.0 / (float)(end_time - start_time);
 
     for(int i = 0; i < 4; i++){
