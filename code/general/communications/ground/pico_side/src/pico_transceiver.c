@@ -25,8 +25,8 @@ void setup() {
 void loop() {
   char fromPC[64];
   char toPC[64];
-  memset(fromPC, 1, 64);
-  memset(toPC, 1, 64);
+  memset(fromPC, 0, 64);
+  memset(toPC, 0, 64);
   int result;
   PicoSystemLog log = {
       .transmissionsPerSecond.f = 10, .readTimeouts.i = 0, .usbDisconnects.i = 0};
