@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(PICO_SDK_PATH "../../../../pico/pico-sdk")
+
 include(pico_sdk_import.cmake)
 project(drone_protocol C CXX ASM)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

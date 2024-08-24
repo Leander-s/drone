@@ -1,14 +1,25 @@
 import os
 import platform
 import sys
+import shutil
 from pathlib import Path
 
 windows = platform.system() == 'Windows'
 linux = platform.system() == 'Linux'
 
+drone_sdk_path = "../../../pico/pico-sdk"
+
+ground_sdk_path = "../" + drone_sdk_path
+
+drone_target_sdk_path = "../../pico/pico-sdk"
+
+ground_target_sdk_path = "../" + drone_target_sdk_path
+
 drone_projects = [
     "./communications/drone"
 ]
+
+drone_target_project = "./drone"
 
 drone_includes = [
     "./communications/drone/src"
@@ -23,10 +34,17 @@ drone_targets = {
     "lib": "./drone/lib"
 }
 
+
 ground_projects = [
-    "./communications/ground",
+    "./communications/ground/pico_side",
+    "./communications/ground/pc_side",
     "./gui",
 ]
+
+ground_target_projects = {
+    "pc": "./ground/pc",
+    "pico": "./ground/pico",
+}
 
 ground_includes = [
     "./communications/ground/pc_side/src",
@@ -35,8 +53,8 @@ ground_includes = [
 ]
 
 ground_libs = [
-    "./communications/ground/pc_build",
-    "./communications/ground/pico_build",
+    "./communications/ground/pc_side/build",
+    "./communications/ground/pico_side/build",
     "./gui/build",
 ]
 
@@ -46,6 +64,34 @@ ground_targets = {
     "pico_include": "./ground/pico/include",
     "pc_include": "./ground/pc/include",
 }
+
+
+def set_pico_sdk_path(path):
+    os.environ["PICO_SDK_PATH"] = path
+
+
+def build_project(root, path, pico_sdk):
+    os.chdir(path)
+    if not os.path.isdir("build"):
+        os.mkdir("build")
+    os.chdir("build")
+
+    set_pico_sdk_path(pico_sdk)
+
+    if windows:
+        os.system('cmake -G "MinGW Makefiles" ..')
+    elif linux:
+        os.system('cmake ..')
+
+    os.system('make')
+    os.chdir(root)
+
+
+def rebuild_project(root, path, pico_sdk):
+    os.chdir(path)
+    if os.path.isdir("build"):
+        shutil.rmtree("build")
+    build_project(root, os.getcwd(), pico_sdk)
 
 
 def clean_folder(path):
@@ -116,20 +162,14 @@ def copy_ground_files():
 
 def ensure_targets_exist():
     # drone targets
-    if not os.path.isdir("./drone/include"):
-        os.mkdir("./drone/include")
-    if not os.path.isdir("./drone/lib"):
-        os.mkdir("./drone/lib")
+    for key in drone_targets:
+        if not os.path.isdir(drone_targets[key]):
+            os.mkdir(drone_targets[key])
 
     # ground targets
-    if not os.path.isdir("./ground/pico/include"):
-        os.mkdir("./ground/pico/include")
-    if not os.path.isdir("./ground/pico/lib"):
-        os.mkdir("./ground/pico/lib")
-    if not os.path.isdir("./ground/pc/include"):
-        os.mkdir("./ground/pc/include")
-    if not os.path.isdir("./ground/pc/lib"):
-        os.mkdir("./ground/pc/lib")
+    for key in ground_targets:
+        if not os.path.isdir(ground_targets[key]):
+            os.mkdir(ground_targets[key])
 
 
 def copy_files():
@@ -140,45 +180,25 @@ def copy_files():
 def build_drone_files():
     root = os.getcwd()
     for project_folder in drone_projects:
-        os.chdir(project_folder)
-        if (platform.system() == "Linux"):
-            os.system("python3 build.py")
-        else:
-            os.system("python build.py")
-        os.chdir(root)
+        build_project(root, project_folder, drone_sdk_path)
 
 
 def rebuild_drone_files():
     root = os.getcwd()
     for project_folder in drone_projects:
-        os.chdir(project_folder)
-        if (platform.system() == "Linux"):
-            os.system("python3 rebuild.py")
-        else:
-            os.system("python rebuild.py")
-        os.chdir(root)
+        rebuild_project(root, project_folder, drone_sdk_path)
 
 
 def build_ground_files():
     root = os.getcwd()
     for project_folder in ground_projects:
-        os.chdir(project_folder)
-        if (platform.system() == "Linux"):
-            os.system("python3 build.py")
-        else:
-            os.system("python build.py")
-        os.chdir(root)
+        build_project(root, project_folder, ground_sdk_path)
 
 
 def rebuild_ground_files():
     root = os.getcwd()
     for project_folder in ground_projects:
-        os.chdir(project_folder)
-        if (platform.system() == "Linux"):
-            os.system("python3 rebuild.py")
-        else:
-            os.system("python rebuild.py")
-        os.chdir(root)
+        build_project(root, project_folder, ground_sdk_path)
 
 
 def rebuild_files():
@@ -189,6 +209,32 @@ def rebuild_files():
 def build_files():
     build_ground_files()
     build_drone_files()
+
+
+def finish_drone_build(mode):
+    root = os.getcwd()
+
+    if mode == "b":
+        build_project(root, drone_target_project, drone_target_sdk_path)
+    else:
+        rebuild_project(root, drone_target_project, drone_target_sdk_path)
+
+
+def finish_ground_build(mode):
+    root = os.getcwd()
+
+    for project in ground_target_projects:
+        if mode == "b":
+            build_project(
+                root, ground_target_projects[project], ground_target_sdk_path)
+        else:
+            rebuild_project(
+                root, ground_target_projects[project], ground_target_sdk_path)
+
+
+def finish_build(mode):
+    finish_drone_build(mode)
+    finish_ground_build(mode)
 
 
 def main():
@@ -210,6 +256,7 @@ def main():
 
     ensure_targets_exist()
     copy_files()
+    finish_build(build_type)
 
 
 if __name__ == '__main__':
