@@ -4,3 +4,6 @@
 [submodule "code/general/gui/SDL"]
 	path = code/general/gui/SDL
 	url = https://github.com/libsdl-org/SDL
+[submodule "code/general/gui/SDL_ttf"]
+	path = code/general/gui/SDL_ttf
+	url = https://github.com/libsdl-org/SDL_ttf
