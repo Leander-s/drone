@@ -8,11 +8,13 @@ set(COMMUNICATIONS_HEADERS
     src/protocol.h
     src/connection.h
     src/ground_protocol_config.h
+    ../../../debugging_util/diagnostics.h
 )
 
 set(COMMUNICATIONS_SOURCES
     src/protocol.c
     src/connection.c
+    ../../../debugging_util/diagnostics.c
 )
 
 set(COMMUNICATIONS_TEST_HEADERS
@@ -21,6 +23,7 @@ set(COMMUNICATIONS_TEST_HEADERS
     src/connection.h
     src/util.h
     src/input_poll.h
+    ../../../debugging_util/diagnostics.h
 )
 
 set(COMMUNICATIONS_TEST_SOURCES
@@ -29,6 +32,7 @@ set(COMMUNICATIONS_TEST_SOURCES
     src/test_protocol.c
     src/input_poll.c
     src/main.c
+    ../../../debugging_util/diagnostics.c
 )
 
 add_library(${PROJECT_NAME} ${COMMUNICATIONS_SOURCES} ${COMMUNICATIONS_HEADERS})

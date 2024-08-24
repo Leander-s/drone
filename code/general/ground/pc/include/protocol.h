@@ -1,5 +1,4 @@
 #include "connection.h"
-#include "input_poll.h"
 
 typedef struct {
   uint8_t pitch;
@@ -22,6 +21,7 @@ typedef struct {
   DroneSensorState* sensorState;
   uint8_t *sendBuffer;
   uint8_t *recvBuffer;
+  PCSystemLog log;
 } GroundTransceiver;
 
 typedef struct {
@@ -33,9 +33,9 @@ typedef struct {
 
 GroundTransceiver *ground_transceiver_create(GroundTransceiverCreateInfo *info);
 void ground_transceiver_run(GroundTransceiver *transceiver);
-void ground_transceiver_update(GroundTransceiver *transceiver);
+int ground_transceiver_update(GroundTransceiver *transceiver);
 void ground_transceiver_destroy(GroundTransceiver *transceiver);
 
-void ground_transceiver_send(GroundTransceiver *transceiver);
-void ground_transceiver_read(GroundTransceiver *transceiver);
+int ground_transceiver_send(GroundTransceiver *transceiver);
+int ground_transceiver_read(GroundTransceiver *transceiver);
 int ground_transceiver_handle_data(GroundTransceiver *transceiver);

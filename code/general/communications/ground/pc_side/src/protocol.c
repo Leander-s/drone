@@ -4,7 +4,10 @@ GroundTransceiver *
 ground_transceiver_create(GroundTransceiverCreateInfo *info) {
   GroundTransceiver *result = malloc(sizeof(GroundTransceiver));
   result->log = (PCSystemLog){
-      .transmissionsPerSecond = 0, .usbDisconnects = 0, .picoReadTimeouts = 0,};
+      .transmissionsPerSecond = 0,
+      .usbDisconnects = 0,
+      .picoReadTimeouts = 0,
+  };
   result->sendBuffer = malloc(info->bufferSize);
   result->recvBuffer = malloc(info->bufferSize);
   result->port = initConnection(info->path_to_port);
@@ -26,9 +29,9 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
   printf("Ground transceiver running\n");
 
   while (1) {
-      if(ground_transceiver_update(transceiver)){
-          break;
-      }
+    if (ground_transceiver_update(transceiver)) {
+      break;
+    }
 
 #ifdef _WIN32
     Sleep(10);
@@ -56,16 +59,16 @@ int ground_transceiver_update(GroundTransceiver *transceiver) {
 
   int result;
   result = ground_transceiver_send(transceiver);
-  if(result < 0){
-      transceiver->log.usbWriteErrors++;
+  if (result < 0) {
+    transceiver->log.usbWriteErrors++;
   }
 
   uint8_t *recvBuffer = transceiver->recvBuffer;
   memset(recvBuffer, 0, transceiver->bufferSize);
 
   result = ground_transceiver_read(transceiver);
-  if(result < 0){
-      transceiver->log.usbReadErrors++;
+  if (result < 0) {
+    transceiver->log.usbReadErrors++;
   }
 
   return ground_transceiver_handle_data(transceiver);

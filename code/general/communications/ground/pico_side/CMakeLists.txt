@@ -7,12 +7,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(PICO_HEADERS
     ../../../debugging_util/debugging_config.h
     ../../../debugging_util/debugging_util.h
+    ../../../debugging_util/diagnostics.h
     ../../nrf24/nrf24_config.h
     ../../nrf24/nrf24.h
 )
 
 set(PICO_SOURCES
     ../../../debugging_util/debugging_util.c
+    ../../../debugging_util/diagnostics.c
     ../../nrf24/nrf24.c
     src/pico_transceiver.c
 )

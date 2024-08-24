@@ -24,17 +24,20 @@ drone_targets = {
 }
 
 ground_projects = [
-    "./communications/ground"
+    "./communications/ground",
+    "./gui",
 ]
 
 ground_includes = [
     "./communications/ground/pc_side/src",
-    "./communications/ground/pico_side/src"
+    "./communications/ground/pico_side/src",
+    "./gui/src",
 ]
 
 ground_libs = [
     "./communications/ground/pc_build",
-    "./communications/ground/pico_build"
+    "./communications/ground/pico_build",
+    "./gui/build",
 ]
 
 ground_targets = {
@@ -45,42 +48,49 @@ ground_targets = {
 }
 
 
+def clean_folder(path):
+    for file in Path(path).glob('*'):
+        os.remove(file)
+
+
 def copy_drone_files():
+    # remove all the old files
+    clean_folder(drone_targets['include'])
+    clean_folder(drone_targets['lib'])
+
     for folder in drone_includes:
         files = Path(folder).glob('*.h')
-        for file in Path(drone_targets['include']).glob('*'):
-            os.remove(file)
         for file in files:
             if windows:
                 os.system(f"copy {file} {
                           drone_targets['include'].replace('/', '\\')}")
-                continue
             if linux:
                 os.system(f"cp {file} {drone_targets['include']}")
-                continue
+
     for build in drone_libs:
         files = Path(build).glob('*.a')
-        for file in Path(drone_targets['lib']).glob('*'):
-            os.remove(file)
         for file in files:
             if windows:
                 os.system(f"copy {file} {
                           drone_targets['lib'].replace('/', '\\')}")
-                continue
             if linux:
                 os.system(f"cp {file} {drone_targets['lib']}")
-                continue
 
 
 def copy_ground_files():
+    # remove all the old files
+    clean_folder(ground_targets['pico_lib'])
+    clean_folder(ground_targets['pc_lib'])
+    clean_folder(ground_targets['pico_include'])
+    clean_folder(ground_targets['pc_include'])
+
+    # copy in the include files
     for folder in ground_includes:
         if "pico" in folder:
             ground_target = 'pico_include'
         else:
             ground_target = 'pc_include'
         files = Path(folder).glob('*.h')
-        for file in Path(ground_targets[ground_target]).glob('*'):
-            os.remove(file)
         for file in files:
             if windows:
                 os.system(f"copy {file} {
@@ -95,17 +105,13 @@ def copy_ground_files():
         else:
             ground_target = 'pc_lib'
             files = Path(build).glob('*.a')
-        for file in Path(ground_targets[ground_target]).glob('*'):
-            os.remove(file)
         for file in files:
             if windows:
                 os.system(f"copy {file} {
                           ground_targets[ground_target].replace('/', '\\')}")
-                continue
             if linux:
                 os.system(f"cp {file} {
                           ground_targets[ground_target]}")
-                continue
 
 
 def ensure_targets_exist():

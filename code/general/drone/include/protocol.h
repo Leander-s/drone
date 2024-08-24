@@ -25,14 +25,14 @@ typedef struct {
   uint32_t bufferSize;
   uint8_t *sendBuffer;
   uint8_t *readBuffer;
-  void (*send)(uint8_t *buffer, uint32_t len);
-  void (*recv)(uint8_t *buffer, uint32_t len, int timeout_us);
+  int (*send)(uint8_t *buffer, uint32_t len);
+  int (*recv)(uint8_t *buffer, uint32_t len, int timeout_us);
 } DroneTransceiver;
 
 typedef struct {
   void (*init)();
-  void (*send)(uint8_t *buffer, uint32_t len);
-  void (*recv)(uint8_t *buffer, uint32_t len, int timeout_us);
+  int (*send)(uint8_t *buffer, uint32_t len);
+  int (*recv)(uint8_t *buffer, uint32_t len, int timeout_us);
   uint32_t bufferSize;
 } DroneTransceiverCreateInfo;
 
@@ -41,7 +41,7 @@ void drone_protocol_run(DroneTransceiver *transceiver);
 void drone_protocol_handle_message(DroneTransceiver *transceiver);
 void drone_protocol_terminate(DroneTransceiver *transceiver);
 
-void drone_send(DroneTransceiver *transceiver);
-void drone_read(DroneTransceiver *transceiver);
+int drone_send(DroneTransceiver *transceiver);
+int drone_read(DroneTransceiver *transceiver);
 void drone_flush_tx(DroneTransceiver *transceiver);
 void drone_flush_rx(DroneTransceiver *transceiver);

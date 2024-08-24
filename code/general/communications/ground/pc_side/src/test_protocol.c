@@ -1,5 +1,5 @@
-#include "protocol.h"
 #include "input_poll.h"
+#include "protocol.h"
 
 GroundTransceiver *
 ground_transceiver_create(GroundTransceiverCreateInfo *info) {
@@ -19,8 +19,8 @@ ground_transceiver_create(GroundTransceiverCreateInfo *info) {
 }
 
 // this is for unit testing and multithreading
-// Multithreading would still require a way to synchronize data since the structs
-// are shared memory
+// Multithreading would still require a way to synchronize data since the
+// structs are shared memory
 void ground_transceiver_run(GroundTransceiver *transceiver) {
   printf("Ground transceiver running\n");
   // input handler initialized here because it should not be in this file
@@ -95,7 +95,7 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 }
 
 // This is for use in a main loop instead of multithreaded
-void ground_transceiver_update(GroundTransceiver *transceiver) {
+int ground_transceiver_update(GroundTransceiver *transceiver) {
   DroneControlState *controlState = transceiver->controlState;
   DroneSensorState *sensorState = transceiver->sensorState;
   uint32_t bufferSize = transceiver->bufferSize;
@@ -116,20 +116,19 @@ void ground_transceiver_update(GroundTransceiver *transceiver) {
 
   ground_transceiver_read(transceiver);
 
-  ground_transceiver_handle_data(transceiver);
-
-#ifdef _WIN32
-  Sleep(10);
-#else
-  usleep(10000);
-#endif
+  return ground_transceiver_handle_data(transceiver);
 }
 
 int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   // data[0] is code
   // data[0] == 1 => debug/error message -> just print it
-  // data[0] == 2 => terminate
-  // data[0] == ...
+  // data[0] == 2 => terminate (only important for multithreading/run-function
+  // data[0] == 3 => normal sensor data
+  //
+  // data[1] - data[31] is sensor data
+  //
+  // data[32] - data[63] is log data
+  // log data is always sent, no matter what code
   uint8_t *data = transceiver->recvBuffer;
 
   if (data[0] == 0) {
@@ -147,6 +146,21 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
     return 1;
   }
 
+  if (data[0] == 3) {
+    // update sensor state
+    // ...
+
+    // update log
+    PicoSystemLog picoLog;
+    read_int_bytes_b(&picoLog.usbDisconnects, &data[32]);
+    read_int_bytes_b(&picoLog.readTimeouts, &data[36]);
+    read_float_bytes_b(&picoLog.transmissionsPerSecond, &data[40]);
+
+    transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
+    transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
+    transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
+  }
+
   return 0;
 }
 
@@ -156,15 +170,16 @@ void ground_transceiver_destroy(GroundTransceiver *transceiver) {
   free(transceiver);
 }
 
-void ground_transceiver_send(GroundTransceiver *transceiver) {
+int ground_transceiver_send(GroundTransceiver *transceiver) {
   int sentBytes = 0;
   while (sentBytes == 0) {
     sentBytes = writePort(transceiver->port, transceiver->sendBuffer,
                           transceiver->bufferSize);
   }
+  return sentBytes;
 }
 
-void ground_transceiver_read(GroundTransceiver *transceiver) {
+int ground_transceiver_read(GroundTransceiver *transceiver) {
   uint8_t *buffer = transceiver->recvBuffer;
   int readBytes = 0;
   int offset = 0;
@@ -174,12 +189,13 @@ void ground_transceiver_read(GroundTransceiver *transceiver) {
     offset += readBytes;
 
     if (buffer[offset] == 0) {
-      return;
+      return 0;
     }
 
     if (readBytes < 0) {
       printf("Error reading from pico\n");
-      return;
+      return -1;
     }
   }
+  return readBytes;
 }

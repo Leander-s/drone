@@ -17,5 +17,6 @@ project(pc_app C)
 
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-target_link_libraries(${PROJECT_NAME} ${LIBRARY_FILES})
-target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
+target_link_directories(${PROJECT_NAME} PRIVATE "../../gui/SDL/build" "../../gui/SDL_ttf/build")
+target_link_libraries(${PROJECT_NAME} ${LIBRARY_FILES} SDL3 SDL3_ttf)
+target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR} "../../debugging_util" "../../gui/SDL/include" "../../gui/SDL_ttf/include")
