@@ -12,3 +12,4 @@
 #include <string.h>
 #include <stdint.h>
 #include <diagnostics.h>
+#include <protocol_util.h>

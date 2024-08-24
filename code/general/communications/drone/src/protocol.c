@@ -1,4 +1,5 @@
 #include "protocol.h"
+#include "protocol_util.h"
 
 DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
 #ifdef NDEBUG
@@ -26,19 +27,25 @@ DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
   result->send = createInfo->send;
   result->recv = createInfo->recv;
 
+  drone_flush_rx(result);
+  drone_flush_tx(result);
 
   return result;
 }
 
 void drone_protocol_run(DroneTransceiver *transceiver) {
-  drone_flush_rx(transceiver);
-  drone_flush_tx(transceiver);
   while (1) {
     drone_read(transceiver);
     drone_protocol_handle_message(transceiver);
     drone_send(transceiver);
   }
   drone_protocol_terminate(transceiver);
+}
+
+void drone_protocol_update(DroneTransceiver *transceiver){
+    drone_read(transceiver);
+    drone_protocol_handle_message(transceiver);
+    drone_send(transceiver);
 }
 
 // Set actions depending on received message
@@ -56,6 +63,7 @@ void drone_protocol_run(DroneTransceiver *transceiver) {
  */
 void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   uint8_t *message = transceiver->readBuffer;
+  decode_buffer(message, 32);
   transceiver->currentState.throttle = message[0];
   transceiver->currentState.pitch = message[1];
   transceiver->currentState.roll = message[2];
@@ -71,6 +79,8 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   // testing
   memcpy(return_message + 1, "Hello", strlen("Hello"));
   return_message[0] = 1;
+
+  encode_buffer(return_message, 32);
 }
 
 void drone_protocol_terminate(DroneTransceiver *transceiver) {

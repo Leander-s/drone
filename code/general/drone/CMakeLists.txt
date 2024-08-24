@@ -4,12 +4,14 @@ set(LIBRARY_DIR "./lib")
 set(INCLUDE_DIR "./include" "../../../pico/pico-sdk/src/rp2_common/pico_stdio/include" "../../../pico/pico-sdk/src/rp2_common/pico_stdlib/include")
 file(GLOB LIBRARY_FILES "${LIBRARY_DIR}/*.a")
 
-file(GLOB SOURCES
-    "./src/*.c"
+set(SOURCES
+    src/main.c
 )
 
-file(GLOB HEADERS
-    "./src/*.h"
+set(HEADERS
+    src/config.h
+    include/drone_protocol_config.h
+    include/protocol.h
 )
 
 set(PICO_SDK_PATH "../../../pico/pico-sdk")

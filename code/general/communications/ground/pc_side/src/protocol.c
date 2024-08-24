@@ -50,14 +50,13 @@ int ground_transceiver_update(GroundTransceiver *transceiver) {
   DroneSensorState sensorState = transceiver->sensorState;
   uint32_t bufferSize = transceiver->bufferSize;
   uint8_t *sendBuffer = transceiver->sendBuffer;
-  memset(sendBuffer, 1, transceiver->bufferSize);
+  memset(sendBuffer, 0, transceiver->bufferSize);
 
   // sending/receiving data
-  // adding 1 everywhere so read() doesnt terminate early
-  sendBuffer[0] = 1 + controlState.throttle;
-  sendBuffer[1] = 1 + controlState.pitch;
-  sendBuffer[2] = 1 + controlState.roll;
-  sendBuffer[3] = 1 + controlState.yaw;
+  sendBuffer[0] = controlState.throttle;
+  sendBuffer[1] = controlState.pitch;
+  sendBuffer[2] = controlState.roll;
+  sendBuffer[3] = controlState.yaw;
 
   int result;
   result = ground_transceiver_send(transceiver);
@@ -133,6 +132,7 @@ void ground_transceiver_destroy(GroundTransceiver *transceiver) {
 
 int ground_transceiver_send(GroundTransceiver *transceiver) {
   int sentBytes = 0;
+  encode_buffer(transceiver->sendBuffer, transceiver->bufferSize);
   while (sentBytes == 0) {
     sentBytes = writePort(transceiver->port, transceiver->sendBuffer,
                           transceiver->bufferSize);
@@ -158,5 +158,6 @@ int ground_transceiver_read(GroundTransceiver *transceiver) {
       return -1;
     }
   }
+  decode_buffer(transceiver->recvBuffer, transceiver->bufferSize);
   return offset;
 }

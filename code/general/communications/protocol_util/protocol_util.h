@@ -1,10 +1,8 @@
 #pragma once
 #include <stdint.h>
-
-typedef union {
-    int i;
-    uint8_t bytes[4];
-}IntBytes;
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 void encode_buffer(uint8_t *buffer, int len);
 

@@ -3,6 +3,7 @@
 #include <nrf24.h>
 #include <pico/time.h>
 #include <diagnostics.h>
+#include <protocol_util.h>
 
 #define READ_TIMEOUT_US 10000
 
@@ -23,8 +24,8 @@ void setup() {
 }
 
 void loop() {
-  char fromPC[64];
-  char toPC[64];
+  uint8_t fromPC[64];
+  uint8_t toPC[64];
   memset(fromPC, 0, 64);
   memset(toPC, 0, 64);
   int result;
@@ -32,7 +33,7 @@ void loop() {
       .transmissionsPerSecond.f = 10, .readTimeouts.i = 0, .usbDisconnects.i = 0};
   while (1) {
     uint64_t start_time = time_us_64();
-    result = pico_read(fromPC, 64);
+    result = pico_read((char*)fromPC, 64);
     if (result < 0) {
       log.usbDisconnects.i++;
       int blink = 0;
@@ -51,7 +52,7 @@ void loop() {
     if (result < 32) {
       continue;
     }
-    if ((fromPC[32] - 1) & 1) {
+    if ((fromPC[36] - 1) & 1) {
       log.usbDisconnects.i++;
       int blink = 0;
       while (!stdio_usb_connected()) {
@@ -67,8 +68,8 @@ void loop() {
       pico_debug_print("Pico connected", 64);
       continue;
     }
-    int bytesSent = nrf24_send((uint8_t *)fromPC, 32);
-    int bytesReceived = nrf24_read((uint8_t *)toPC, 32, READ_TIMEOUT_US);
+    int bytesSent = nrf24_send(fromPC, 32);
+    int bytesReceived = nrf24_read(toPC, 32, READ_TIMEOUT_US);
     if (bytesReceived == 0) {
       log.readTimeouts.i++;
     }
@@ -87,7 +88,9 @@ void loop() {
         toPC[40 + i] = log.transmissionsPerSecond.bytes[i];
     }
 
-    pico_print(toPC, 64);
+    encode_buffer(toPC + 32, 32);
+
+    pico_print((char*)toPC, 64);
   }
 }
 
