@@ -1,19 +1,25 @@
 #include "protocol_util.h"
 
-// THIS IS BITSHIFTING HELL, PLEASE HELP ME, I CANT SEE IT ANYMORE
-
 void encode_buffer(uint8_t *buffer, int len) {
   uint8_t *transBuffer = malloc(len);
+  memset(transBuffer, 0, len);
   int bitIndex = 0;
-  for (int i = 0; i < len - 4; i++) {
+  for (int i = 0; i < len; i++) {
+    int bufferByte = bitIndex / 8;
+    int firstBit = bitIndex % 8;
+    int nextByteBits = firstBit - 1;
+    transBuffer[i] |= (buffer[bufferByte] << firstBit) |
+                      buffer[bufferByte + 1] >> (7 - nextByteBits) | 1;
+    /*
     for (int j = 0; j < 8; j++) {
       int currentBit = (buffer[i] & (1 << (7 - bitIndex % 8))) !=
                        0; // same as j but more readable
       int transBitIndex = bitIndex / 7 + bitIndex;
       int transByte = transBitIndex / 8;
       transBuffer[transByte] |= currentBit * (1 << (7 - transBitIndex % 8)) + 1;
-      bitIndex++;
     }
+    */
+    bitIndex += 7;
   }
   memcpy(buffer, transBuffer, len);
   free(transBuffer);

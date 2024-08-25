@@ -88,20 +88,16 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   uint8_t *data = transceiver->recvBuffer;
 
   if (data[0] == 0) {
+    printf("No data\n");
     return 0;
   }
 
   if (data[0] == 1) {
-    for (int i = 1; i < transceiver->bufferSize; i++) {
-      if (data[i] == 0) {
-        printf("[ ]");
-      }
-      printf("%c", data[i]);
-    }
-    printf("\n");
+      printf("%s\n", data + 1);
   }
 
   if (data[0] == 2) {
+    printf("Terminating\n");
     return 1;
   }
 
@@ -119,7 +115,6 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
   transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
   transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
-  printf("TPS : %f\n", transceiver->log.transmissionsPerSecond);
 
   return 0;
 }
@@ -144,7 +139,7 @@ int ground_transceiver_read(GroundTransceiver *transceiver) {
   uint8_t *buffer = transceiver->recvBuffer;
   int readBytes = 0;
   int offset = 0;
-  while (offset < 32) {
+  while (offset < transceiver->bufferSize) {
     readBytes =
         readPort(transceiver->port, buffer + offset, transceiver->bufferSize);
     offset += readBytes;
@@ -158,6 +153,9 @@ int ground_transceiver_read(GroundTransceiver *transceiver) {
       return -1;
     }
   }
-  decode_buffer(transceiver->recvBuffer, transceiver->bufferSize);
+  // decode drone data
+  decode_buffer(transceiver->recvBuffer, 32);
+  // decode rest of buffer (just system logs right now)
+  decode_buffer(transceiver->recvBuffer + 32, transceiver->bufferSize - 32);
   return offset;
 }

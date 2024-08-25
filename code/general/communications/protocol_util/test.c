@@ -1,5 +1,10 @@
 #include "protocol_util.h"
 
+typedef union {
+  float f;
+  uint8_t bytes[4];
+} FloatBytes;
+
 void print_buffer(uint8_t *buffer, int len) {
   for (int i = 0; i < len; i++) {
     printf("Buffer[%u] = %u\n", i, buffer[i]);
@@ -22,33 +27,40 @@ int buffer_is_sendable(uint8_t *buffer, int len) {
   return 1;
 }
 
+void test_sendable(const char *testName, uint8_t *buffer, int len) {
+  if (buffer_is_sendable(buffer, len)) {
+    printf("%s passed.\n", testName);
+    return;
+  }
+  printf("%s failed. Buffer:\n", testName);
+  print_buffer(buffer, len);
+}
+
+void test_equal(const char *testName, uint8_t *buffer1, uint8_t *buffer2,
+                int len) {
+  if (buffers_are_equal(buffer1, buffer2, len)) {
+    printf("%s passed.\n", testName);
+    return;
+  }
+  printf("%s failed. Buffers:\n", testName);
+  for (int i = 0; i < len; i++) {
+    printf("Buffer1[%d] : %u | Buffer2[%d] : %u\n", i, buffer1[i], i, buffer2[i]);
+  }
+}
+
 int main() {
   uint8_t testBuffer[32];
-  testBuffer[1] = 1;
-  testBuffer[8] = 128;
-  testBuffer[9] = 255;
-  testBuffer[10] = 1;
-  testBuffer[18] = 100;
-  testBuffer[25] = 13;
+  memcpy(testBuffer + 1, "Hello", strlen("Hello"));
+  testBuffer[0] = 1;
 
   uint8_t testCopy[32];
   memcpy(testCopy, testBuffer, 32);
 
-  encode_buffer(testBuffer, 32);
-  if (!buffer_is_sendable(testBuffer, 32)) {
-    printf("Test 1 failed\n");
-    print_buffer(testBuffer, 32);
-  } else {
-    printf("Test 1 passed\n");
-  }
+  encode_buffer(testBuffer, 16);
+  encode_buffer(testBuffer + 16, 16);
+  test_sendable("Sendable test", testBuffer, 32);
 
-  decode_buffer(testBuffer, 32);
-  if (!buffers_are_equal(testBuffer, testCopy, 32)) {
-    printf("Test 2 failed\n");
-    for (int i = 0; i < 32; i++) {
-      printf("Buffer : %u, control : %u\n", testBuffer[i], testCopy[i]);
-    }
-  } else {
-    printf("Test 2 passed\n");
-  }
+  decode_buffer(testBuffer, 16);
+  decode_buffer(testBuffer + 16, 16);
+  test_equal("Equality test", testBuffer, testCopy, 32);
 }

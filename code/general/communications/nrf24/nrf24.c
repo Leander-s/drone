@@ -78,8 +78,6 @@ void nrf24_write_register(uint8_t reg, uint8_t value) {
 }
 
 int nrf24_send(uint8_t *data, uint32_t len) {
-  nrf24_flush_tx();
-
   gpio_put(PIN_CE, 0);
 
   set_mode(TX_MODE);
@@ -129,7 +127,6 @@ int nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   gpio_put(LED_PIN, 1);
 
   uint8_t cmd = R_RX_PAYLOAD;
-  //uint8_t dummy[32];
   gpio_put(PIN_CS, 0);
   spi_write_blocking(SPI_PORT, &cmd, 1);
   int bytesRead = spi_read_blocking(SPI_PORT, 0, data, len);
@@ -137,8 +134,6 @@ int nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   sleep_us(10);
 
   nrf24_write_register(STATUS, 0x70);
-
-  nrf24_flush_rx();
 
   gpio_put(LED_PIN, 0);
   return bytesRead;
