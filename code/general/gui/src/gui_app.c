@@ -116,6 +116,7 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 void drone_model_draw(GUI *gui, const GUIData *data) {
   // need to make perspective matrix and run the points from data through it
   // the draw lines/ hollow simple drone model, start with cuboid
+
 }
 
 void rect_draw(SDL_Renderer *renderer, int x, int y, int w, int h,
