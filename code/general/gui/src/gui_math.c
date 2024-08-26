@@ -13,7 +13,7 @@ void quaternion_set(Quaternion *quat, const vec3 *axis, const float degrees) {
 }
 
 float quaternion_magnitude(const Quaternion *quat) {
-  return sqrt(pow((quat->x + quat->i + quat->j + quat->k), 2));
+  return sqrt(pow(quat->x, 2) + pow(quat->i, 2) + pow(quat->j,2) + pow(quat->k, 2));
 }
 
 void quaternion_normalize(Quaternion *quat) {
@@ -26,8 +26,13 @@ void quaternion_normalize(Quaternion *quat) {
 
 void translate_point(const mat4 *mvp, const mat4 *viewPort, const vec3 *point,
                      const float zoom, vec2 *dstPoint) {
+  Quaternion littleTestRotation;
+  vec3 randomAxis = (vec3){.x = 0.2, .y = 0.6, .z = 0.5};
+  quaternion_set(&littleTestRotation, &randomAxis, 30);
+  vec3 rotatedPoint;
+  rotate_point(&littleTestRotation, point, &rotatedPoint);
   vec4 pos =
-      (vec4){.x = point->x, .y = point->y, .z = point->z + zoom, .w = 1.0f};
+      (vec4){.x = rotatedPoint.x, .y = rotatedPoint.y, .z = rotatedPoint.z + zoom, .w = 1.0f};
   vec4 clipPos;
   mult_mat_vec(mvp, &pos, &clipPos);
   vec4 ndcPos = (vec4){.x = clipPos.x / clipPos.w,
@@ -128,7 +133,6 @@ void vec3_cross(const vec3 *vec1, const vec3 *vec2, vec3 *dstVec) {
 
 void mult_quat_quat(const Quaternion *quat1, const Quaternion *quat2,
                     Quaternion *result) {
-  // terrible memory wise but readable, maybe should change this to be efficient
   vec3 axisPart1;
   mult_vec3_scalar(&quat1->v, quat2->w, &axisPart1);
   vec3 axisPart2;
@@ -155,10 +159,10 @@ void mult_quat_vec(const Quaternion *quat, const vec3 *vec,
 
 void mult_vec_quat(const vec3 *vec, const Quaternion *quat,
                    Quaternion *result) {
-    Quaternion vecQ;
-    vecQ.v = *vec;
-    vecQ.w = 0;
-    mult_quat_quat(&vecQ, quat, result);
+  Quaternion vecQ;
+  vecQ.v = *vec;
+  vecQ.w = 0;
+  mult_quat_quat(&vecQ, quat, result);
 }
 
 void rotate_point(const Quaternion *quat, const vec3 *point, vec3 *dstPoint) {
@@ -167,11 +171,10 @@ void rotate_point(const Quaternion *quat, const vec3 *point, vec3 *dstPoint) {
     return;
   }
 
-  // not sure this works
   Quaternion q = *quat;
   quaternion_normalize(&q);
   float magnitude = quaternion_magnitude(quat);
-  Quaternion iq = (Quaternion){.i = -q.i, .j = -q.j, .k = -q.k, .x = 0};
+  Quaternion iq = (Quaternion){.i = -q.i, .j = -q.j, .k = -q.k, .x = q.x};
 
   Quaternion qp;
   mult_quat_vec(&q, point, &qp);
