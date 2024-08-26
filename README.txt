@@ -46,6 +46,9 @@ usb connection sometimes fails. Comes right back but not optimal.
         
 TODO:
 
+we need 4 floats sent over radio. Buffer is 32 bytes max. maybe f16 is enough but not defined in c.
+make FloatBytes something other than a union. Union is too breakable.
+
 pc ground controller ui
 
 kalman filter sensors
