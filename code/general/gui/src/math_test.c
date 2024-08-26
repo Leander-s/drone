@@ -161,5 +161,11 @@ int main() {
   test_float("Dot product test", dotTestResult, -58.2f);
   test_vec3("Cross product test", &crossTestResult, &crossTestControl);
 
+  Quaternion quat = (Quaternion){.x = 1, .i = 2, .j = 3, .k = 4};
+  vec3 quatAxisControl = (vec3){.x = 2, .y = 3, .z = 4};
+
+  test_vec3("Quat vector compare", &quat.v, &quatAxisControl);
+  test_float("Quat angle compare", quat.w, 1);
+
   return 0;
 }

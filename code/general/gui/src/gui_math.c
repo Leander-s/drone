@@ -105,6 +105,15 @@ vec3 mult_vec3_scalar(const vec3 *vec, const float x) {
   return result;
 }
 
+vec3 vec3_add(const vec3 *vec1, const vec3 *vec2) {
+  vec3 result = (vec3){
+      .x = vec1->x + vec2->x,
+      .y = vec1->y + vec2->y,
+      .z = vec1->z + vec2->z,
+  };
+  return result;
+}
+
 float vec3_dot(const vec3 *vec1, const vec3 *vec2) {
   float result = 0;
   for (int i = 0; i < 3; i++) {
@@ -113,17 +122,25 @@ float vec3_dot(const vec3 *vec1, const vec3 *vec2) {
   return result;
 }
 
-vec3 vec3_cross(const vec3 *vec1, const vec3 *vec2){
-    vec3 result = (vec3){
-        .x = (vec1->y*vec2->z - vec1->z*vec2->y),
-            .y = (vec1->z*vec2->x - vec1->x*vec2->z),
-            .z = (vec1->x*vec2->y - vec1->y*vec2->x)
-    };
-    return result;
+vec3 vec3_cross(const vec3 *vec1, const vec3 *vec2) {
+  vec3 result = (vec3){.x = (vec1->y * vec2->z - vec1->z * vec2->y),
+                       .y = (vec1->z * vec2->x - vec1->x * vec2->z),
+                       .z = (vec1->x * vec2->y - vec1->y * vec2->x)};
+  return result;
 }
 
 Quaternion mult_quat_quat(const Quaternion *quat1, const Quaternion *quat2) {
+  // terrible memory wise but readable, maybe should change this to be efficient
   Quaternion result;
+  vec3 axisPart1 = mult_vec3_scalar(&quat1->v, quat2->w);
+  vec3 axisPart2 = mult_vec3_scalar(&quat2->v, quat1->w);
+  vec3 axisPart3 = vec3_add(&axisPart1, &axisPart2);
+  vec3 axisPart4 = vec3_cross(&quat1->v, &quat2->v);
+  vec3 newV = vec3_add(&axisPart3, &axisPart4);
+  float newW = quat1->w * quat2->w - vec3_dot(&quat2->v, &quat1->v);
+  result.v = newV;
+  result.w = newW;
+  return result;
 }
 
 Quaternion mult_quat_vec(const Quaternion *quat, const vec3 *vec) {}

@@ -40,6 +40,10 @@ typedef union {
     float j;
     float k;
   };
+  struct {
+      float w;
+      vec3 v;
+  };
   float data[4];
 } Quaternion;
 

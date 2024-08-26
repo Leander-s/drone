@@ -30,6 +30,7 @@ int main() {
     // sending to drone/receiving from drone
     ground_transceiver_update(link);
 
+    // updating gui
     gui_update(gui, &guiData);
   }
 
