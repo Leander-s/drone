@@ -93,6 +93,8 @@ int nrf24_send(uint8_t *data, uint32_t len) {
   sleep_us(10);
   gpio_put(PIN_CE, 0);
 
+  //nrf24_flush_tx();
+
   // no idea why this is necessary
   sleep_us(1000);
   gpio_put(LED_PIN, 0);
@@ -132,6 +134,8 @@ int nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   int bytesRead = spi_read_blocking(SPI_PORT, 0, data, len);
   gpio_put(PIN_CS, 1);
   sleep_us(10);
+
+  //nrf24_flush_rx();
 
   nrf24_write_register(STATUS, 0x70);
 

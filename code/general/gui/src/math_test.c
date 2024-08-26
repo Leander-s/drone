@@ -1,6 +1,14 @@
 #include "gui_math.h"
 #include <stdio.h>
 
+void print_vec2(vec2 *vec) {
+  printf("[");
+  for (int i = 0; i < 2; i++) {
+    printf("%f, ", vec->data[i]);
+  }
+  printf("]\n");
+}
+
 void print_vec4(vec4 *vec) {
   printf("[");
   for (int i = 0; i < 4; i++) {
@@ -30,6 +38,20 @@ void test_mat(const char *testName, mat4 *result, mat4 *expected) {
         print_mat(result);
         return;
       }
+    }
+  }
+  printf("%s passed!\n", testName);
+}
+
+void test_vec2(const char *testName, vec2 *result, vec2 *expected) {
+  for (int i = 0; i < 2; i++) {
+    if (result->data[i] != expected->data[i]) {
+      printf("%s failed. Vecs:\n", testName);
+      printf("Expected:\n");
+      print_vec2(expected);
+      printf("Got:\n");
+      print_vec2(result);
+      return;
     }
   }
   printf("%s passed!\n", testName);
@@ -86,7 +108,15 @@ int main() {
 
   test_vec4("Unity multiplication", &result, &testVec);
 
+  vec3 testPoint = (vec3){.x = 0, .y = 0, .z = 10};
 
+  mat4 mvp, viewPort;
+  create_mvp(16.0f/9.0f, M_PI/2.0f, 100, 0.1, &mvp);
+  create_view_port(1920, 1080, 100, 0.1, &viewPort);
 
+  vec2 translatedPoint = translate_point(&mvp, &viewPort, &testPoint);
+  vec2 controlPoint = (vec2){.x = 1920.0f/2.0f, .y = 1080.0f/2.0f};
+
+  test_vec2("Point translation test", &translatedPoint, &controlPoint);
   return 0;
 }

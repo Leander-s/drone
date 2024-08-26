@@ -1,5 +1,6 @@
 #include "gui_app.h"
 #include "colors.h"
+#include <SDL3/SDL_render.h>
 
 GUI *gui_create(int width, int height) {
   int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
@@ -114,9 +115,66 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 }
 
 void drone_model_draw(GUI *gui, const GUIData *data) {
-  // need to make perspective matrix and run the points from data through it
-  // the draw lines/ hollow simple drone model, start with cuboid
+  Model droneModel;
+  droneModel.vertices[0] = (vec3){.x = -2.5f, .y = 2.5f, .z = 50.0f};
+  droneModel.vertices[1] = (vec3){.x = -2.5f, .y = 2.5f, .z = 55.0f};
+  droneModel.vertices[2] = (vec3){.x = 2.5f, .y = 2.5f, .z = 55.0f};
+  droneModel.vertices[3] = (vec3){.x = 2.5f, .y = 2.5f, .z = 50.0f};
+  droneModel.vertices[4] = (vec3){.x = -2.5f, .y = -2.5f, .z = 50.0f};
+  droneModel.vertices[5] = (vec3){.x = -2.5f, .y = -2.5f, .z = 55.0f};
+  droneModel.vertices[6] = (vec3){.x = 2.5f, .y = -2.5f, .z = 55.0f};
+  droneModel.vertices[7] = (vec3){.x = 2.5f, .y = -2.5f, .z = 50.0f};
+  droneModel.indices[0] = 0;
+  droneModel.indices[1] = 1;
+  droneModel.indices[2] = 1;
+  droneModel.indices[3] = 2;
+  droneModel.indices[4] = 2;
+  droneModel.indices[5] = 3;
+  droneModel.indices[6] = 3;
+  droneModel.indices[7] = 0;
+  droneModel.indices[8] = 0;
+  droneModel.indices[9] = 4;
+  droneModel.indices[10] = 4;
+  droneModel.indices[11] = 5;
+  droneModel.indices[12] = 5;
+  droneModel.indices[13] = 6;
+  droneModel.indices[14] = 6;
+  droneModel.indices[15] = 7;
+  droneModel.indices[16] = 7;
+  droneModel.indices[17] = 4;
+  droneModel.indices[18] = 5;
+  droneModel.indices[19] = 1;
+  droneModel.indices[20] = 6;
+  droneModel.indices[21] = 2;
+  droneModel.indices[22] = 7;
+  droneModel.indices[23] = 3;
 
+  mat4 projection, viewPort;
+  create_view_port(gui->width/2.0f, gui->height, 100.0f, 0.1f, &viewPort);
+  create_mvp((float)gui->width/2.0f / gui->height,  deg_to_rad(60), 100.0f, 0.1f,
+             &projection);
+
+  vec2 screenPoints[8];
+
+  for (int i = 0; i < 8; i++) {
+    screenPoints[i] =
+        translate_point(&projection, &viewPort, &droneModel.vertices[i]);
+  }
+
+  for (int i = 0; i < 24; i += 2) {
+    int startIndex = droneModel.indices[i];
+    int endIndex = droneModel.indices[i + 1];
+    line_draw(gui->renderer, screenPoints[startIndex].x,
+              screenPoints[startIndex].y, screenPoints[endIndex].x,
+              screenPoints[endIndex].y, &LIGHT_GREY);
+  }
+}
+
+void line_draw(SDL_Renderer *renderer, int x, int y, int endX, int endY,
+               const SDL_Color *color) {
+  SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a);
+
+  SDL_RenderLine(renderer, x, y, endX, endY);
 }
 
 void rect_draw(SDL_Renderer *renderer, int x, int y, int w, int h,

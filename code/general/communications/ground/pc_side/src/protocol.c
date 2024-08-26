@@ -50,7 +50,9 @@ int ground_transceiver_update(GroundTransceiver *transceiver) {
   DroneSensorState sensorState = transceiver->sensorState;
   uint32_t bufferSize = transceiver->bufferSize;
   uint8_t *sendBuffer = transceiver->sendBuffer;
+  uint8_t *recvBuffer = transceiver->recvBuffer;
   memset(sendBuffer, 0, transceiver->bufferSize);
+  memset(recvBuffer, 0, transceiver->bufferSize);
 
   // sending/receiving data
   sendBuffer[0] = controlState.throttle;
@@ -63,9 +65,6 @@ int ground_transceiver_update(GroundTransceiver *transceiver) {
   if (result < 0) {
     transceiver->log.usbWriteErrors++;
   }
-
-  uint8_t *recvBuffer = transceiver->recvBuffer;
-  memset(recvBuffer, 0, transceiver->bufferSize);
 
   result = ground_transceiver_read(transceiver);
   if (result < 0) {

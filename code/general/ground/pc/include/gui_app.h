@@ -1,5 +1,6 @@
 #pragma once
 #include "gui_config.h"
+#include "gui_math.h"
 
 typedef struct {
   PCSystemLog *log;
@@ -20,6 +21,8 @@ void gui_destroy(GUI *gui);
 void data_sheet_draw(GUI *gui, const GUIData *data);
 void drone_model_draw(GUI *gui, const GUIData *data);
 
+void line_draw(SDL_Renderer *renderer, int x, int y, int endX, int endY,
+               const SDL_Color *color);
 void rect_draw(SDL_Renderer *renderer, int x, int y, int w, int h,
                const SDL_Color *color);
 void rect_fill(SDL_Renderer *renderer, int x, int y, int w, int h,
