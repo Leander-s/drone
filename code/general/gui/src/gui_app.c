@@ -166,8 +166,7 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   vec2 screenPoints[8];
 
   for (int i = 0; i < 8; i++) {
-    screenPoints[i] =
-        translate_point(&projection, &viewPort, &droneModel->vertices[i], 20.0f);
+        translate_point(&projection, &viewPort, &droneModel->vertices[i], 20.0f, &screenPoints[i]);
   }
 
   for (int i = 0; i < 24; i += 2) {

@@ -135,7 +135,8 @@ int main() {
 
   vec4 testVec = (vec4){.x = 7.0, .y = 42.0, .z = 1337.0, .w = 3.0};
 
-  vec4 result = mult_mat_vec(&unity, &testVec);
+  vec4 result;
+  mult_mat_vec(&unity, &testVec, &result);
 
   test_vec4("Unity multiplication", &result, &testVec);
 
@@ -145,7 +146,8 @@ int main() {
   create_mvp(16.0f / 9.0f, M_PI / 2.0f, 100, 0.1, &mvp);
   create_view_port(1920, 1080, 100, 0.1, &viewPort);
 
-  vec2 translatedPoint = translate_point(&mvp, &viewPort, &testPoint, 50.0f);
+  vec2 translatedPoint;
+  translate_point(&mvp, &viewPort, &testPoint, 50.0f, &translatedPoint);
   vec2 controlPoint = (vec2){.x = 1920.0f / 2.0f, .y = 1080.0f / 2.0f};
 
   test_vec2("Point translation test", &translatedPoint, &controlPoint);
@@ -154,7 +156,8 @@ int main() {
   vec3 dotTestVec2 = (vec3){.x = -5, .y = 4, .z = 0.2};
 
   float dotTestResult = vec3_dot(&dotTestVec1, &dotTestVec2);
-  vec3 crossTestResult = vec3_cross(&dotTestVec1, &dotTestVec2);
+  vec3 crossTestResult;
+  vec3_cross(&dotTestVec1, &dotTestVec2, &crossTestResult);
 
   vec3 crossTestControl = (vec3){.x = -38.0f, .y = -45.8, .z = -48};
 
