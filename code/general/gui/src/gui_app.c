@@ -113,40 +113,50 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
   yOffset += padding;
 }
 
+Model *drone_model_create(){
+  Model *droneModel = malloc(sizeof(Model));
+  droneModel->vertices[0] = (vec3){.x = -0.5f, .y = 0.5f, .z = -0.5f};
+  droneModel->vertices[1] = (vec3){.x = -0.5f, .y = 0.5f, .z = 0.5f};
+  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.5f, .z = 0.5f};
+  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = 0.5f, .z = -0.5f};
+  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.5f, .z = -0.5f};
+  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = -0.5f, .z = 0.5f};
+  droneModel->vertices[6] = (vec3){.x = 0.5f, .y = -0.5f, .z = 0.5f};
+  droneModel->vertices[7] = (vec3){.x = 0.5f, .y = -0.5f, .z = -0.5f};
+  droneModel->indices[0] = 0;
+  droneModel->indices[1] = 1;
+  droneModel->indices[2] = 1;
+  droneModel->indices[3] = 2;
+  droneModel->indices[4] = 2;
+  droneModel->indices[5] = 3;
+  droneModel->indices[6] = 3;
+  droneModel->indices[7] = 0;
+  droneModel->indices[8] = 0;
+  droneModel->indices[9] = 4;
+  droneModel->indices[10] = 4;
+  droneModel->indices[11] = 5;
+  droneModel->indices[12] = 5;
+  droneModel->indices[13] = 6;
+  droneModel->indices[14] = 6;
+  droneModel->indices[15] = 7;
+  droneModel->indices[16] = 7;
+  droneModel->indices[17] = 4;
+  droneModel->indices[18] = 5;
+  droneModel->indices[19] = 1;
+  droneModel->indices[20] = 6;
+  droneModel->indices[21] = 2;
+  droneModel->indices[22] = 7;
+  droneModel->indices[23] = 3;
+
+  return droneModel;
+}
+
+void drone_model_destroy(Model *droneModel){
+    free(droneModel);
+}
+
 void drone_model_draw(GUI *gui, const GUIData *data) {
-  Model droneModel;
-  droneModel.vertices[0] = (vec3){.x = -2.5f, .y = 2.5f, .z = 50.0f};
-  droneModel.vertices[1] = (vec3){.x = -2.5f, .y = 2.5f, .z = 55.0f};
-  droneModel.vertices[2] = (vec3){.x = 2.5f, .y = 2.5f, .z = 55.0f};
-  droneModel.vertices[3] = (vec3){.x = 2.5f, .y = 2.5f, .z = 50.0f};
-  droneModel.vertices[4] = (vec3){.x = -2.5f, .y = -2.5f, .z = 50.0f};
-  droneModel.vertices[5] = (vec3){.x = -2.5f, .y = -2.5f, .z = 55.0f};
-  droneModel.vertices[6] = (vec3){.x = 2.5f, .y = -2.5f, .z = 55.0f};
-  droneModel.vertices[7] = (vec3){.x = 2.5f, .y = -2.5f, .z = 50.0f};
-  droneModel.indices[0] = 0;
-  droneModel.indices[1] = 1;
-  droneModel.indices[2] = 1;
-  droneModel.indices[3] = 2;
-  droneModel.indices[4] = 2;
-  droneModel.indices[5] = 3;
-  droneModel.indices[6] = 3;
-  droneModel.indices[7] = 0;
-  droneModel.indices[8] = 0;
-  droneModel.indices[9] = 4;
-  droneModel.indices[10] = 4;
-  droneModel.indices[11] = 5;
-  droneModel.indices[12] = 5;
-  droneModel.indices[13] = 6;
-  droneModel.indices[14] = 6;
-  droneModel.indices[15] = 7;
-  droneModel.indices[16] = 7;
-  droneModel.indices[17] = 4;
-  droneModel.indices[18] = 5;
-  droneModel.indices[19] = 1;
-  droneModel.indices[20] = 6;
-  droneModel.indices[21] = 2;
-  droneModel.indices[22] = 7;
-  droneModel.indices[23] = 3;
+  Model *droneModel = data->droneModel;
 
   mat4 projection, viewPort;
   create_view_port(gui->width/2.0f, gui->height, 100.0f, 0.1f, &viewPort);
@@ -157,12 +167,12 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
 
   for (int i = 0; i < 8; i++) {
     screenPoints[i] =
-        translate_point(&projection, &viewPort, &droneModel.vertices[i]);
+        translate_point(&projection, &viewPort, &droneModel->vertices[i], 20.0f);
   }
 
   for (int i = 0; i < 24; i += 2) {
-    int startIndex = droneModel.indices[i];
-    int endIndex = droneModel.indices[i + 1];
+    int startIndex = droneModel->indices[i];
+    int endIndex = droneModel->indices[i + 1];
     line_draw(gui->renderer, screenPoints[startIndex].x,
               screenPoints[startIndex].y, screenPoints[endIndex].x,
               screenPoints[endIndex].y, &LIGHT_GREY);

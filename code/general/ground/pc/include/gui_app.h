@@ -4,6 +4,7 @@
 
 typedef struct {
   PCSystemLog *log;
+  Model *droneModel;
 } GUIData;
 
 typedef struct {
@@ -17,6 +18,9 @@ typedef struct {
 GUI *gui_create(int width, int height);
 void gui_update(GUI *gui, const GUIData *data);
 void gui_destroy(GUI *gui);
+
+Model *drone_model_create();
+void drone_model_destroy(Model* droneModel);
 
 void data_sheet_draw(GUI *gui, const GUIData *data);
 void drone_model_draw(GUI *gui, const GUIData *data);

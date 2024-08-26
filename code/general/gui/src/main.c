@@ -7,10 +7,11 @@ int main() {
                                          .usbReadErrors = 0,
                                          .usbWriteErrors = 0,
                                          .usbDisconnects = 0};
-  GUIData dummyData = (GUIData){.log = dummyLog};
+  GUIData dummyData = (GUIData){.log = dummyLog, .droneModel = drone_model_create()};
   while (!main_gui->shouldQuit) {
     gui_update(main_gui, &dummyData);
   }
+  drone_model_destroy(dummyData.droneModel);
   gui_destroy(main_gui);
   return 0;
 }
