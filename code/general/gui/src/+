@@ -54,7 +54,7 @@ typedef struct {
   int indices[24];
 } Model;
 
-void quaternion_set(Quaternion* result, const vec3 *axis, const float degrees);
+void quaternion_set(const vec3 *axis, const float degrees, Quaternion* result);
 
 float quaternion_magnitude(const Quaternion *quat);
 

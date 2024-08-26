@@ -4,7 +4,7 @@ float deg_to_rad(float deg) { return deg * M_PI / 180; }
 
 float rad_to_deg(float rad) { return rad * 180 / M_PI; }
 
-void set_quaternion(Quaternion *quat, const vec3 *axis, const float degrees) {
+void quaternion_set(Quaternion *quat, const vec3 *axis, const float degrees) {
   float angle = deg_to_rad(degrees);
   quat->x = cos(angle / 2);
   quat->i = sin(angle / 2) * axis->x;

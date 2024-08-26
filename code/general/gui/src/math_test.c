@@ -170,5 +170,16 @@ int main() {
   test_vec3("Quat vector compare", &quat.v, &quatAxisControl);
   test_float("Quat angle compare", quat.w, 1);
 
+  Quaternion ninetyRot;
+  vec3 xAxis = (vec3){.x = 1.0f, .y = 0.0f, .z = 0.0f};
+  quaternion_set(&ninetyRot, &xAxis, 90);
+
+  vec3 quatTestPoint = (vec3){.x = 0.0f, .y = 1.0f, .z = 0.0f};
+  vec3 quatTestControl = (vec3){.x = 0.0f, .y = 0.0f, .z = -1.0f};
+
+  rotate_point(&ninetyRot, &quatTestPoint, &quatTestPoint);
+
+  test_vec3("Simple quaternion rotation", &quatTestPoint, &quatTestControl);
+
   return 0;
 }
