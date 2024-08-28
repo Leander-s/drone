@@ -10,15 +10,6 @@ void encode_buffer(uint8_t *buffer, int len) {
     int nextByteBits = firstBit - 1;
     transBuffer[i] |= (buffer[bufferByte] << firstBit) |
                       buffer[bufferByte + 1] >> (7 - nextByteBits) | 1;
-    /*
-    for (int j = 0; j < 8; j++) {
-      int currentBit = (buffer[i] & (1 << (7 - bitIndex % 8))) !=
-                       0; // same as j but more readable
-      int transBitIndex = bitIndex / 7 + bitIndex;
-      int transByte = transBitIndex / 8;
-      transBuffer[transByte] |= currentBit * (1 << (7 - transBitIndex % 8)) + 1;
-    }
-    */
     bitIndex += 7;
   }
   memcpy(buffer, transBuffer, len);

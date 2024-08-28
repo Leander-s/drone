@@ -93,7 +93,6 @@ int nrf24_send(uint8_t *data, uint32_t len) {
   sleep_us(10);
   gpio_put(PIN_CE, 0);
 
-  //nrf24_flush_tx();
 
   // no idea why this is necessary
   sleep_us(1000);

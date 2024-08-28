@@ -42,7 +42,8 @@ drone/code/general/communications/nrf24:
 nrf24:
     This is how the module should be wired https://coffeebreakpoint.com/wp-content/uploads/2021/05/pico-nrf24L01_wiring-768x763.png.
     
-usb connection sometimes fails. Comes right back but not optimal.
+pico read timouts are an issue. The nrf24 read on the pico transceiver times out.
+Both pico seem to be stuck on read to make this happen. Need to sync better somehow.
         
 TODO:
 

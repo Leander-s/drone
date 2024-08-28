@@ -1,5 +1,6 @@
 #include "protocol.h"
 #include "protocol_util.h"
+#include <pico/time.h>
 
 DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
 #ifdef NDEBUG
@@ -37,6 +38,7 @@ void drone_protocol_run(DroneTransceiver *transceiver) {
   while (1) {
     drone_read(transceiver);
     drone_protocol_handle_message(transceiver);
+    // wait for ground to be ready
     drone_send(transceiver);
   }
   drone_protocol_terminate(transceiver);

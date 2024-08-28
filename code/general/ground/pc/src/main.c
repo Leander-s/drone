@@ -8,7 +8,11 @@ int main() {
   // Setting up transceiver
   GroundTransceiverCreateInfo createInfo;
   // Not sure how to go about this yet
+#ifdef _WIN32
+  createInfo.path_to_port = "COM4";
+#else
   createInfo.path_to_port = "/dev/ttyACM0";
+#endif
   // Buffer size between pico transceiver and pc. Buffer size for radio transmissions
   // is hardcoded and also capped at 32 atm
   createInfo.bufferSize = 64;
