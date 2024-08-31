@@ -28,6 +28,11 @@ Build:
     To build only one subprojects and tests (if given), run build.py or rebuild.py
     in the subprojects folder.
 
+IMPORTANT:
+    as of right now, you MUST manually set the COM port/dev file for the usb connection to the pico transceiver
+    otherwise, it might just not be the right port
+    the port can be set in drone/code/general/communications/ground/pc_side/src/main.c
+
 drone/code/pico/*:
     This is where some tests for the pico and the pico-sdk are
 
