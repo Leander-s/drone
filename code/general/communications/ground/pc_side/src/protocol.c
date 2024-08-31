@@ -3,66 +3,35 @@
 GroundTransceiver *
 ground_transceiver_create(GroundTransceiverCreateInfo *info) {
   GroundTransceiver *result = malloc(sizeof(GroundTransceiver));
+  result->log = (PCSystemLog){
+      .transmissionsPerSecond = 0,
+      .usbDisconnects = 0,
+      .picoReadTimeouts = 0,
+      .usbReadErrors = 0,
+      .usbWriteErrors = 0,
+  };
   result->sendBuffer = malloc(info->bufferSize);
   result->recvBuffer = malloc(info->bufferSize);
   result->port = initConnection(info->path_to_port);
   result->bufferSize = info->bufferSize;
-  result->currentState = (DroneState){};
+  result->controlState =
+      (DroneControlState){.throttle = 0, .pitch = 127, .roll = 127, .yaw = 127};
+  result->sensorState = (DroneSensorState){};
 
   ground_transceiver_read(result);
-  printf("%s", result->recvBuffer);
+  printf("%s\n", result->recvBuffer);
 
   return result;
 }
 
+// this is for unit testing and multithreading
+// Multithreading would still require a way to synchronize data since the
+// structs are shared memory
 void ground_transceiver_run(GroundTransceiver *transceiver) {
-  // input handler initialized here because it should not be in this file
-  // forever
-  inputHandler *input = createInputHandler();
+  printf("Ground transceiver running\n");
+
   while (1) {
-    DroneState state = transceiver->currentState;
-
-    // inputs should be done somewhere else in future
-    state.pitch = 127;
-    state.roll = 127;
-    state.yaw = 127;
-    state.throttle = state.throttle;
-    if (key_down(input, XK_W))
-      state.pitch = 0;
-    if (key_down(input, XK_S))
-      state.pitch = 255;
-    if (key_down(input, XK_A))
-      state.roll = 0;
-    if (key_down(input, XK_D))
-      state.roll = 255;
-    if (key_down(input, XK_Q))
-      state.yaw = 0;
-    if (key_down(input, XK_E))
-      state.yaw = 255;
-    if (key_down(input, XK_Shift_L))
-      state.throttle += 1;
-    if (key_down(input, XK_Control_L))
-      state.throttle -= 1;
-
-    // sending/receiving data
-    uint32_t bufferSize = transceiver->bufferSize;
-
-    uint8_t *sendBuffer = transceiver->sendBuffer;
-    memset(sendBuffer, 0, transceiver->bufferSize);
-
-    sendBuffer[0] = state.throttle;
-    sendBuffer[1] = state.pitch;
-    sendBuffer[2] = state.roll;
-    sendBuffer[3] = state.yaw;
-
-    ground_transceiver_send(transceiver);
-
-    uint8_t *recvBuffer = transceiver->recvBuffer;
-    memset(recvBuffer, 0, transceiver->bufferSize);
-
-    ground_transceiver_read(transceiver);
-
-    if (ground_transceiver_handle_data(transceiver)) {
+    if (ground_transceiver_update(transceiver)) {
       break;
     }
 
@@ -75,27 +44,76 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
   ground_transceiver_destroy(transceiver);
 }
 
+// This is for use in a main loop instead of multithreaded
+int ground_transceiver_update(GroundTransceiver *transceiver) {
+  DroneControlState controlState = transceiver->controlState;
+  DroneSensorState sensorState = transceiver->sensorState;
+  uint32_t bufferSize = transceiver->bufferSize;
+  uint8_t *sendBuffer = transceiver->sendBuffer;
+  uint8_t *recvBuffer = transceiver->recvBuffer;
+  memset(sendBuffer, 0, transceiver->bufferSize);
+  memset(recvBuffer, 0, transceiver->bufferSize);
+
+  // sending/receiving data
+  sendBuffer[0] = controlState.throttle;
+  sendBuffer[1] = controlState.pitch;
+  sendBuffer[2] = controlState.roll;
+  sendBuffer[3] = controlState.yaw;
+
+  int result;
+  result = ground_transceiver_send(transceiver);
+  if (result < 0) {
+    transceiver->log.usbWriteErrors++;
+  }
+
+  result = ground_transceiver_read(transceiver);
+  if (result < 0) {
+    transceiver->log.usbReadErrors++;
+  }
+
+  return ground_transceiver_handle_data(transceiver);
+}
+
 int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   // data[0] is code
   // data[0] == 1 => debug/error message -> just print it
-  // data[0] == 2 => terminate
-  // data[0] == ...
+  // data[0] == 2 => terminate (only important for multithreading/run-function
+  // data[0] == 3 => normal sensor data
+  //
+  // data[1] - data[31] is sensor data
+  //
+  // data[32] - data[63] is log data
+  // log data is always sent, no matter what code
   uint8_t *data = transceiver->recvBuffer;
 
-  if(data[0] == 0){
-      return 0;
+  if (data[0] == 0) {
+    printf("No data\n");
+    return 0;
   }
 
   if (data[0] == 1) {
-    for (int i = 0; i < transceiver->bufferSize; i++) {
-      printf("%c", data[i]);
-    }
-    printf("\n");
+      printf("%s\n", data + 1);
   }
 
   if (data[0] == 2) {
+    printf("Terminating\n");
     return 1;
   }
+
+  if (data[0] == 3) {
+    // update sensor state
+    // ...
+  }
+
+  // update log
+  PicoSystemLog picoLog;
+  read_int_bytes_b(&picoLog.usbDisconnects, &data[32]);
+  read_int_bytes_b(&picoLog.readTimeouts, &data[36]);
+  read_float_bytes_b(&picoLog.transmissionsPerSecond, &data[40]);
+
+  transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
+  transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
+  transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
 
   return 0;
 }
@@ -106,10 +124,37 @@ void ground_transceiver_destroy(GroundTransceiver *transceiver) {
   free(transceiver);
 }
 
-void ground_transceiver_send(GroundTransceiver *transceiver) {
-  writePort(transceiver->port, transceiver->sendBuffer, transceiver->bufferSize);
+int ground_transceiver_send(GroundTransceiver *transceiver) {
+  int sentBytes = 0;
+  encode_buffer(transceiver->sendBuffer, transceiver->bufferSize);
+  while (sentBytes == 0) {
+    sentBytes = writePort(transceiver->port, transceiver->sendBuffer,
+                          transceiver->bufferSize);
+  }
+  return sentBytes;
 }
 
-void ground_transceiver_read(GroundTransceiver *transceiver) {
-  readPort(transceiver->port, transceiver->recvBuffer, transceiver->bufferSize);
+int ground_transceiver_read(GroundTransceiver *transceiver) {
+  uint8_t *buffer = transceiver->recvBuffer;
+  int readBytes = 0;
+  int offset = 0;
+  while (offset < transceiver->bufferSize) {
+    readBytes =
+        readPort(transceiver->port, buffer + offset, transceiver->bufferSize);
+    offset += readBytes;
+
+    if (readBytes == 0) {
+      return 0;
+    }
+
+    if (readBytes < 0) {
+      printf("Error reading from pico\n");
+      return -1;
+    }
+  }
+  // decode drone data
+  decode_buffer(transceiver->recvBuffer, 32);
+  // decode rest of buffer (just system logs right now)
+  decode_buffer(transceiver->recvBuffer + 32, transceiver->bufferSize - 32);
+  return offset;
 }

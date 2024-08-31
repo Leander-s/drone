@@ -17,6 +17,8 @@ int main(){
     createInfo.path_to_port = "/dev/ttyACM0";
 #endif
 
+    createInfo.controlState = (DroneControlState*){};
+    createInfo.sensorState = (DroneSensorState*){};
     GroundTransceiver *tx = ground_transceiver_create(&createInfo);
     ground_transceiver_run(tx);
     return 0;

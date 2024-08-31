@@ -11,12 +11,15 @@ Requirements:
         arm-none-eabi compilers (see raspberrypi pico setup)
         gcc
 
+Init:
+    run init.py
+
 Build:
     from "drone/code/general/" directory run "python build.py b" to build the output
     from "drone/code/general/" directory run "python build.py r" to rebuild the files 
         (deletes all previously built files and rebuilds them)
 
-    3 Output files (empty as of now):
+    3 Output files:
         drone/code/general/drone/build -> *.uf2 goes in the drones pico
         drone/code/general/ground/pc/build -> *.exe/*(unix executable) for pc
         drone/code/general/ground/pico/build -> *.uf2 goes in pico connected to pc as transceiver
@@ -44,10 +47,18 @@ drone/code/general/communications/nrf24:
 nrf24:
     This is how the module should be wired https://coffeebreakpoint.com/wp-content/uploads/2021/05/pico-nrf24L01_wiring-768x763.png.
     
+pico read timouts are an issue. The nrf24 read on the pico transceiver times out.
+Both pico seem to be stuck on read to make this happen. Need to sync better somehow.
         
 TODO:
 
-get nrf24 to work in general code
+we need 4 floats sent over radio. Buffer is 32 bytes max. maybe f16 is enough but not defined in c.
+make FloatBytes something other than a union. Union is too breakable.
+
+pc ground controller ui
+
+kalman filter sensors
+get sensor data in sensor subproject
 
 Windows compatibility (done?):
     connection.h/.c

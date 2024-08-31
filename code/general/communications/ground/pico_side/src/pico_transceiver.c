@@ -1,9 +1,13 @@
-#include <nrf24.h>
 #include <debugging_util.h>
+#include <diagnostics.h>
+#include <hardware/timer.h>
+#include <nrf24.h>
+#include <pico/time.h>
+#include <protocol_util.h>
 
-void setup() {
-  stdio_usb_init();
+#define READ_TIMEOUT_US 10000
 
+void busy_wait_for_connect() {
   while (!stdio_usb_connected()) {
     sleep_ms(100);
   }
@@ -12,33 +16,66 @@ void setup() {
     sleep_ms(100);
   }
 
-  char *message = "\0Pico connected";
-  message[0] = 1;
-  pico_print(message);
+  pico_debug_print("Pico connected", 32);
+}
+
+void setup() {
+  stdio_usb_init();
+
+  busy_wait_for_connect();
 
   nrf24_init();
 }
 
 void loop() {
+  uint8_t fromPC[64];
+  uint8_t toPC[64];
+  memset(fromPC, 0, 64);
+  memset(toPC, 0, 64);
+  int result;
+  PicoSystemLog log = {.transmissionsPerSecond.f = 0,
+                       .readTimeouts.i = 0,
+                       .usbDisconnects.i = 0};
   while (1) {
-    static char message[32];
-    memset(message, 0, 32);
-    int result = pico_read(message, 32);
-    if (strcmp(message, "") == 0) {
+    uint64_t start_time = time_us_64();
+    result = pico_read((char *)fromPC, 64);
+    if (result < 0) {
+      log.usbDisconnects.i++;
+      busy_wait_for_connect();
       continue;
     }
-    if (strcmp(message, "q") == 0) {
-      pico_print("Quitting");
-      break;
+    if (result < 32) {
+      continue;
     }
-    if (!tud_cdc_connected()) {
-      break;
+    if ((fromPC[36] - 1) & 1) {
+      log.usbDisconnects.i++;
+      busy_wait_for_connect();
+      continue;
     }
-    nrf24_send((uint8_t*)message, 32);
-    memset(message, 0, 32);
-    nrf24_read((uint8_t*)message, 32);
-    pico_print(message);
-    stdio_flush();
+    int bytesSent = nrf24_send(fromPC, 32);
+    int bytesReceived = nrf24_read(toPC, 32, READ_TIMEOUT_US);
+    if (bytesReceived == 0) {
+      log.readTimeouts.i++;
+    }
+    for (int i = 0; i < 4; i++) {
+      toPC[32 + i] = log.usbDisconnects.bytes[i];
+    }
+
+    for (int i = 0; i < 4; i++) {
+      toPC[36 + i] = log.readTimeouts.bytes[i];
+    }
+
+    uint64_t end_time = time_us_64();
+    log.transmissionsPerSecond.f =
+        (1.0 / (float)(end_time - start_time)) * 1000000;
+
+    for (int i = 0; i < 4; i++) {
+      toPC[40 + i] = log.transmissionsPerSecond.bytes[i];
+    }
+
+    encode_buffer(toPC + 32, 32);
+
+    pico_print(toPC, 64);
   }
 }
 
