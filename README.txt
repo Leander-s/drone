@@ -54,6 +54,9 @@ TODO:
 refactor project -> no more static libraries, we use a python script to cp all
 source files into a single project and then compile that once, don't want
 duplicate math libs
+
+need to make Quaternion/vector math more universally accessible and link it to some other projects that need it.
+
 we need 4 floats sent over radio. Buffer is 32 bytes max. maybe f16 is enough but not defined in c.
 make FloatBytes something other than a union. Union is too breakable.
 
