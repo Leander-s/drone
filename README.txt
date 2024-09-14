@@ -51,7 +51,9 @@ pico read timouts are an issue. The nrf24 read on the pico transceiver times out
 Both pico seem to be stuck on read to make this happen. Need to sync better somehow.
         
 TODO:
-
+refactor project -> no more static libraries, we use a python script to cp all
+source files into a single project and then compile that once, don't want
+duplicate math libs
 we need 4 floats sent over radio. Buffer is 32 bytes max. maybe f16 is enough but not defined in c.
 make FloatBytes something other than a union. Union is too breakable.
 
