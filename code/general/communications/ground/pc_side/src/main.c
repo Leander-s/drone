@@ -1,4 +1,4 @@
-#include "protocol.h"
+#include <protocol.h>
 
 // This file is used to test the ground program
 // in the actual ground program, we will figure out a way to either automate
