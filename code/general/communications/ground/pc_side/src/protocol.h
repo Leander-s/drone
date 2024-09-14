@@ -1,16 +1,6 @@
 #include "connection.h"
 
 typedef struct {
-  uint8_t pitch;
-  uint8_t roll;
-  uint8_t yaw;
-  uint8_t throttle;
-} DroneControlState;
-
-typedef struct {
-} DroneSensorState;
-
-typedef struct {
 #ifdef _WIN32
   HANDLE port;
 #else

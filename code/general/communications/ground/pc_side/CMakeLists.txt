@@ -10,6 +10,7 @@ set(COMMUNICATIONS_HEADERS
     src/ground_protocol_config.h
     ../../protocol_util/protocol_util.h
     ../../../debugging_util/diagnostics.h
+    ../../../state/drone_states.h
 )
 
 set(COMMUNICATIONS_SOURCES
@@ -27,6 +28,7 @@ set(COMMUNICATIONS_TEST_HEADERS
     src/input_poll.h
     ../../protocol_util/protocol_util.h
     ../../../debugging_util/diagnostics.h
+    ../../../state/drone_states.h
 )
 
 set(COMMUNICATIONS_TEST_SOURCES
@@ -40,10 +42,10 @@ set(COMMUNICATIONS_TEST_SOURCES
 )
 
 add_library(${PROJECT_NAME} ${COMMUNICATIONS_SOURCES} ${COMMUNICATIONS_HEADERS})
-target_include_directories(${PROJECT_NAME} PRIVATE "../../../debugging_util/" "../../protocol_util") 
+target_include_directories(${PROJECT_NAME} PRIVATE "../../../state/" "../../../debugging_util/" "../../protocol_util") 
 
 add_executable("ground_protocol_pc_test" ${COMMUNICATIONS_TEST_SOURCES} ${COMMUNICATIONS_TEST_HEADERS})
-target_include_directories("ground_protocol_pc_test" PRIVATE "../../../debugging_util/" "../../protocol_util") 
+target_include_directories("ground_protocol_pc_test" PRIVATE "../../../state/" "../../../debugging_util/" "../../protocol_util") 
 if(UNIX)
 target_link_libraries("ground_protocol_pc_test" X11)
 endif(UNIX)

@@ -15,3 +15,4 @@
 #include <stdint.h>
 #include <diagnostics.h>
 #include <protocol_util.h>
+#include <drone_states.h>
