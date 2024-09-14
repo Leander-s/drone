@@ -1,5 +1,5 @@
-#include <gui_app.h>
-#include <colors.h>
+#include "gui_app.h"
+#include "colors.h"
 
 GUI *gui_create(int width, int height) {
   int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);

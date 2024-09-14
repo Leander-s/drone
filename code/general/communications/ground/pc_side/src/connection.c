@@ -1,4 +1,4 @@
-#include <connection.h>
+#include "connection.h"
 
 #ifdef _WIN32
 HANDLE initConnection(const char* path){
