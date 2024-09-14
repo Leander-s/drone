@@ -1,5 +1,5 @@
-#include "diagnostics.h"
-#include "gui_app.h"
+#include <diagnostics.h>
+#include <gui_app.h>
 
 int main() {
   GUI *main_gui = gui_create(800, 600);

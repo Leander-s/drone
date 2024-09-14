@@ -1,5 +1,5 @@
-#include "input_poll.h"
-#include "protocol.h"
+#include <input_poll.h>
+#include <protocol.h>
 
 GroundTransceiver *
 ground_transceiver_create(GroundTransceiverCreateInfo *info) {

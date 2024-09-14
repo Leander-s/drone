@@ -5,9 +5,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(ground_protocol_pc)
 
 set(COMMUNICATIONS_HEADERS
-    src/protocol.h
-    src/connection.h
-    src/ground_protocol_config.h
+    include/protocol.h
+    include/connection.h
+    include/ground_protocol_config.h
     ../../protocol_util/protocol_util.h
     ../../../debugging_util/diagnostics.h
     ../../../state/drone_states.h
@@ -21,11 +21,11 @@ set(COMMUNICATIONS_SOURCES
 )
 
 set(COMMUNICATIONS_TEST_HEADERS
-    src/protocol.h
-    src/test_config.h
-    src/connection.h
-    src/util.h
-    src/input_poll.h
+    include/protocol.h
+    include/test_config.h
+    include/connection.h
+    include/util.h
+    include/input_poll.h
     ../../protocol_util/protocol_util.h
     ../../../debugging_util/diagnostics.h
     ../../../state/drone_states.h
@@ -42,10 +42,10 @@ set(COMMUNICATIONS_TEST_SOURCES
 )
 
 add_library(${PROJECT_NAME} ${COMMUNICATIONS_SOURCES} ${COMMUNICATIONS_HEADERS})
-target_include_directories(${PROJECT_NAME} PRIVATE "../../../state/" "../../../debugging_util/" "../../protocol_util") 
+target_include_directories(${PROJECT_NAME} PRIVATE "../../../state/" "../../../debugging_util/" "../../protocol_util" "./include") 
 
 add_executable("ground_protocol_pc_test" ${COMMUNICATIONS_TEST_SOURCES} ${COMMUNICATIONS_TEST_HEADERS})
-target_include_directories("ground_protocol_pc_test" PRIVATE "../../../state/" "../../../debugging_util/" "../../protocol_util") 
+target_include_directories("ground_protocol_pc_test" PRIVATE "../../../state/" "../../../debugging_util/" "../../protocol_util" "./include") 
 if(UNIX)
 target_link_libraries("ground_protocol_pc_test" X11)
 endif(UNIX)

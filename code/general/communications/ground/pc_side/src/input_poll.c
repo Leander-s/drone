@@ -1,4 +1,4 @@
-#include "input_poll.h"
+#include <input_poll.h>
 
 #ifdef _WIN32
 int key_in_stack(inputHandler *handler, int keycode) {

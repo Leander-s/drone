@@ -1,5 +1,4 @@
-#include "config.h"
-#include "gui_app.h"
+#include <config.h>
 
 int main() {
   DroneSensorState sensorData;
