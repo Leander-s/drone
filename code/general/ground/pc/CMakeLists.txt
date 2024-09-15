@@ -8,6 +8,7 @@ set(INCLUDE_DIR
     "../../math/include"
     "../../state/include"
     "../../debugging_util/include"
+    "../../diagnostics/include"
     "../../gui/include"
     "../../gui/SDL/include"
     "../../gui/SDL_ttf/include"
@@ -21,6 +22,7 @@ set(SOURCE_DIR
     "../../gui/src"
     "../../state/src"
     "../../debugging_util/src"
+    "../../diagnostics/src"
 )
 
 set(SOURCES
