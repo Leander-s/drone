@@ -1,5 +1,5 @@
 *build/
-**debug*
+**debug/
 **/*/*git*
 **/*/.*
 **__pycache__*
