@@ -1,4 +1,5 @@
-#include "drone_protocol_config.h"
+#pragma once
+#include <drone_protocol_config.h>
 
 /*
  * Message layout
@@ -38,6 +39,7 @@ typedef struct {
 
 DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo);
 void drone_protocol_run(DroneTransceiver *transceiver);
+void drone_protocol_update(DroneTransceiver *transceiver);
 void drone_protocol_handle_message(DroneTransceiver *transceiver);
 void drone_protocol_terminate(DroneTransceiver *transceiver);
 

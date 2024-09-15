@@ -10,6 +10,6 @@ typedef struct {
 } DroneControlState;
 
 typedef struct {
-    Quaternion *orientation;
+    Quaternion orientation;
     float altitude;
 } DroneSensorState;

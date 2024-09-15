@@ -1,10 +1,11 @@
+#pragma once
 #include "imu.h"
 
 typedef struct{
     DroneSensorState *state;
-    DroneSystemLog *logs;
+    DroneSystemLog *log;
 }Sensor;
 
-void init_sensors(Sensor *sensor);
+void sensor_init(Sensor *sensor);
 
-void update_sensors(Sensor *sensor);
+void sensor_update(Sensor *sensor);
