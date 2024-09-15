@@ -21,7 +21,7 @@ DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
   createInfo->init();
 
   DroneTransceiver *result = malloc(sizeof(DroneTransceiver));
-  result->currentState = (DroneState){};
+  result->drone = createInfo->drone;
   result->bufferSize = createInfo->bufferSize;
   result->readBuffer = malloc(result->bufferSize);
   result->sendBuffer = malloc(result->bufferSize);

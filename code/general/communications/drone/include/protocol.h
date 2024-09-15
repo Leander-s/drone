@@ -15,14 +15,7 @@
  */
 
 typedef struct {
-  uint8_t pitch;
-  uint8_t roll;
-  uint8_t yaw;
-  uint8_t throttle;
-} DroneState;
-
-typedef struct {
-  DroneState currentState;
+  Drone *drone;
   uint32_t bufferSize;
   uint8_t *sendBuffer;
   uint8_t *readBuffer;
@@ -35,6 +28,7 @@ typedef struct {
   int (*send)(uint8_t *buffer, uint32_t len);
   int (*recv)(uint8_t *buffer, uint32_t len, int timeout_us);
   uint32_t bufferSize;
+  Drone *drone;
 } DroneTransceiverCreateInfo;
 
 DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo);
