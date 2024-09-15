@@ -1,6 +1,8 @@
 #pragma once
 #include <stdint.h>
 
+#define BNO055_INIT_ERROR 1
+
 typedef union {
     float f;
     uint8_t bytes[4];
@@ -24,6 +26,10 @@ typedef struct {
     IntBytes usbDisconnects;
     IntBytes readTimeouts;
 }PicoSystemLog;
+
+typedef struct{
+    uint8_t error;
+}DroneSystemLog;
 
 void read_float_bytes_f(FloatBytes* fb, float f);
 

@@ -1,9 +1,9 @@
-#include <hardware/structs/io_bank0.h>
-#include <general_math.h>
-#include <drone_states.h>
 #include <diagnostics.h>
-#include "hardware/i2c.h"
-#include "pico/stdlib.h"
+#include <drone_states.h>
+#include <general_math.h>
+#include <hardware/i2c.h>
+#include <hardware/structs/io_bank0.h>
+#include <pico/stdlib.h>
 
 #define I2C_PORT i2c1
 #define I2C_SDA 26
