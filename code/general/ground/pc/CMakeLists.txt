@@ -7,7 +7,6 @@ set(INCLUDE_DIR
     "../../communications/ground/pc_side/include"
     "../../math/include"
     "../../state/include"
-    "../../debugging_util/include"
     "../../diagnostics/include"
     "../../gui/include"
     "../../gui/SDL/include"
@@ -21,20 +20,18 @@ set(SOURCE_DIR
     "../../math/src"
     "../../gui/src"
     "../../state/src"
-    "../../debugging_util/src"
     "../../diagnostics/src"
-)
-
-set(SOURCES
-    src/main.c
 )
 
 foreach(DIR ${SOURCE_DIR})
     file(GLOB FILE
-        "${DIR}/*.c" EXCEPT "*/main.c" "*/test*.c"
+        "${DIR}/*.c"
     )
     list(APPEND SOURCES ${FILE})
+    list(FILTER SOURCES EXCLUDE REGEX "main.c")
+    list(FILTER SOURCES EXCLUDE REGEX "test.c")
 endforeach()
+list(APPEND SOURCES src/main.c)
 
 message("Sources : ${SOURCES}")
 
