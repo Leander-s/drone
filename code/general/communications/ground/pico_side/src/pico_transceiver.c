@@ -1,11 +1,12 @@
-#include <debugging_util.h>
-#include <diagnostics.h>
-#include <hardware/timer.h>
-#include <nrf24.h>
-#include <pico/time.h>
-#include <protocol_util.h>
+#include <pico_transceiver.h>
 
-#define READ_TIMEOUT_US 10000
+void setup() {
+    stdio_usb_init();
+
+    busy_wait_for_connect();
+
+    nrf24_init();
+}
 
 void busy_wait_for_connect() {
   while (!stdio_usb_connected()) {
@@ -19,68 +20,59 @@ void busy_wait_for_connect() {
   pico_debug_print("Pico connected", 32);
 }
 
-void setup() {
-  stdio_usb_init();
-
-  busy_wait_for_connect();
-
-  nrf24_init();
+PicoTransceiver *pico_transceiver_create(){
+    PicoTransceiver *result = (PicoTransceiver*)malloc(sizeof(PicoTransceiver));
+    result->log.readTimeouts.i = 0;
+    result->log.usbDisconnects.i = 0;
+    result->log.transmissionsPerSecond.f = 0;
+    memset(result->fromPC, 0, 64);
+    memset(result->toPC, 0, 64);
+    return result;
 }
 
-void loop() {
-  uint8_t fromPC[64];
-  uint8_t toPC[64];
-  memset(fromPC, 0, 64);
-  memset(toPC, 0, 64);
-  int result;
-  PicoSystemLog log = {.transmissionsPerSecond.f = 0,
-                       .readTimeouts.i = 0,
-                       .usbDisconnects.i = 0};
-  while (1) {
+void pico_transceiver_update(PicoTransceiver *trans){
+    int result;
     uint64_t start_time = time_us_64();
-    result = pico_read((char *)fromPC, 64);
+    result = pico_read((char *)trans->fromPC, 64);
     if (result < 0) {
-      log.usbDisconnects.i++;
+      trans->log.usbDisconnects.i++;
       busy_wait_for_connect();
-      continue;
+      return;
     }
     if (result < 32) {
-      continue;
+      return;
     }
-    if ((fromPC[36] - 1) & 1) {
-      log.usbDisconnects.i++;
+    if ((trans->fromPC[36] - 1) & 1) {
+      trans->log.usbDisconnects.i++;
       busy_wait_for_connect();
-      continue;
+      return;
     }
-    int bytesSent = nrf24_send(fromPC, 32);
-    int bytesReceived = nrf24_read(toPC, 32, READ_TIMEOUT_US);
+    int bytesSent = nrf24_send(trans->fromPC, 32);
+    int bytesReceived = nrf24_read(trans->toPC, 32, READ_TIMEOUT_US);
     if (bytesReceived == 0) {
-      log.readTimeouts.i++;
+      trans->log.readTimeouts.i++;
     }
     for (int i = 0; i < 4; i++) {
-      toPC[32 + i] = log.usbDisconnects.bytes[i];
+      trans->toPC[32 + i] = trans->log.usbDisconnects.bytes[i];
     }
 
     for (int i = 0; i < 4; i++) {
-      toPC[36 + i] = log.readTimeouts.bytes[i];
+      trans->toPC[36 + i] = trans->log.readTimeouts.bytes[i];
     }
 
     uint64_t end_time = time_us_64();
-    log.transmissionsPerSecond.f =
+    trans->log.transmissionsPerSecond.f =
         (1.0 / (float)(end_time - start_time)) * 1000000;
 
     for (int i = 0; i < 4; i++) {
-      toPC[40 + i] = log.transmissionsPerSecond.bytes[i];
+      trans->toPC[40 + i] = trans->log.transmissionsPerSecond.bytes[i];
     }
 
-    encode_buffer(toPC + 32, 32);
+    encode_buffer(trans->toPC + 32, 32);
 
-    pico_print(toPC, 64);
-  }
+    pico_print(trans->toPC, 64);
 }
 
-int main() {
-  setup();
-  loop();
-  return 0;
+void pico_transceiver_destroy(PicoTransceiver *trans){
+    free(trans);
 }

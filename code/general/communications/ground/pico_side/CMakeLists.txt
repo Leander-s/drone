@@ -7,6 +7,7 @@ project(ground_protocol_pico C CXX ASM)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(PICO_HEADERS
+    ./include
     ../../../debugging_util/include/
     ../../../diagnostics/include/
     ../../nrf24/include/
@@ -19,6 +20,7 @@ set(PICO_SOURCES
     ../../nrf24/src/nrf24.c
     ../../protocol_util/src/protocol_util.c
     src/pico_transceiver.c
+    test/main.c
 )
 
 pico_sdk_init()
