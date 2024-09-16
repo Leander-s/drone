@@ -18,12 +18,13 @@ GUI *gui_create(int width, int height) {
   gui->width = width;
   gui->height = height;
   gui->shouldQuit = 0;
+  printf("Creating model\n");
+  gui->droneModel = drone_model_create();
+  printf("Model created\n");
   result = SDL_CreateWindowAndRenderer("Drone Controller", width, height,
                                        SDL_WINDOW_RESIZABLE, &gui->window,
                                        &gui->renderer);
   printf("Window and renderer created\n");
-  gui->droneModel = drone_model_create();
-  printf("Model created\n");
   if (result != 0) {
     SDL_Log("Creating window and renderer failed : %s\n", SDL_GetError());
     return NULL;
@@ -118,7 +119,7 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 }
 
 Model *drone_model_create() {
-  Model *droneModel = (Model*)malloc(sizeof(Model));
+  Model *droneModel = malloc(sizeof(Model));
   droneModel->vertices[0] = (vec3){.x = -0.5f, .y = 0.5f, .z = -0.5f};
   droneModel->vertices[1] = (vec3){.x = -0.5f, .y = 0.5f, .z = 0.5f};
   droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.5f, .z = 0.5f};

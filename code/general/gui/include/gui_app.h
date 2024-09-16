@@ -1,6 +1,5 @@
 #pragma once
 #include <gui_config.h>
-#include <gui_math.h>
 
 typedef struct {
   PCSystemLog *log;
