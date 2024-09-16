@@ -68,6 +68,10 @@ void drone_protocol_update(DroneTransceiver *transceiver){
 void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   uint8_t *message = transceiver->readBuffer;
   decode_buffer(message, 32);
+  // As of right now, this just sets controls to a certain state. Eventually
+  // I want this to change a target quaternion, that controls can approximate
+  // automatically, but this is easier for now, without controls being 
+  // implemented
   transceiver->controlState->throttle = message[0];
   transceiver->controlState->pitch = message[1];
   transceiver->controlState->roll = message[2];
@@ -80,8 +84,8 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   drone_flush_tx(transceiver);
   uint8_t *return_message = transceiver->sendBuffer;
 
-  // testing
-  memcpy(return_message + 1, "Hello", strlen("Hello"));
+  // Sending back sensorState
+  memcpy(return_message + 1, transceiver->sensorState->bytes, 8);
   return_message[0] = 1;
 
   encode_buffer(return_message, 32);

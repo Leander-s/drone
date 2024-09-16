@@ -4,48 +4,45 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(ground_protocol_pc)
 
-set(COMMUNICATIONS_HEADERS
-    include/protocol.h
-    include/connection.h
-    include/ground_protocol_config.h
-    ../../protocol_util/protocol_util.h
-    ../../../debugging_util/diagnostics.h
-    ../../../state/drone_states.h
+set(INCLUDE_DIR
+    "./include"
+    "../../../math/include"
+    "../../protocol_util/include"
+    "../../../diagnostics/include"
+    "../../../state/include"
 )
 
 set(COMMUNICATIONS_SOURCES
-    src/protocol.c
-    src/connection.c
-    ../../protocol_util/protocol_util.c
-    ../../../debugging_util/diagnostics.c
+    ./src/protocol.c
+    ./src/connection.c
+    ../../protocol_util/src/protocol_util.c
+    ../../../diagnostics/src/diagnostics.c
 )
 
-set(COMMUNICATIONS_TEST_HEADERS
-    include/protocol.h
-    include/test_config.h
-    include/connection.h
-    include/util.h
-    include/input_poll.h
-    ../../protocol_util/protocol_util.h
-    ../../../debugging_util/diagnostics.h
-    ../../../state/drone_states.h
+set(TEST_INCLUDES
+    "./include"
+    "./test_include"
+    "../../../math/include"
+    "../../protocol_util/include"
+    "../../../diagnostics/include"
+    "../../../state/include"
 )
 
 set(COMMUNICATIONS_TEST_SOURCES
-    src/util.c
-    src/connection.c
-    src/test_protocol.c
-    src/input_poll.c
-    src/main.c
-    ../../protocol_util/protocol_util.c
-    ../../../debugging_util/diagnostics.c
+    ./src/util.c
+    ./src/connection.c
+    ./test_src/test_protocol.c
+    ./test_src/input_poll.c
+    ./src/main.c
+    ../../protocol_util/src/protocol_util.c
+    ../../../diagnostics/src/diagnostics.c
 )
 
-add_library(${PROJECT_NAME} ${COMMUNICATIONS_SOURCES} ${COMMUNICATIONS_HEADERS})
-target_include_directories(${PROJECT_NAME} PRIVATE "../../../state/" "../../../debugging_util/" "../../protocol_util" "./include") 
+add_library(${PROJECT_NAME} ${COMMUNICATIONS_SOURCES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR}) 
 
-add_executable("ground_protocol_pc_test" ${COMMUNICATIONS_TEST_SOURCES} ${COMMUNICATIONS_TEST_HEADERS})
-target_include_directories("ground_protocol_pc_test" PRIVATE "../../../state/" "../../../debugging_util/" "../../protocol_util" "./include") 
+add_executable("ground_protocol_pc_test" ${COMMUNICATIONS_TEST_SOURCES})
+target_include_directories("ground_protocol_pc_test" PRIVATE ${TEST_INCLUDES}) 
 if(UNIX)
 target_link_libraries("ground_protocol_pc_test" X11)
 endif(UNIX)

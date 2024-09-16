@@ -12,4 +12,5 @@ typedef struct {
 typedef struct {
     Quaternion orientation;
     float altitude;
+    uint8_t bytes[8];
 } DroneSensorState;

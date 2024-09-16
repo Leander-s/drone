@@ -5,5 +5,5 @@ void sensor_init(DroneSensor *sensor){
 }
 
 void sensor_update(DroneSensor *sensor){
-    imu_read(&sensor->state->orientation);
+    imu_read(sensor->state);
 }

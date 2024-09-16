@@ -23,15 +23,18 @@ void imu_init(DroneSystemLog *logs){
     // Set operation mode ??
 }
 
-void imu_read(Quaternion *quat){
+void imu_read(DroneSensorState *state){
     uint8_t reg = BNO055_QUATERNION_DATA_W_LSB_ADDR;
     uint8_t data[8];
 
     i2c_write_blocking(I2C_PORT, BNO055_ADDRESS, &reg, 1, true);
     i2c_read_blocking(I2C_PORT, BNO055_ADDRESS, data, 8, false);
 
-    quat->w = (float)((int16_t)((data[1] << 8) | data[0])) / 16384.0f;
-    quat->v.x = (float)((int16_t)((data[3] << 8) | data[2])) / 16384.0f;
-    quat->v.y = (float)((int16_t)((data[5] << 8) | data[4])) / 16384.0f;
-    quat->v.z = (float)((int16_t)((data[7] << 8) | data[6])) / 16384.0f;
+    for(int i = 0; i < 8; i++){
+        state->bytes[i] = data[i];
+    }
+    state->orientation.w = (float)((int16_t)((data[1] << 8) | data[0])) / 16384.0f;
+    state->orientation.v.x = (float)((int16_t)((data[3] << 8) | data[2])) / 16384.0f;
+    state->orientation.v.y = (float)((int16_t)((data[5] << 8) | data[4])) / 16384.0f;
+    state->orientation.v.z = (float)((int16_t)((data[7] << 8) | data[6])) / 16384.0f;
 }
