@@ -6,7 +6,7 @@ typedef struct {
     DroneSensorState sensorState;
     DroneControlState state;
     DroneSystemLog log;
-    Sensor sensor;
+    DroneSensor sensor;
 } Drone;
 
 Drone *drone_start();

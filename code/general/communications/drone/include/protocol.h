@@ -1,4 +1,5 @@
 #pragma once
+#include "drone_states.h"
 #include <drone_protocol_config.h>
 
 /*
@@ -15,7 +16,9 @@
  */
 
 typedef struct {
-  Drone *drone;
+  DroneSensorState *sensorState;
+  DroneSystemLog *systemLog;
+  DroneControlState *controlState;
   uint32_t bufferSize;
   uint8_t *sendBuffer;
   uint8_t *readBuffer;
@@ -28,7 +31,9 @@ typedef struct {
   int (*send)(uint8_t *buffer, uint32_t len);
   int (*recv)(uint8_t *buffer, uint32_t len, int timeout_us);
   uint32_t bufferSize;
-  Drone *drone;
+  DroneSensorState *sensorState;
+  DroneSystemLog *log;
+  DroneControlState *controlState;
 } DroneTransceiverCreateInfo;
 
 DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo);

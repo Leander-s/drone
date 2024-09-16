@@ -4,8 +4,8 @@
 typedef struct{
     DroneSensorState *state;
     DroneSystemLog *log;
-}Sensor;
+}DroneSensor;
 
-void sensor_init(Sensor *sensor);
+void sensor_init(DroneSensor *sensor);
 
-void sensor_update(Sensor *sensor);
+void sensor_update(DroneSensor *sensor);

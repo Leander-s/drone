@@ -20,8 +20,10 @@ DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
 
   createInfo->init();
 
-  DroneTransceiver *result = malloc(sizeof(DroneTransceiver));
-  result->drone = createInfo->drone;
+  DroneTransceiver *result = (DroneTransceiver*)malloc(sizeof(DroneTransceiver));
+  result->systemLog = createInfo->log;
+  result->sensorState = createInfo->sensorState;
+  result->controlState = createInfo->controlState;
   result->bufferSize = createInfo->bufferSize;
   result->readBuffer = malloc(result->bufferSize);
   result->sendBuffer = malloc(result->bufferSize);
@@ -66,10 +68,10 @@ void drone_protocol_update(DroneTransceiver *transceiver){
 void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   uint8_t *message = transceiver->readBuffer;
   decode_buffer(message, 32);
-  transceiver->currentState.throttle = message[0];
-  transceiver->currentState.pitch = message[1];
-  transceiver->currentState.roll = message[2];
-  transceiver->currentState.yaw = message[3];
+  transceiver->controlState->throttle = message[0];
+  transceiver->controlState->pitch = message[1];
+  transceiver->controlState->roll = message[2];
+  transceiver->controlState->yaw = message[3];
 
   // flush readBuffer
   drone_flush_rx(transceiver);
