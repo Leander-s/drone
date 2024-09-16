@@ -1,5 +1,5 @@
-#include <gui_app.h>
 #include <colors.h>
+#include <gui_app.h>
 
 GUI *gui_create(int width, int height) {
   int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
@@ -21,6 +21,9 @@ GUI *gui_create(int width, int height) {
   result = SDL_CreateWindowAndRenderer("Drone Controller", width, height,
                                        SDL_WINDOW_RESIZABLE, &gui->window,
                                        &gui->renderer);
+  printf("Window and renderer created\n");
+  gui->droneModel = drone_model_create();
+  printf("Model created\n");
   if (result != 0) {
     SDL_Log("Creating window and renderer failed : %s\n", SDL_GetError());
     return NULL;
@@ -54,6 +57,7 @@ void gui_update(GUI *gui, const GUIData *data) {
 }
 
 void gui_destroy(GUI *gui) {
+  drone_model_destroy(gui->droneModel);
   SDL_DestroyRenderer(gui->renderer);
   SDL_DestroyWindow(gui->window);
   SDL_Quit();
@@ -113,8 +117,8 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
   yOffset += padding;
 }
 
-Model *drone_model_create(){
-  Model *droneModel = malloc(sizeof(Model));
+Model *drone_model_create() {
+  Model *droneModel = (Model*)malloc(sizeof(Model));
   droneModel->vertices[0] = (vec3){.x = -0.5f, .y = 0.5f, .z = -0.5f};
   droneModel->vertices[1] = (vec3){.x = -0.5f, .y = 0.5f, .z = 0.5f};
   droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.5f, .z = 0.5f};
@@ -151,22 +155,24 @@ Model *drone_model_create(){
   return droneModel;
 }
 
-void drone_model_destroy(Model *droneModel){
-    free(droneModel);
-}
+void drone_model_destroy(Model *droneModel) { free(droneModel); }
 
 void drone_model_draw(GUI *gui, const GUIData *data) {
-  Model *droneModel = data->droneModel;
+  Model *droneModel = gui->droneModel;
 
   mat4 projection, viewPort;
-  create_view_port(gui->width/2.0f, gui->height, 100.0f, 0.1f, &viewPort);
-  create_mvp((float)gui->width/2.0f / gui->height,  deg_to_rad(60), 100.0f, 0.1f,
-             &projection);
+  create_view_port(gui->width / 2.0f, gui->height, 100.0f, 0.1f, &viewPort);
+  create_mvp((float)gui->width / 2.0f / gui->height, deg_to_rad(60), 100.0f,
+             0.1f, &projection);
 
+  vec3 rotatedPoints[8];
   vec2 screenPoints[8];
 
   for (int i = 0; i < 8; i++) {
-        translate_point(&projection, &viewPort, &droneModel->vertices[i], 20.0f, &screenPoints[i]);
+    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i],
+                 &rotatedPoints[i]);
+    translate_point(&projection, &viewPort, &rotatedPoints[i], 20.0f,
+                    &screenPoints[i]);
   }
 
   for (int i = 0; i < 24; i += 2) {

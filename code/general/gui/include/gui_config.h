@@ -10,3 +10,4 @@
 
 // mine
 #include <diagnostics.h>
+#include <drone_states.h>

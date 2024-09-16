@@ -2,13 +2,8 @@
 
 void translate_point(const mat4 *mvp, const mat4 *viewPort, const vec3 *point,
                      const float zoom, vec2 *dstPoint) {
-  Quaternion littleTestRotation;
-  vec3 randomAxis = (vec3){.x = 0.2, .y = 0.6, .z = 0.5};
-  quaternion_set(&littleTestRotation, &randomAxis, 30);
-  vec3 rotatedPoint;
-  rotate_point(&littleTestRotation, point, &rotatedPoint);
   vec4 pos =
-      (vec4){.x = rotatedPoint.x, .y = rotatedPoint.y, .z = rotatedPoint.z + zoom, .w = 1.0f};
+      (vec4){.x = point->x, .y = point->y, .z = point->z + zoom, .w = 1.0f};
   vec4 clipPos;
   mult_mat_vec(mvp, &pos, &clipPos);
   vec4 ndcPos = (vec4){.x = clipPos.x / clipPos.w,
