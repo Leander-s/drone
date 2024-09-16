@@ -25,7 +25,7 @@ int main() {
 
   GUIData guiData;
   guiData.log = &link->log;
-  guiData.droneModel = drone_model_create();
+  guiData.sensorState = &sensorData;
 
   GUI *gui = gui_create(800, 600);
 
@@ -37,7 +37,6 @@ int main() {
     gui_update(gui, &guiData);
   }
 
-  drone_model_destroy(guiData.droneModel);
   ground_transceiver_destroy(link);
   gui_destroy(gui);
 }

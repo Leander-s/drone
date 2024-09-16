@@ -2,6 +2,7 @@
 	"nodes":[
 		{"id":"a0cd38a2455333de","type":"group","x":3500,"y":-1182,"width":1620,"height":1204,"label":"Communication"},
 		{"id":"8f8c6a1cdadea265","type":"group","x":3660,"y":680,"width":1300,"height":740,"label":"Drone"},
+		{"id":"16d331cab6ac161d","type":"group","x":3660,"y":1500,"width":1300,"height":740,"label":"Ground"},
 		{"id":"217c558d031da0ce","type":"text","text":"ledoho41@gmail.com","x":-1434,"y":-500,"width":250,"height":60},
 		{"id":"53544868e424b7b3","type":"text","text":"foam cutter\n- 0.25 millimeter nichrome wire\n- wood frame\n- push button\n- retraction spring, because wire sags when heating up\n- 9v / 12-20v for quick slicing","x":360,"y":-378,"width":520,"height":258},
 		{"id":"85f71145ad01626f","type":"file","file":"Pasted image 20240811211239.png","x":360,"y":-40,"width":572,"height":300},
@@ -23,12 +24,17 @@
 		{"id":"73899f4a583565bb","type":"text","text":"TX LoRa Module","x":3740,"y":-720,"width":250,"height":60,"color":"4"},
 		{"id":"aad685c95a8a79a6","type":"text","text":"Arduino","x":4259,"y":-946,"width":250,"height":60,"color":"4"},
 		{"id":"c34a45f94257fbba","type":"text","text":"Arduino","x":4259,"y":-280,"width":250,"height":60,"color":"4"},
-		{"id":"79e6b02b0d07de1c","x":4175,"y":793,"width":250,"height":60,"color":"4","type":"text","text":"DroneTransceiver"},
+		{"id":"79e6b02b0d07de1c","type":"text","text":"DroneTransceiver","x":4175,"y":793,"width":250,"height":60,"color":"4"},
 		{"id":"8af17def727bc22d","type":"text","text":"DroneControlState","x":4425,"y":1040,"width":250,"height":60,"color":"5"},
-		{"id":"313240e2a3272e09","x":4175,"y":1180,"width":250,"height":60,"color":"5","type":"text","text":"DroneSensorState"},
+		{"id":"313240e2a3272e09","type":"text","text":"DroneSensorState","x":4175,"y":1180,"width":250,"height":60,"color":"5"},
 		{"id":"72f5505595a3d9b1","type":"text","text":"DroneSystemLog","x":3925,"y":1040,"width":250,"height":60,"color":"5"},
 		{"id":"455466e090de0082","type":"text","text":"DroneControls","x":4620,"y":1180,"width":250,"height":60,"color":"4"},
-		{"id":"57aa95801b31ca98","type":"text","text":"DroneSensor","x":3740,"y":1180,"width":250,"height":60,"color":"4"}
+		{"id":"57aa95801b31ca98","type":"text","text":"DroneSensor","x":3740,"y":1180,"width":250,"height":60,"color":"4"},
+		{"id":"e3df7de3d5511e15","x":4168,"y":1633,"width":250,"height":60,"color":"4","type":"text","text":"Transceiver"},
+		{"id":"66ff618ee4473b39","type":"text","text":"GUI","x":4168,"y":2040,"width":250,"height":60,"color":"4"},
+		{"id":"40d51a42027fc2b1","type":"text","text":"DroneSensorState","x":3860,"y":1820,"width":250,"height":60,"color":"5"},
+		{"id":"a03cfe0e74c223e7","type":"text","text":"DroneControlState","x":4480,"y":1820,"width":250,"height":60,"color":"5"},
+		{"id":"7ed15bc653a92b85","type":"text","text":"Logs","x":4168,"y":1820,"width":250,"height":60,"color":"5"}
 	],
 	"edges":[
 		{"id":"cbad27ff1b83f0c5","fromNode":"0150c26d424214f6","fromSide":"right","toNode":"53544868e424b7b3","toSide":"left"},
@@ -54,6 +60,12 @@
 		{"id":"4873e756cb6a54e7","fromNode":"57aa95801b31ca98","fromSide":"right","toNode":"313240e2a3272e09","toSide":"left"},
 		{"id":"1ad8f23da082a552","fromNode":"57aa95801b31ca98","fromSide":"top","toNode":"72f5505595a3d9b1","toSide":"left"},
 		{"id":"1482b3812133080f","fromNode":"8af17def727bc22d","fromSide":"right","toNode":"455466e090de0082","toSide":"top"},
-		{"id":"f1d9aa24428ccaad","fromNode":"313240e2a3272e09","fromSide":"right","toNode":"455466e090de0082","toSide":"left"}
+		{"id":"f1d9aa24428ccaad","fromNode":"313240e2a3272e09","fromSide":"right","toNode":"455466e090de0082","toSide":"left"},
+		{"id":"174c563a56517a66","fromNode":"e3df7de3d5511e15","fromSide":"left","toNode":"40d51a42027fc2b1","toSide":"top"},
+		{"id":"b6fcf83e437817f2","fromNode":"40d51a42027fc2b1","fromSide":"bottom","toNode":"66ff618ee4473b39","toSide":"left"},
+		{"id":"3ea4d0c035d3fee3","fromNode":"66ff618ee4473b39","fromSide":"right","toNode":"a03cfe0e74c223e7","toSide":"bottom"},
+		{"id":"cbc592b1e6d6761f","fromNode":"a03cfe0e74c223e7","fromSide":"top","toNode":"e3df7de3d5511e15","toSide":"right"},
+		{"id":"a0794b57ad03558e","fromNode":"e3df7de3d5511e15","fromSide":"bottom","toNode":"7ed15bc653a92b85","toSide":"top"},
+		{"id":"21a122a2e778c651","fromNode":"7ed15bc653a92b85","fromSide":"bottom","toNode":"66ff618ee4473b39","toSide":"top"}
 	]
 }
