@@ -113,6 +113,6 @@ int writePort(int port, uint8_t* buffer, int amount){
 }
 
 int readPort(int port, uint8_t* buffer, int amount){
-    return read(port, buffer, amount);
+    return read(port, (void*)buffer, amount);
 }
 #endif

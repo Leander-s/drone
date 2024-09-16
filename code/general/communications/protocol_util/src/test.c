@@ -1,4 +1,4 @@
-#include <protocol_util.h>
+#include "../include/protocol_util.h"
 
 typedef union {
   float f;
@@ -49,9 +49,18 @@ void test_equal(const char *testName, uint8_t *buffer1, uint8_t *buffer2,
 }
 
 int main() {
+  uint8_t test[8];
+  test[0] = 134;
+  test[1] = 122;
+  test[2] = 34;
+  test[3] = 14;
+  test[4] = 13;
+  test[5] = 200;
+  test[6] = 90;
+  test[7] = 83;
   uint8_t testBuffer[32];
-  memcpy(testBuffer + 1, "Hello", strlen("Hello"));
-  testBuffer[0] = 1;
+  memcpy(testBuffer + 1, test, 8);
+  testBuffer[0] = 3;
 
   uint8_t testCopy[32];
   memcpy(testCopy, testBuffer, 32);
@@ -63,4 +72,5 @@ int main() {
   decode_buffer(testBuffer, 16);
   decode_buffer(testBuffer + 16, 16);
   test_equal("Equality test", testBuffer, testCopy, 32);
+  printf("This is the first : %d\n", testBuffer[0]);
 }

@@ -85,8 +85,8 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   uint8_t *return_message = transceiver->sendBuffer;
 
   // Sending back sensorState
-  memcpy(return_message + 1, transceiver->sensorState->bytes, 8);
   return_message[0] = 3;
+  memcpy(return_message + 1, transceiver->sensorState->bytes, 8);
 
   encode_buffer(return_message, 32);
 }

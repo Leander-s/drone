@@ -1,13 +1,5 @@
 #include <pico_transceiver.h>
 
-void setup() {
-    stdio_usb_init();
-
-    busy_wait_for_connect();
-
-    nrf24_init();
-}
-
 void busy_wait_for_connect() {
   while (!stdio_usb_connected()) {
     sleep_ms(100);
@@ -21,6 +13,10 @@ void busy_wait_for_connect() {
 }
 
 PicoTransceiver *pico_transceiver_create(){
+    stdio_usb_init();
+    busy_wait_for_connect();
+    nrf24_init();
+
     PicoTransceiver *result = (PicoTransceiver*)malloc(sizeof(PicoTransceiver));
     result->log.readTimeouts.i = 0;
     result->log.usbDisconnects.i = 0;
@@ -70,7 +66,7 @@ void pico_transceiver_update(PicoTransceiver *trans){
 
     encode_buffer(trans->toPC + 32, 32);
 
-    pico_print(trans->toPC, 64);
+    pico_print((char*)trans->toPC, 64);
 }
 
 void pico_transceiver_destroy(PicoTransceiver *trans){
