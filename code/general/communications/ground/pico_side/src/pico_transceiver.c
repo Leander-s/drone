@@ -66,7 +66,7 @@ void pico_transceiver_update(PicoTransceiver *trans){
 
     encode_buffer(trans->toPC + 32, 32);
 
-    pico_print((char*)trans->toPC, 64);
+    pico_print(trans->toPC, 64);
 }
 
 void pico_transceiver_destroy(PicoTransceiver *trans){

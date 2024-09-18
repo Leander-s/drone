@@ -13,10 +13,12 @@ void encode_buffer(uint8_t *buffer, int len) {
     bitIndex += 7;
   }
   memcpy(buffer, transBuffer, len);
+  buffer[len - 1] = 0;
   free(transBuffer);
 }
 
 void decode_buffer(uint8_t *buffer, int len) {
+  buffer[len - 1] = 1;
   uint8_t *transBuffer = malloc(len);
   memset(transBuffer, 0, len);
   int bitIndex = 0;
