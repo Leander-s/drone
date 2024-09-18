@@ -1,3 +1,4 @@
+#include "general_math.h"
 #include <colors.h>
 #include <gui_app.h>
 
@@ -169,9 +170,16 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   vec3 rotatedPoints[8];
   vec2 screenPoints[8];
 
+  // Quaternion test = (Quaternion){.x = 0.5, .v.x = 0.5, .v.y = 0.5, .v.z =
+  // 0.5};
+
   for (int i = 0; i < 8; i++) {
     rotate_point(&data->sensorState->orientation, &droneModel->vertices[i],
                  &rotatedPoints[i]);
+    /*
+    rotate_point(&test, &droneModel->vertices[i],
+                 &rotatedPoints[i]);
+                 */
     translate_point(&projection, &viewPort, &rotatedPoints[i], 20.0f,
                     &screenPoints[i]);
   }

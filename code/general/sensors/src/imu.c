@@ -1,4 +1,17 @@
+#include <hardware/i2c.h>
 #include <imu.h>
+
+void write_register(uint8_t reg, uint8_t data){
+    uint8_t buf[2] = {reg, data};
+    i2c_write_blocking(I2C_PORT, BNO055_ADDRESS, buf, 2, false);
+}
+
+uint8_t read_register(uint8_t reg){
+    uint8_t data;
+    i2c_write_blocking(I2C_PORT, BNO055_ADDRESS, &reg, 1, true);
+    i2c_read_blocking(I2C_PORT, BNO055_ADDRESS, &data, 1, false);
+    return data;
+}
 
 void imu_init(DroneSystemLog *logs){
     i2c_init(I2C_PORT, 400000);
@@ -10,17 +23,28 @@ void imu_init(DroneSystemLog *logs){
     // wait for sensor to start up, maybe wait a little less, see if that works
     sleep_ms(1000);
 
-    uint8_t chip_id = 0;
-    uint8_t reg = BNO055_CHIP_ID_ADDR;
-    i2c_write_blocking(I2C_PORT, BNO055_ADDRESS, &reg, 1, true);
-    i2c_read_blocking(I2C_PORT, BNO055_ADDRESS, &chip_id, 1, false);
-
+    uint8_t chip_id = read_register(BNO055_CHIP_ID_ADDR);
     if(chip_id != 0xA0){
         logs->error |= BNO055_INIT_ERROR;
         return;
     }
 
-    // Set operation mode ??
+    write_register(BNO055_SYS_TRIGGER_ADDR, 0x20);
+    sleep_ms(650);
+
+    // normal power mode
+    write_register(BNO055_PWR_MODE_ADDR, 0x00);
+
+    // page 0 ??
+    write_register(BNO055_PAGE_ID_ADDR, 0x00);
+
+    write_register(BNO055_UNIT_SEL_ADDR, 0x04);
+
+    // NDOF (Nine Degrees Of Freedom)
+    // use all sensors
+    write_register(BNO055_OPR_MODE_ADDR, 0x0C);
+
+    sleep_ms(20);
 }
 
 void imu_read(DroneSensorState *state){
