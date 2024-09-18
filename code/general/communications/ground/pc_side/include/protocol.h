@@ -8,8 +8,8 @@ typedef struct {
   uint32_t port;
 #endif
   uint32_t bufferSize;
-  DroneControlState controlState;
-  DroneSensorState sensorState;
+  DroneControlState *controlState;
+  DroneSensorState *sensorState;
   uint8_t *sendBuffer;
   uint8_t *recvBuffer;
   PCSystemLog log;
