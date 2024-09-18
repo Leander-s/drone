@@ -10,7 +10,8 @@ Drone *drone_start() {
       (DroneSensor){.state = &result->sensorState, .log = &result->log};
 
   DroneTransceiverCreateInfo createInfo =
-      (DroneTransceiverCreateInfo){.init = nrf24_init,
+      (DroneTransceiverCreateInfo){
+          .init = nrf24_init,
           .send = nrf24_send,
           .recv = nrf24_read,
           .bufferSize = 32,
@@ -20,6 +21,7 @@ Drone *drone_start() {
       };
   result->transceiver = drone_protocol_init(&createInfo);
   sensor_init(&result->sensor);
+  return result;
 }
 
 void drone_update(Drone *drone) {

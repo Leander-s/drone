@@ -49,28 +49,23 @@ void test_equal(const char *testName, uint8_t *buffer1, uint8_t *buffer2,
 }
 
 int main() {
-  uint8_t test[8];
-  test[0] = 134;
-  test[1] = 122;
-  test[2] = 34;
-  test[3] = 14;
-  test[4] = 13;
-  test[5] = 200;
-  test[6] = 90;
-  test[7] = 83;
-  uint8_t testBuffer[32];
-  memcpy(testBuffer + 1, test, 8);
-  testBuffer[0] = 3;
+  uint8_t test[64];
+  memset(test, 1, 64);
+  test[0] = 3;
+  memset(test + 28, 0, 4);
+  memset(test + 60, 0, 4);
+  test[4] = 255;
+  test[50] = 255;
 
-  uint8_t testCopy[32];
-  memcpy(testCopy, testBuffer, 32);
+  uint8_t testCopy[64];
+  memcpy(testCopy, test, 64);
 
-  encode_buffer(testBuffer, 16);
-  encode_buffer(testBuffer + 16, 16);
-  test_sendable("Sendable test", testBuffer, 32);
+  encode_buffer(test, 32);
+  encode_buffer(test + 32, 32);
+  test_sendable("Sendable test", test, 64);
 
-  decode_buffer(testBuffer, 16);
-  decode_buffer(testBuffer + 16, 16);
-  test_equal("Equality test", testBuffer, testCopy, 32);
-  printf("This is the first : %d\n", testBuffer[0]);
+  decode_buffer(test, 32);
+  decode_buffer(test + 32, 32);
+  test_equal("Equality test", test, testCopy, 64);
+  printf("This is the first : %d\n", test[0]);
 }

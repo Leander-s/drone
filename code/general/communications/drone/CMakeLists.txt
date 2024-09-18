@@ -40,11 +40,11 @@ add_executable("drone_communications_test" ${COMMUNICATIONS_TEST_SOURCES})
 pico_enable_stdio_usb("drone_communications_test" 1)
 
 pico_add_extra_outputs("drone_communications_test")
-target_include_directories("drone_communications_test" PRIVATE "./include" "../pico/pico-sdk/src/rp2_common/hardware_spi/include" "../nrf24/include" "../../debugging_util/include" "../protocol_util/include" "../../drone/include" "../../diagnostics/include" "../../state/include")
+target_include_directories("drone_communications_test" PRIVATE "./include" "../pico/pico-sdk/src/rp2_common/hardware_spi/include" "../nrf24/include" "../../debugging_util/include" "../protocol_util/include" "../../drone/include" "../../diagnostics/include" "../../state/include" "../../math/include")
 target_link_libraries("drone_communications_test" pico_stdlib hardware_spi hardware_pio hardware_uart)
 
 add_library("drone_communications" ${COMMUNICATIONS_SOURCES})
 pico_enable_stdio_usb("drone_communications" 1)
 
-target_include_directories("drone_communications" PRIVATE "./include" "../pico/pico-sdk/src/rp2_common/hardware_spi/include" "../nrf24/include" "../../debugging_util/include" "../protocol_util/include" "../../drone/include" "../../diagnostics/include" "../../state/include")
+target_include_directories("drone_communications" PRIVATE "./include" "../pico/pico-sdk/src/rp2_common/hardware_spi/include" "../nrf24/include" "../../debugging_util/include" "../protocol_util/include" "../../drone/include" "../../diagnostics/include" "../../state/include" "../../math/include")
 target_link_libraries("drone_communications" pico_stdlib hardware_spi hardware_pio hardware_uart)

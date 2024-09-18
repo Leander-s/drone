@@ -1,3 +1,4 @@
+#include "protocol_util.h"
 #include <pico_transceiver.h>
 
 void busy_wait_for_connect() {
@@ -21,15 +22,16 @@ PicoTransceiver *pico_transceiver_create(){
     result->log.readTimeouts.i = 0;
     result->log.usbDisconnects.i = 0;
     result->log.transmissionsPerSecond.f = 0;
-    memset(result->fromPC, 0, 64);
-    memset(result->toPC, 0, 64);
     return result;
 }
 
 void pico_transceiver_update(PicoTransceiver *trans){
+    memset(trans->fromPC, 0, 64);
+    memset(trans->toPC, 1, 32);
+    memset(trans->toPC + 32, 0, 32);
     int result;
     uint64_t start_time = time_us_64();
-    result = pico_read((char *)trans->fromPC, 64);
+    result = pico_read(trans->fromPC, 64);
     if (result < 0) {
       trans->log.usbDisconnects.i++;
       busy_wait_for_connect();
@@ -43,6 +45,7 @@ void pico_transceiver_update(PicoTransceiver *trans){
       busy_wait_for_connect();
       return;
     }
+    encode_buffer(trans->fromPC, 32);
     int bytesSent = nrf24_send(trans->fromPC, 32);
     int bytesReceived = nrf24_read(trans->toPC, 32, READ_TIMEOUT_US);
     if (bytesReceived == 0) {
@@ -67,6 +70,8 @@ void pico_transceiver_update(PicoTransceiver *trans){
     encode_buffer(trans->toPC + 32, 32);
 
     pico_print(trans->toPC, 64);
+    stdio_flush();
+    tud_cdc_write_flush();
 }
 
 void pico_transceiver_destroy(PicoTransceiver *trans){

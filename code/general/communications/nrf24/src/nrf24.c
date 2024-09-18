@@ -78,6 +78,7 @@ void nrf24_write_register(uint8_t reg, uint8_t value) {
 }
 
 int nrf24_send(uint8_t *data, uint32_t len) {
+  nrf24_flush_tx();
   gpio_put(PIN_CE, 0);
 
   set_mode(TX_MODE);
@@ -93,7 +94,6 @@ int nrf24_send(uint8_t *data, uint32_t len) {
   sleep_us(10);
   gpio_put(PIN_CE, 0);
 
-
   // no idea why this is necessary
   sleep_us(1000);
   gpio_put(LED_PIN, 0);
@@ -102,6 +102,7 @@ int nrf24_send(uint8_t *data, uint32_t len) {
 }
 
 int nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
+  nrf24_flush_rx();
   set_mode(RX_MODE);
 
   gpio_put(PIN_CE, 1);
@@ -134,7 +135,7 @@ int nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   gpio_put(PIN_CS, 1);
   sleep_us(10);
 
-  //nrf24_flush_rx();
+  // nrf24_flush_rx();
 
   nrf24_write_register(STATUS, 0x70);
 

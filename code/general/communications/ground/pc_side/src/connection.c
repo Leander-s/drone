@@ -109,7 +109,7 @@ int initConnection(const char *path) {
 }
 
 int writePort(int port, uint8_t* buffer, int amount){
-    return write(port, buffer, amount);
+    return write(port, (void*)buffer, amount);
 }
 
 int readPort(int port, uint8_t* buffer, int amount){

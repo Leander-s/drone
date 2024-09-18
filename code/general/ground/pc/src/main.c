@@ -33,6 +33,8 @@ int main() {
     // sending to drone/receiving from drone
     ground_transceiver_update(link);
 
+    printf("Transmissions per second : %f\n", link->log.transmissionsPerSecond);
+
     // updating gui
     gui_update(gui, &guiData);
   }

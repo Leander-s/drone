@@ -86,9 +86,25 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   // log data is always sent, no matter what code
   uint8_t *data = transceiver->recvBuffer;
 
+  // printing for testing
+  for(int i = 0; i < 64; i++){
+      printf("(%d)[%hhu] ", i, data[i]);
+  }
+  printf("\n---------------------------\n");
+
+  // update log
+  PicoSystemLog picoLog;
+  read_int_bytes_b(&picoLog.usbDisconnects, data + 32);
+  read_int_bytes_b(&picoLog.readTimeouts, data + 36);
+  read_float_bytes_b(&picoLog.transmissionsPerSecond, data + 40);
+
+  transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
+  transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
+  transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
+
   if (data[0] == 0) {
-    printf("No data\n");
-    return 0;
+      printf("No data\n");
+      return 0;
   }
 
   if (data[0] == 1) {
@@ -96,29 +112,18 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   }
 
   if (data[0] == 2) {
-    printf("Terminating\n");
-    return 1;
+      printf("Terminating\n");
+      return 1;
   }
 
   if (data[0] == 3) {
-    // update sensor state
-    memcpy(transceiver->sensorState.bytes, data + 1, 8);
-    transceiver->sensorState.orientation.w = (float)((int16_t)((data[2] << 8) | data[1])) / 16384.0f;
-    transceiver->sensorState.orientation.v.x = (float)((int16_t)((data[4] << 8) | data[3])) / 16384.0f;
-    transceiver->sensorState.orientation.v.y = (float)((int16_t)((data[6] << 8) | data[5])) / 16384.0f;
-    transceiver->sensorState.orientation.v.z = (float)((int16_t)((data[8] << 8) | data[7])) / 16384.0f;
-
+      // update sensor state
+      memcpy(transceiver->sensorState.bytes, data + 1, 8);
+      transceiver->sensorState.orientation.w = (float)((int16_t)((data[2] << 8) | data[1])) / 16384.0f;
+      transceiver->sensorState.orientation.v.x = (float)((int16_t)((data[4] << 8) | data[3])) / 16384.0f;
+      transceiver->sensorState.orientation.v.y = (float)((int16_t)((data[6] << 8) | data[5])) / 16384.0f;
+      transceiver->sensorState.orientation.v.z = (float)((int16_t)((data[8] << 8) | data[7])) / 16384.0f;
   }
-
-  // update log
-  PicoSystemLog picoLog;
-  read_int_bytes_b(&picoLog.usbDisconnects, &data[32]);
-  read_int_bytes_b(&picoLog.readTimeouts, &data[36]);
-  read_float_bytes_b(&picoLog.transmissionsPerSecond, &data[40]);
-
-  transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
-  transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
-  transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
 
   return 0;
 }
@@ -149,7 +154,7 @@ int ground_transceiver_read(GroundTransceiver *transceiver) {
     offset += readBytes;
 
     if (readBytes == 0) {
-      return 0;
+        break;
     }
 
     if (readBytes < 0) {
@@ -158,8 +163,8 @@ int ground_transceiver_read(GroundTransceiver *transceiver) {
     }
   }
   // decode drone data
-  decode_buffer(transceiver->recvBuffer, 32);
+  decode_buffer(buffer, 32);
   // decode rest of buffer (just system logs right now)
-  decode_buffer(transceiver->recvBuffer + 32, transceiver->bufferSize - 32);
+  decode_buffer(buffer + 32, transceiver->bufferSize - 32);
   return offset;
 }

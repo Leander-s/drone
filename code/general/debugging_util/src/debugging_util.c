@@ -1,6 +1,6 @@
 #include <debugging_util.h>
 
-int pico_read(uint8_t *readBuffer, int size) {
+int pico_read(char *readBuffer, int size) {
   int result;
   int i = 0;
   while (i < size) {
@@ -12,10 +12,10 @@ int pico_read(uint8_t *readBuffer, int size) {
   return i;
 }
 
-int pico_print(uint8_t *message, int len) {
+int pico_print(char *message, int len) {
   int printedBytes = 0;
   for (int i = 0; i < len; i++) {
-    printedBytes += printf("%hhu", message[i]);
+    printedBytes += printf("%c", message[i]);
   }
   return printedBytes;
 }

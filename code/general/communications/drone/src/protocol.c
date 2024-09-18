@@ -1,26 +1,27 @@
+#include <pico/time.h>
 #include <protocol.h>
 #include <protocol_util.h>
-#include <pico/time.h>
 
 DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
 #ifdef NDEBUG
 #else
-    stdio_usb_init();
-    
-    while(!stdio_usb_connected()){
-        sleep_ms(100);
-    }
+  stdio_usb_init();
 
-    while(!tud_cdc_connected()){
-        sleep_ms(100);
-    }
+  while (!stdio_usb_connected()) {
+    sleep_ms(100);
+  }
 
-    LOG("Pico connected", 32);
+  while (!tud_cdc_connected()) {
+    sleep_ms(100);
+  }
+
+  LOG("Pico connected", 32);
 #endif
 
   createInfo->init();
 
-  DroneTransceiver *result = (DroneTransceiver*)malloc(sizeof(DroneTransceiver));
+  DroneTransceiver *result =
+      (DroneTransceiver *)malloc(sizeof(DroneTransceiver));
   result->systemLog = createInfo->log;
   result->sensorState = createInfo->sensorState;
   result->controlState = createInfo->controlState;
@@ -46,10 +47,10 @@ void drone_protocol_run(DroneTransceiver *transceiver) {
   drone_protocol_terminate(transceiver);
 }
 
-void drone_protocol_update(DroneTransceiver *transceiver){
-    drone_read(transceiver);
-    drone_protocol_handle_message(transceiver);
-    drone_send(transceiver);
+void drone_protocol_update(DroneTransceiver *transceiver) {
+  drone_read(transceiver);
+  drone_protocol_handle_message(transceiver);
+  drone_send(transceiver);
 }
 
 // Set actions depending on received message
@@ -70,7 +71,7 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   decode_buffer(message, 32);
   // As of right now, this just sets controls to a certain state. Eventually
   // I want this to change a target quaternion, that controls can approximate
-  // automatically, but this is easier for now, without controls being 
+  // automatically, but this is easier for now, without controls being
   // implemented
   transceiver->controlState->throttle = message[0];
   transceiver->controlState->pitch = message[1];
@@ -102,7 +103,8 @@ int drone_send(DroneTransceiver *transceiver) {
 }
 
 int drone_read(DroneTransceiver *transceiver) {
-  return transceiver->recv(transceiver->readBuffer, transceiver->bufferSize, -1);
+  return transceiver->recv(transceiver->readBuffer, transceiver->bufferSize,
+                           -1);
 }
 
 void drone_flush_rx(DroneTransceiver *transceiver) {
