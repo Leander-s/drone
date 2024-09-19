@@ -124,13 +124,13 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   if (data[0] == 3) {
     // update sensor state
     memcpy(transceiver->sensorState->bytes, data + 1, 8);
-    transceiver->sensorState->orientation.w =
+    transceiver->sensorState->orientation.x =
         (float)((int16_t)((data[2] << 8) | data[1])) / 16384.0f;
-    transceiver->sensorState->orientation.i =
+    transceiver->sensorState->orientation.v.x =
         (float)((int16_t)((data[4] << 8) | data[3])) / 16384.0f;
-    transceiver->sensorState->orientation.j =
+    transceiver->sensorState->orientation.v.y =
         (float)((int16_t)((data[6] << 8) | data[5])) / 16384.0f;
-    transceiver->sensorState->orientation.k =
+    transceiver->sensorState->orientation.v.z =
         (float)((int16_t)((data[8] << 8) | data[7])) / 16384.0f;
     quaternion_normalize(&transceiver->sensorState->orientation);
 

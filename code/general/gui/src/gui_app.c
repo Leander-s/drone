@@ -121,14 +121,14 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 
 Model *drone_model_create() {
   Model *droneModel = malloc(sizeof(Model));
-  droneModel->vertices[0] = (vec3){.x = -0.5f, .y = 0.5f, .z = -0.5f};
-  droneModel->vertices[1] = (vec3){.x = -0.5f, .y = 0.5f, .z = 0.5f};
-  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.5f, .z = 0.5f};
-  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = 0.5f, .z = -0.5f};
-  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.5f, .z = -0.5f};
-  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = -0.5f, .z = 0.5f};
-  droneModel->vertices[6] = (vec3){.x = 0.5f, .y = -0.5f, .z = 0.5f};
-  droneModel->vertices[7] = (vec3){.x = 0.5f, .y = -0.5f, .z = -0.5f};
+  droneModel->vertices[0] = (vec3){.x = -0.5f, .y = 0.3f, .z = -0.1f};
+  droneModel->vertices[1] = (vec3){.x = -0.5f, .y = 0.3f, .z = 0.1f};
+  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.3f, .z = 0.1f};
+  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = 0.3f, .z = -0.1f};
+  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.3f, .z = -0.1f};
+  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = -0.3f, .z = 0.1f};
+  droneModel->vertices[6] = (vec3){.x = 0.5f, .y = -0.3f, .z = 0.1f};
+  droneModel->vertices[7] = (vec3){.x = 0.5f, .y = -0.3f, .z = -0.1f};
   droneModel->indices[0] = 0;
   droneModel->indices[1] = 1;
   droneModel->indices[2] = 1;
@@ -170,16 +170,10 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   vec3 rotatedPoints[8];
   vec2 screenPoints[8];
 
-  // Quaternion test = (Quaternion){.x = 0.5, .v.x = 0.5, .v.y = 0.5, .v.z =
-  // 0.5};
 
   for (int i = 0; i < 8; i++) {
     rotate_point(&data->sensorState->orientation, &droneModel->vertices[i],
                  &rotatedPoints[i]);
-    /*
-    rotate_point(&test, &droneModel->vertices[i],
-                 &rotatedPoints[i]);
-                 */
     translate_point(&projection, &viewPort, &rotatedPoints[i], 20.0f,
                     &screenPoints[i]);
   }
