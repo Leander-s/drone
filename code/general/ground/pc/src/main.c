@@ -2,6 +2,7 @@
 
 int main() {
   DroneSensorState sensorData;
+  sensorData.orientation = (Quaternion){.x = 1, .i = 0, .j = 0, .k = 0};
   DroneControlState controlState;
 
   // Setting up transceiver
@@ -12,8 +13,8 @@ int main() {
 #else
   createInfo.path_to_port = "/dev/ttyACM0";
 #endif
-  // Buffer size between pico transceiver and pc. Buffer size for radio transmissions
-  // is hardcoded and also capped at 32 atm
+  // Buffer size between pico transceiver and pc. Buffer size for radio
+  // transmissions is hardcoded and also capped at 32 atm
   createInfo.bufferSize = 64;
   // States need to be here in the main program, they will be what we control/
   // read throughout

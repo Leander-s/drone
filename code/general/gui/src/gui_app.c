@@ -121,14 +121,22 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 
 Model *drone_model_create() {
   Model *droneModel = malloc(sizeof(Model));
-  droneModel->vertices[0] = (vec3){.x = -0.5f, .y = 0.3f, .z = -0.1f};
-  droneModel->vertices[1] = (vec3){.x = -0.5f, .y = 0.3f, .z = 0.1f};
-  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.3f, .z = 0.1f};
-  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = 0.3f, .z = -0.1f};
-  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.3f, .z = -0.1f};
-  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = -0.3f, .z = 0.1f};
-  droneModel->vertices[6] = (vec3){.x = 0.5f, .y = -0.3f, .z = 0.1f};
-  droneModel->vertices[7] = (vec3){.x = 0.5f, .y = -0.3f, .z = -0.1f};
+  droneModel->vertices[0] = (vec3){.x = 0.5f, .y = -0.1f, .z = -0.1f};
+  droneModel->vertices[1] = (vec3){.x = 0.5f, .y = 0.1f, .z = -0.1f};
+  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.1f, .z = 0.1f};
+  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = -0.1f, .z = 0.1f};
+  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.1f, .z = -0.1f};
+  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = 0.1f, .z = -0.1f};
+  droneModel->vertices[6] = (vec3){.x = -0.5f, .y = 0.1f, .z = 0.1f};
+  droneModel->vertices[7] = (vec3){.x = -0.5f, .y = -0.1f, .z = 0.1f};
+  droneModel->vertices[8] = (vec3){.x = 0.2f, .y = -0.3f, .z = -0.05f};
+  droneModel->vertices[9] = (vec3){.x = 0.2f, .y = 0.3f, .z = -0.05f};
+  droneModel->vertices[10] = (vec3){.x = 0.2f, .y = 0.3f, .z = 0.05f};
+  droneModel->vertices[11] = (vec3){.x = 0.2f, .y = -0.3f, .z = 0.05f};
+  droneModel->vertices[12] = (vec3){.x = -0.2f, .y = -0.3f, .z = -0.05f};
+  droneModel->vertices[13] = (vec3){.x = -0.2f, .y = 0.3f, .z = -0.05f};
+  droneModel->vertices[14] = (vec3){.x = -0.2f, .y = 0.3f, .z = 0.05f};
+  droneModel->vertices[15] = (vec3){.x = -0.2f, .y = -0.3f, .z = 0.05f};
   droneModel->indices[0] = 0;
   droneModel->indices[1] = 1;
   droneModel->indices[2] = 1;
@@ -153,6 +161,30 @@ Model *drone_model_create() {
   droneModel->indices[21] = 2;
   droneModel->indices[22] = 7;
   droneModel->indices[23] = 3;
+  droneModel->indices[24] = 8;
+  droneModel->indices[25] = 9;
+  droneModel->indices[26] = 9;
+  droneModel->indices[27] = 10;
+  droneModel->indices[28] = 10;
+  droneModel->indices[29] = 11;
+  droneModel->indices[30] = 11;
+  droneModel->indices[31] = 8;
+  droneModel->indices[32] = 8;
+  droneModel->indices[33] = 12;
+  droneModel->indices[34] = 12;
+  droneModel->indices[35] = 13;
+  droneModel->indices[36] = 13;
+  droneModel->indices[37] = 14;
+  droneModel->indices[38] = 14;
+  droneModel->indices[39] = 15;
+  droneModel->indices[40] = 15;
+  droneModel->indices[41] = 12;
+  droneModel->indices[42] = 13;
+  droneModel->indices[43] = 9;
+  droneModel->indices[44] = 14;
+  droneModel->indices[45] = 10;
+  droneModel->indices[46] = 15;
+  droneModel->indices[47] = 11;
 
   return droneModel;
 }
@@ -167,18 +199,24 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   create_mvp((float)gui->width / 2.0f / gui->height, deg_to_rad(60), 100.0f,
              0.1f, &projection);
 
-  vec3 rotatedPoints[8];
-  vec2 screenPoints[8];
+  vec3 rotatedPoints[16];
+  vec2 screenPoints[16];
 
+  Quaternion iq = (Quaternion){
+      .w = data->sensorState->orientation.w,
+      .v.x = -data->sensorState->orientation.v.x,
+      .v.y = -data->sensorState->orientation.v.y,
+      .v.z = -data->sensorState->orientation.v.z,
+  };
 
-  for (int i = 0; i < 8; i++) {
-    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i],
+  for (int i = 0; i < 16; i++) {
+    rotate_point(&iq, &droneModel->vertices[i],
                  &rotatedPoints[i]);
     translate_point(&projection, &viewPort, &rotatedPoints[i], 20.0f,
                     &screenPoints[i]);
   }
 
-  for (int i = 0; i < 24; i += 2) {
+  for (int i = 0; i < 48; i += 2) {
     int startIndex = droneModel->indices[i];
     int endIndex = droneModel->indices[i + 1];
     line_draw(gui->renderer, screenPoints[startIndex].x,
