@@ -51,18 +51,9 @@ pico read timouts are an issue. The nrf24 read on the pico transceiver times out
 Both pico seem to be stuck on read to make this happen. Need to sync better somehow.
         
 TODO:
-Refactoring done, ground pico_side needs update/init function in communications
-and main.c needs to be main function (2 main funcs rn -> cant build)
+need OpenGL for depth buffering...
 
-need to make Quaternion/vector math more universally accessible and link it to some other projects that need it.
-
-we need 4 floats sent over radio. Buffer is 32 bytes max. maybe f16 is enough but not defined in c.
 make FloatBytes something other than a union. Union is too breakable.
-
-pc ground controller ui
-
-kalman filter sensors
-get sensor data in sensor subproject
 
 Windows compatibility (done?):
     connection.h/.c
