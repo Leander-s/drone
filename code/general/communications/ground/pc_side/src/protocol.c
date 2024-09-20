@@ -124,13 +124,13 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   if (data[0] == 3) {
     // update sensor state
     memcpy(transceiver->sensorState->bytes, data + 1, 8);
-    transceiver->sensorState->orientation.w =
+    transceiver->sensorState->orientation.x =
         (float)((int16_t)((data[2] << 8) | data[1])) / 16384.0f;
-    transceiver->sensorState->orientation.v.x =
+    transceiver->sensorState->orientation.i =
         (float)((int16_t)((data[4] << 8) | data[3])) / 16384.0f;
-    transceiver->sensorState->orientation.v.y =
+    transceiver->sensorState->orientation.j =
         (float)((int16_t)((data[6] << 8) | data[5])) / 16384.0f;
-    transceiver->sensorState->orientation.v.z =
+    transceiver->sensorState->orientation.k =
         (float)((int16_t)((data[8] << 8) | data[7])) / 16384.0f;
   }
 

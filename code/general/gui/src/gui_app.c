@@ -125,16 +125,16 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 
 Model *drone_model_create() {
   Model *droneModel = malloc(sizeof(Model));
-  droneModel->vertices[0] = (vec3){.x = 0.5f, .y = -0.1f, .z = -0.1f};
-  droneModel->vertices[1] = (vec3){.x = 0.5f, .y = 0.1f, .z = -0.1f};
-  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.1f, .z = 0.1f};
-  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = -0.1f, .z = 0.1f};
-  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.1f, .z = -0.1f};
-  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = 0.1f, .z = -0.1f};
-  droneModel->vertices[6] = (vec3){.x = -0.5f, .y = 0.1f, .z = 0.1f};
-  droneModel->vertices[7] = (vec3){.x = -0.5f, .y = -0.1f, .z = 0.1f};
+  droneModel->vertices[0] = (vec3){.x = 0.5f, .y = -0.3f, .z = -0.1f};
+  droneModel->vertices[1] = (vec3){.x = 0.5f, .y = 0.3f, .z = -0.1f};
+  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.3f, .z = 0.1f};
+  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = -0.3f, .z = 0.1f};
+  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.3f, .z = -0.1f};
+  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = 0.3f, .z = -0.1f};
+  droneModel->vertices[6] = (vec3){.x = -0.5f, .y = 0.3f, .z = 0.1f};
+  droneModel->vertices[7] = (vec3){.x = -0.5f, .y = -0.3f, .z = 0.1f};
 
-  /* Rect indices */
+  /* Rect indices 
   droneModel->indices[0] = 0;
   droneModel->indices[1] = 1;
   droneModel->indices[2] = 2;
@@ -164,8 +164,8 @@ Model *drone_model_create() {
   droneModel->indices[21] = 3;
   droneModel->indices[22] = 2;
   droneModel->indices[23] = 6;
+  */
 
-  /* Line indices
   droneModel->indices[0] = 0;
   droneModel->indices[1] = 1;
   droneModel->indices[2] = 1;
@@ -214,7 +214,6 @@ Model *drone_model_create() {
   droneModel->indices[45] = 10;
   droneModel->indices[46] = 15;
   droneModel->indices[47] = 11;
-  */
 
   return droneModel;
 }
@@ -233,19 +232,20 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   vec2 screenPoints[8];
 
   Quaternion iq = (Quaternion){
-      .w = data->sensorState->orientation.w,
-      .v.x = -data->sensorState->orientation.v.x,
-      .v.y = -data->sensorState->orientation.v.y,
-      .v.z = -data->sensorState->orientation.v.z,
+      .x = data->sensorState->orientation.w,
+      .i = -data->sensorState->orientation.v.x,
+      .j = -data->sensorState->orientation.v.y,
+      .k = -data->sensorState->orientation.v.z,
   };
 
   for (int i = 0; i < 8; i++) {
-    rotate_point(&iq, &droneModel->vertices[i], &rotatedPoints[i]);
-    translate_point(&projection, &viewPort, &rotatedPoints[i], 20.0f,
+    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i], &rotatedPoints[i]);
+    translate_point(&projection, &viewPort, &rotatedPoints[i], 30.0f,
                     &screenPoints[i]);
   }
 
 
+  /*
   SDL_Color colors[6];
   colors[0] = RED;
   colors[1] = BLUE;
@@ -280,7 +280,6 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
     }
   }
 
-  /*
   SDL_Vertex test[3];
   test[0] = (SDL_Vertex){
       .position = (SDL_FPoint){.x = 400, .y = 150},
@@ -300,6 +299,7 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   */
 
   /* Drawing lines
+  */
   for (int i = 0; i < 48; i += 2) {
     SDL_Color color = LIGHT_GREY;
     if (droneModel->indices[i] < 4 && droneModel->indices[i + 1] < 4) {
@@ -311,7 +311,6 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
               screenPoints[startIndex].y, screenPoints[endIndex].x,
               screenPoints[endIndex].y, &color);
   }
-  */
 }
 
 void line_draw(SDL_Renderer *renderer, int x, int y, int endX, int endY,

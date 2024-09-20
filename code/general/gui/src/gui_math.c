@@ -21,10 +21,11 @@ void create_mvp(const float aspectRatio, const float fov, const float near,
                 const float far, mat4 *result) {
   mat4 view, projection;
   view = (mat4){
-      .col[0] = (vec4){.x = 0.0f, .y = 0.0f, .z = 1.0f, .w = -0.05f},
-      .col[1] = (vec4){.x = 1.0f, .y = 0.0f, .z = 0.0f, .w = 0.0f},
-      .col[2] = (vec4){.x = 0.0f, .y = 1.0f, .z = 0.0f, .w = 0.0f},
+      .col[0] = (vec4){.x = 0.0f, .y = 0.0f, .z = 1.0f, .w = 0.0f},
+      .col[1] = (vec4){.x = -1.0f, .y = 0.0f, .z = 0.0f, .w = 0.0f},
+      .col[2] = (vec4){.x = 0.0f, .y = -1.0f, .z = 0.0f, .w = 0.0f},
       .col[3] = (vec4){.x = 0.0f, .y = 0.0f, .z = 0.0f, .w = 1.0f},
+
   };
   projection = (mat4){
       .col[0] = (vec4){.x = 1 / (aspectRatio * tan(fov / 2)),
@@ -38,7 +39,7 @@ void create_mvp(const float aspectRatio, const float fov, const float near,
                        .w = -(2 * far * near) / (far - near)},
       .col[3] = (vec4){.x = 0.0f, .y = 0.0f, .z = -1, .w = 0.0f},
   };
-  mult_mat_mat(&projection, &view, result);
+  mult_mat_mat(&view, &projection, result);
 }
 
 void create_view_port(const float width, const float height, const float far,
