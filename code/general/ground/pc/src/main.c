@@ -1,3 +1,4 @@
+#include "connection.h"
 #include <config.h>
 
 int main() {
@@ -6,12 +7,11 @@ int main() {
   DroneControlState controlState;
 
   // Setting up transceiver
-  GroundTransceiverCreateInfo createInfo;
-  // Not sure how to go about this yet
+  GroundTransceiverCreateInfo createInfo; // Not sure how to go about this yet
 #ifdef _WIN32
   createInfo.path_to_port = "COM4";
 #else
-  createInfo.path_to_port = "/dev/ttyACM0";
+  createInfo.path_to_port = find_device_path("Pico");
 #endif
   // Buffer size between pico transceiver and pc. Buffer size for radio
   // transmissions is hardcoded and also capped at 32 atm

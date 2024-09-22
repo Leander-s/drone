@@ -138,6 +138,9 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
 }
 
 void ground_transceiver_destroy(GroundTransceiver *transceiver) {
+  memset(transceiver->sendBuffer, 0, transceiver->bufferSize);
+  transceiver->sendBuffer[36] = 1;
+  ground_transceiver_send(transceiver);
   free(transceiver->sendBuffer);
   free(transceiver->recvBuffer);
   free(transceiver);

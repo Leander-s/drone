@@ -16,7 +16,7 @@ typedef struct {
 } GroundTransceiver;
 
 typedef struct {
-  char *path_to_port;
+  const char *path_to_port;
   uint32_t bufferSize;
   DroneControlState* controlState;
   DroneSensorState* sensorState;

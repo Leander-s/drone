@@ -51,7 +51,7 @@ pico read timouts are an issue. The nrf24 read on the pico transceiver times out
 Both pico seem to be stuck on read to make this happen. Need to sync better somehow.
         
 TODO:
-need OpenGL for depth buffering...
+windows : add handshake for transceiver to identify correct device
 
 make FloatBytes something other than a union. Union is too breakable.
 
