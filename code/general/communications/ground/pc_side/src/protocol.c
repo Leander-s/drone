@@ -1,3 +1,4 @@
+#include "diagnostics.h"
 #include "general_math.h"
 #include <protocol.h>
 
@@ -132,6 +133,13 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
         (float)((int16_t)((data[6] << 8) | data[5])) / 16384.0f;
     transceiver->sensorState->orientation.k =
         (float)((int16_t)((data[8] << 8) | data[7])) / 16384.0f;
+
+    /*
+    // print free memory
+    IntBytes freeMem;
+    memcpy(data + 9, freeMem.bytes, 4);
+    printf("Free memory on pico : %d\n", freeMem.i);
+    */
   }
 
   return 0;

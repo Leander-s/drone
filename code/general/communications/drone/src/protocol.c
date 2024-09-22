@@ -1,3 +1,4 @@
+#include "diagnostics.h"
 #include <pico/time.h>
 #include <protocol.h>
 #include <protocol_util.h>
@@ -84,10 +85,32 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
   // flush writeBuffer
   drone_flush_tx(transceiver);
   uint8_t *return_message = transceiver->sendBuffer;
+  int offset = 0;
 
   // Sending back sensorState
   return_message[0] = 3;
+  offset++;
+
   memcpy(return_message + 1, transceiver->sensorState->bytes, 8);
+  offset += 8;
+
+  // Sending free memory
+  /*
+  // finding free memory
+  int blockSize = 32;
+  int allocSize = blockSize;
+  uint8_t *ptr = malloc(allocSize);
+  while(ptr != NULL){
+  free(ptr);
+  allocSize += blockSize;
+  ptr = malloc(allocSize);
+  }
+  free(ptr);
+  IntBytes freeMem;
+  freeMem.i = allocSize - blockSize;
+  memcpy(return_message + offset, freeMem.bytes, 4),
+  offset += 4;
+  */
 
   encode_buffer(return_message, 32);
 }
