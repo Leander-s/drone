@@ -40,18 +40,54 @@ DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
 
 void drone_protocol_run(DroneTransceiver *transceiver) {
   while (1) {
+    drone_protocol_prepare_data(transceiver);
     drone_read(transceiver);
-    drone_protocol_handle_message(transceiver);
-    // wait for ground to be ready
     drone_send(transceiver);
+    drone_protocol_handle_message(transceiver);
   }
   drone_protocol_terminate(transceiver);
 }
 
 void drone_protocol_update(DroneTransceiver *transceiver) {
-  drone_read(transceiver);
-  drone_protocol_handle_message(transceiver);
-  drone_send(transceiver);
+  drone_protocol_prepare_data(transceiver);
+  int readBytes = drone_read(transceiver);
+  int sentBytes = drone_send(transceiver);
+  if (readBytes > 0) {
+    drone_protocol_handle_message(transceiver);
+  }
+}
+
+void drone_protocol_prepare_data(DroneTransceiver *transceiver) {
+  // flush writeBuffer
+  drone_flush_tx(transceiver);
+  uint8_t *message = transceiver->sendBuffer;
+  int offset = 0;
+
+  // Sending back sensorState
+  message[0] = 3;
+  offset++;
+
+  memcpy(message + 1, transceiver->sensorState->bytes, 8);
+  offset += 8;
+
+  // Sending free memory
+  /*
+  // finding free memory
+  int blockSize = 4096;
+  int allocSize = blockSize;
+  uint8_t *ptr = malloc(allocSize);
+  while (ptr != NULL) {
+    free(ptr);
+    allocSize += blockSize;
+    ptr = malloc(allocSize);
+  }
+  free(ptr);
+  IntBytes freeMem;
+  freeMem.i = allocSize - blockSize;
+  memcpy(return_message + offset, freeMem.bytes, 4), offset += 4;
+  */
+
+  encode_buffer(message, 32);
 }
 
 // Set actions depending on received message
@@ -81,38 +117,6 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
 
   // flush readBuffer
   drone_flush_rx(transceiver);
-
-  // flush writeBuffer
-  drone_flush_tx(transceiver);
-  uint8_t *return_message = transceiver->sendBuffer;
-  int offset = 0;
-
-  // Sending back sensorState
-  return_message[0] = 3;
-  offset++;
-
-  memcpy(return_message + 1, transceiver->sensorState->bytes, 8);
-  offset += 8;
-
-  // Sending free memory
-  /*
-  // finding free memory
-  int blockSize = 32;
-  int allocSize = blockSize;
-  uint8_t *ptr = malloc(allocSize);
-  while(ptr != NULL){
-  free(ptr);
-  allocSize += blockSize;
-  ptr = malloc(allocSize);
-  }
-  free(ptr);
-  IntBytes freeMem;
-  freeMem.i = allocSize - blockSize;
-  memcpy(return_message + offset, freeMem.bytes, 4),
-  offset += 4;
-  */
-
-  encode_buffer(return_message, 32);
 }
 
 void drone_protocol_terminate(DroneTransceiver *transceiver) {
@@ -127,7 +131,7 @@ int drone_send(DroneTransceiver *transceiver) {
 
 int drone_read(DroneTransceiver *transceiver) {
   return transceiver->recv(transceiver->readBuffer, transceiver->bufferSize,
-                           -1);
+                           RADIO_READ_TIMEOUT);
 }
 
 void drone_flush_rx(DroneTransceiver *transceiver) {

@@ -5,7 +5,7 @@
 #include <pico/time.h>
 #include <protocol_util.h>
 
-#define READ_TIMEOUT_US 10000
+#define READ_TIMEOUT 100000
 
 typedef struct{
     uint8_t fromPC[64];

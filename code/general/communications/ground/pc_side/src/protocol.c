@@ -109,7 +109,7 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
 
   if (data[0] == 0) {
-    printf("No data\n");
+    // no data, probably read timout
     return 0;
   }
 
@@ -134,8 +134,8 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
     transceiver->sensorState->orientation.k =
         (float)((int16_t)((data[8] << 8) | data[7])) / 16384.0f;
 
-    /*
     // print free memory
+    /*
     IntBytes freeMem;
     memcpy(data + 9, freeMem.bytes, 4);
     printf("Free memory on pico : %d\n", freeMem.i);

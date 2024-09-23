@@ -34,6 +34,7 @@ void pico_transceiver_update(PicoTransceiver *trans) {
   int result;
   uint64_t start_time = time_us_64();
   result = pico_read(trans->fromPC, 64);
+  tud_cdc_read_flush();
   if (result < 0) {
     trans->log.usbDisconnects.i++;
     busy_wait_for_connect();
@@ -49,7 +50,7 @@ void pico_transceiver_update(PicoTransceiver *trans) {
   }
   encode_buffer(trans->fromPC, 32);
   int bytesSent = nrf24_send(trans->fromPC, 32);
-  int bytesReceived = nrf24_read(trans->toPC, 32, READ_TIMEOUT_US);
+  int bytesReceived = nrf24_read(trans->toPC, 32, READ_TIMEOUT);
   if (bytesReceived == 0) {
     trans->log.readTimeouts.i++;
   }
