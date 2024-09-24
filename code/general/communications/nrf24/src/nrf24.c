@@ -98,11 +98,13 @@ int nrf24_send(uint8_t *data, uint32_t len) {
   sleep_us(1000);
   gpio_put(LED_PIN, 0);
 
+  set_mode(RX_MODE);
+  gpio_put(PIN_CE, 1);
+
   return bytesWritten;
 }
 
 int nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
-  nrf24_flush_rx();
   set_mode(RX_MODE);
 
   gpio_put(PIN_CE, 1);
@@ -135,11 +137,14 @@ int nrf24_read(uint8_t *data, uint32_t len, int timeout_us) {
   gpio_put(PIN_CS, 1);
   sleep_us(10);
 
-  // nrf24_flush_rx();
-
   nrf24_write_register(STATUS, 0x70);
 
   gpio_put(LED_PIN, 0);
+
+  nrf24_flush_rx();
+
+  gpio_put(PIN_CE, 1);
+
   return bytesRead;
 }
 
