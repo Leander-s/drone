@@ -7,20 +7,18 @@ project(drone_sensors C CXX ASM)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 pico_sdk_init()
 
-set(COMMUNICATIONS_HEADERS
-    ../debugging_util/debugging_config.h
-    ../debugging_util/debugging_util.h
-    ../debugging_util/diagnostics.h
-    ../math/general_math.h
-    include/config.h
-    include/sensors.h
-    include/imu.h
+set(INCLUDE_DIRS
+    ../debugging_util/include
+    ../diagnostics/include
+    ../math/include
+    ../state/include
+    include/
 )
 
 set(COMMUNICATIONS_SOURCES
-    ../debugging_util/debugging_util.c
-    ../debugging_util/diagnostics.c
-    ../math/general_math.c
+    ../debugging_util/src/debugging_util.c
+    ../diagnostics/src/diagnostics.c
+    ../math/src/general_math.c
     src/sensors.c
     src/imu.c
 )
@@ -49,5 +47,5 @@ target_link_libraries("drone_sensors_test" pico_stdlib hardware_pio hardware_uar
 add_library("drone_sensors" ${COMMUNICATIONS_SOURCES} ${COMMUNICATIONS_HEADERS})
 pico_enable_stdio_usb("drone_sensors" 1)
 
-target_include_directories("drone_sensors" PRIVATE  "./include" "../math/" "../state/"  "../debugging_util/" "../../pico/pico-sdk/src/rp2_common/hardware_i2c/include/")
+target_include_directories("drone_sensors" PRIVATE ${INCLUDE_DIRS} "../../pico/pico-sdk/src/rp2_common/hardware_i2c/include/")
 target_link_libraries("drone_sensors" pico_stdlib hardware_pio hardware_uart hardware_i2c m)

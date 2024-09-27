@@ -1,9 +1,9 @@
 #include <sensors.h>
 
-void init_sensors(Sensor *sensor){
-    imu_init(sensor->logs);
+void sensor_init(DroneSensor *sensor){
+    imu_init(sensor->log);
 }
 
-void update_sensors(Sensor *sensor){
-    imu_read(sensor->state->orientation);
+void sensor_update(DroneSensor *sensor){
+    imu_read(sensor->state);
 }

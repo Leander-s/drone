@@ -1,10 +1,9 @@
 #pragma once
-#include "gui_config.h"
-#include "gui_math.h"
+#include <gui_config.h>
 
 typedef struct {
   PCSystemLog *log;
-  Model *droneModel;
+  DroneSensorState *sensorState;
 } GUIData;
 
 typedef struct {
@@ -13,6 +12,7 @@ typedef struct {
   int width;
   int height;
   int shouldQuit;
+  Model *droneModel;
 } GUI;
 
 GUI *gui_create(int width, int height);
@@ -20,7 +20,7 @@ void gui_update(GUI *gui, const GUIData *data);
 void gui_destroy(GUI *gui);
 
 Model *drone_model_create();
-void drone_model_destroy(Model* droneModel);
+void drone_model_destroy(Model *droneModel);
 
 void data_sheet_draw(GUI *gui, const GUIData *data);
 void drone_model_draw(GUI *gui, const GUIData *data);

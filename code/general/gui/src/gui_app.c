@@ -1,5 +1,10 @@
-#include <gui_app.h>
+#include "SDL3/SDL_error.h"
+#include "SDL3/SDL_pixels.h"
+#include "SDL3/SDL_rect.h"
+#include "SDL3/SDL_render.h"
+#include "general_math.h"
 #include <colors.h>
+#include <gui_app.h>
 
 GUI *gui_create(int width, int height) {
   int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
@@ -18,9 +23,13 @@ GUI *gui_create(int width, int height) {
   gui->width = width;
   gui->height = height;
   gui->shouldQuit = 0;
+  printf("Creating model\n");
+  gui->droneModel = drone_model_create();
+  printf("Model created\n");
   result = SDL_CreateWindowAndRenderer("Drone Controller", width, height,
                                        SDL_WINDOW_RESIZABLE, &gui->window,
                                        &gui->renderer);
+  printf("Window and renderer created\n");
   if (result != 0) {
     SDL_Log("Creating window and renderer failed : %s\n", SDL_GetError());
     return NULL;
@@ -54,6 +63,7 @@ void gui_update(GUI *gui, const GUIData *data) {
 }
 
 void gui_destroy(GUI *gui) {
+  drone_model_destroy(gui->droneModel);
   SDL_DestroyRenderer(gui->renderer);
   SDL_DestroyWindow(gui->window);
   SDL_Quit();
@@ -113,16 +123,49 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
   yOffset += padding;
 }
 
-Model *drone_model_create(){
+Model *drone_model_create() {
   Model *droneModel = malloc(sizeof(Model));
-  droneModel->vertices[0] = (vec3){.x = -0.5f, .y = 0.5f, .z = -0.5f};
-  droneModel->vertices[1] = (vec3){.x = -0.5f, .y = 0.5f, .z = 0.5f};
-  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.5f, .z = 0.5f};
-  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = 0.5f, .z = -0.5f};
-  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.5f, .z = -0.5f};
-  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = -0.5f, .z = 0.5f};
-  droneModel->vertices[6] = (vec3){.x = 0.5f, .y = -0.5f, .z = 0.5f};
-  droneModel->vertices[7] = (vec3){.x = 0.5f, .y = -0.5f, .z = -0.5f};
+  droneModel->vertices[0] = (vec3){.x = 0.5f, .y = -0.3f, .z = -0.1f};
+  droneModel->vertices[1] = (vec3){.x = 0.5f, .y = 0.3f, .z = -0.1f};
+  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.3f, .z = 0.1f};
+  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = -0.3f, .z = 0.1f};
+  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.3f, .z = -0.1f};
+  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = 0.3f, .z = -0.1f};
+  droneModel->vertices[6] = (vec3){.x = -0.5f, .y = 0.3f, .z = 0.1f};
+  droneModel->vertices[7] = (vec3){.x = -0.5f, .y = -0.3f, .z = 0.1f};
+
+  /* Rect indices 
+  droneModel->indices[0] = 0;
+  droneModel->indices[1] = 1;
+  droneModel->indices[2] = 2;
+  droneModel->indices[3] = 3;
+
+  droneModel->indices[4] = 4;
+  droneModel->indices[5] = 5;
+  droneModel->indices[6] = 6;
+  droneModel->indices[7] = 7;
+
+  droneModel->indices[8] = 4;
+  droneModel->indices[9] = 0;
+  droneModel->indices[10] = 3;
+  droneModel->indices[11] = 7;
+
+  droneModel->indices[12] = 5;
+  droneModel->indices[13] = 1;
+  droneModel->indices[14] = 2;
+  droneModel->indices[15] = 6;
+
+  droneModel->indices[16] = 4;
+  droneModel->indices[17] = 0;
+  droneModel->indices[18] = 1;
+  droneModel->indices[19] = 5;
+
+  droneModel->indices[20] = 7;
+  droneModel->indices[21] = 3;
+  droneModel->indices[22] = 2;
+  droneModel->indices[23] = 6;
+  */
+
   droneModel->indices[0] = 0;
   droneModel->indices[1] = 1;
   droneModel->indices[2] = 1;
@@ -147,34 +190,126 @@ Model *drone_model_create(){
   droneModel->indices[21] = 2;
   droneModel->indices[22] = 7;
   droneModel->indices[23] = 3;
+  droneModel->indices[24] = 8;
+  droneModel->indices[25] = 9;
+  droneModel->indices[26] = 9;
+  droneModel->indices[27] = 10;
+  droneModel->indices[28] = 10;
+  droneModel->indices[29] = 11;
+  droneModel->indices[30] = 11;
+  droneModel->indices[31] = 8;
+  droneModel->indices[32] = 8;
+  droneModel->indices[33] = 12;
+  droneModel->indices[34] = 12;
+  droneModel->indices[35] = 13;
+  droneModel->indices[36] = 13;
+  droneModel->indices[37] = 14;
+  droneModel->indices[38] = 14;
+  droneModel->indices[39] = 15;
+  droneModel->indices[40] = 15;
+  droneModel->indices[41] = 12;
+  droneModel->indices[42] = 13;
+  droneModel->indices[43] = 9;
+  droneModel->indices[44] = 14;
+  droneModel->indices[45] = 10;
+  droneModel->indices[46] = 15;
+  droneModel->indices[47] = 11;
 
   return droneModel;
 }
 
-void drone_model_destroy(Model *droneModel){
-    free(droneModel);
-}
+void drone_model_destroy(Model *droneModel) { free(droneModel); }
 
 void drone_model_draw(GUI *gui, const GUIData *data) {
-  Model *droneModel = data->droneModel;
+  Model *droneModel = gui->droneModel;
 
   mat4 projection, viewPort;
-  create_view_port(gui->width/2.0f, gui->height, 100.0f, 0.1f, &viewPort);
-  create_mvp((float)gui->width/2.0f / gui->height,  deg_to_rad(60), 100.0f, 0.1f,
-             &projection);
+  create_view_port(gui->width / 2.0f, gui->height, 100.0f, 0.1f, &viewPort);
+  create_mvp((float)gui->width / 2.0f / gui->height, deg_to_rad(60), 100.0f,
+             0.1f, &projection);
 
+  vec3 rotatedPoints[8];
   vec2 screenPoints[8];
 
+  Quaternion iq = (Quaternion){
+      .x = data->sensorState->orientation.w,
+      .i = -data->sensorState->orientation.v.x,
+      .j = -data->sensorState->orientation.v.y,
+      .k = -data->sensorState->orientation.v.z,
+  };
+
   for (int i = 0; i < 8; i++) {
-        translate_point(&projection, &viewPort, &droneModel->vertices[i], 20.0f, &screenPoints[i]);
+    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i], &rotatedPoints[i]);
+    translate_point(&projection, &viewPort, &rotatedPoints[i], 30.0f,
+                    &screenPoints[i]);
   }
 
-  for (int i = 0; i < 24; i += 2) {
+
+  /*
+  SDL_Color colors[6];
+  colors[0] = RED;
+  colors[1] = BLUE;
+  colors[2] = GREEN;
+  colors[3] = LIGHT_GREY;
+  colors[4] = WHITE;
+  colors[5] = GREY;
+
+  for (int i = 0; i < 24; i += 4) {
+    SDL_Vertex verts[4];
+    int indices[6];
+    indices[0] = 2;
+    indices[1] = 1;
+    indices[2] = 0;
+    indices[3] = 3;
+    indices[4] = 2;
+    indices[5] = 0;
+    SDL_Color color = colors[i / 4];
+    for (int j = 0; j < 4; j++) {
+      verts[j] = (SDL_Vertex){
+          .position =
+              (SDL_FPoint){.x = screenPoints[droneModel->indices[i + j]].x,
+                           .y = screenPoints[droneModel->indices[i + j]].y},
+          .color = (SDL_FColor){.r = (float)color.r / 255,
+                                .g = (float)color.g / 255,
+                                .b = (float)color.b / 255,
+                                .a = 1.0},
+      };
+    }
+    if (!SDL_RenderGeometry(gui->renderer, NULL, verts, 4, indices, 6)) {
+      printf("Error on rendering : %s\n", SDL_GetError());
+    }
+  }
+
+  SDL_Vertex test[3];
+  test[0] = (SDL_Vertex){
+      .position = (SDL_FPoint){.x = 400, .y = 150},
+      .color = (SDL_FColor){.r = 1.0, .g = 0.0, .b = 0.0, .a = 1.0},
+  };
+  test[1] = (SDL_Vertex){
+      .position = (SDL_FPoint){.x = 200, .y = 450},
+      .color = (SDL_FColor){.r = 0.0, .g = 1.0, .b = 0.0, .a = 1.0},
+  };
+  test[2] = (SDL_Vertex){
+      .position = (SDL_FPoint){.x = 600, .y = 450},
+      .color = (SDL_FColor){.r = 0.0, .g = 0.0, .b = 1.0, .a = 1.0},
+  };
+  if (!SDL_RenderGeometry(gui->renderer, NULL, test, 3, NULL, 0)) {
+    printf("Error on test rendering : %s\n", SDL_GetError());
+  }
+  */
+
+  /* Drawing lines
+  */
+  for (int i = 0; i < 48; i += 2) {
+    SDL_Color color = LIGHT_GREY;
+    if (droneModel->indices[i] < 4 && droneModel->indices[i + 1] < 4) {
+      color = RED;
+    }
     int startIndex = droneModel->indices[i];
     int endIndex = droneModel->indices[i + 1];
     line_draw(gui->renderer, screenPoints[startIndex].x,
               screenPoints[startIndex].y, screenPoints[endIndex].x,
-              screenPoints[endIndex].y, &LIGHT_GREY);
+              screenPoints[endIndex].y, &color);
   }
 }
 

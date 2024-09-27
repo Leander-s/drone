@@ -52,6 +52,7 @@ void vec3_cross(const vec3 *vec1, const vec3 *vec2, vec3 *dstVec) {
 
 void mult_quat_quat(const Quaternion *quat1, const Quaternion *quat2,
                     Quaternion *result) {
+    /*
   vec3 axisPart1;
   mult_vec3_scalar(&quat1->v, quat2->w, &axisPart1);
   vec3 axisPart2;
@@ -65,6 +66,12 @@ void mult_quat_quat(const Quaternion *quat1, const Quaternion *quat2,
   float newW = quat1->w * quat2->w - vec3_dot(&quat2->v, &quat1->v);
   result->v = newV;
   result->w = newW;
+  */
+
+  result->x = quat1->x * quat2->x - quat1->i * quat2->i - quat1->j * quat2->j - quat1->k * quat2->k;
+  result->i = quat1->x * quat2->i + quat1->i * quat2->x + quat1->j * quat2->k - quat1->k * quat2->j;
+  result->j = quat1->x * quat2->j - quat1->i * quat2->k + quat1->j * quat2->x + quat1->k * quat2->i;
+  result->k = quat1->x * quat2->k + quat1->i * quat2->j - quat1->j * quat2->i + quat1->k * quat2->x;
   quaternion_normalize(result);
 }
 

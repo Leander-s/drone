@@ -10,3 +10,5 @@
 
 // mine
 #include <diagnostics.h>
+#include <drone_states.h>
+#include <gui_math.h>

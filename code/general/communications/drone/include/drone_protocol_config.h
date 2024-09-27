@@ -1,11 +1,13 @@
-#include "class/cdc/cdc_device.h"
+#include <class/cdc/cdc_device.h>
 #include <debugging_util.h>
-#include <protocol_util.h>
+#include <diagnostics.h>
+#include <drone_states.h>
 #include <pico/stdio_usb.h>
 #include <pico/time.h>
+#include <protocol_util.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifdef NDEBUG

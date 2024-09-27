@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <unistd.h>
+#include <libudev.h>
 #endif
 
 #include <stdio.h>

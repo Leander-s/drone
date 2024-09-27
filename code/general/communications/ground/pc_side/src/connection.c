@@ -1,75 +1,156 @@
 #include <connection.h>
+#include <libudev.h>
+#include <termios.h>
 
 #ifdef _WIN32
-HANDLE initConnection(const char* path){
-    HANDLE hComm = CreateFile(path,                // Port name
-        GENERIC_READ | GENERIC_WRITE, // Read/Write
-        0,                            // No sharing
-        NULL,                         // No security
-        OPEN_EXISTING,                // Open existing port only
-        0,                            // Non-overlapped I/O
-        NULL);                        // Null for Comm devices
+HANDLE initConnection(const char *path) {
+  HANDLE hComm = CreateFile(path,                         // Port name
+                            GENERIC_READ | GENERIC_WRITE, // Read/Write
+                            0,                            // No sharing
+                            NULL,                         // No security
+                            OPEN_EXISTING, // Open existing port only
+                            0,             // Non-overlapped I/O
+                            NULL);         // Null for Comm devices
 
-    if (hComm == INVALID_HANDLE_VALUE) {
-        perror("Error opening COM port");
-        return NULL;
-    }
+  if (hComm == INVALID_HANDLE_VALUE) {
+    perror("Error opening COM port");
+    return NULL;
+  }
 
-    // Set COM port parameters
-    DCB dcbSerialParams = { 0 };
-    dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+  // Set COM port parameters
+  DCB dcbSerialParams = {0};
+  dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
 
-    if (!GetCommState(hComm, &dcbSerialParams)) {
-        perror("Error getting COM port state");
-        CloseHandle(hComm);
-        return NULL;
-    }
+  if (!GetCommState(hComm, &dcbSerialParams)) {
+    perror("Error getting COM port state");
+    CloseHandle(hComm);
+    return NULL;
+  }
 
-    dcbSerialParams.BaudRate = CBR_115200;  // Baud rate
-    dcbSerialParams.ByteSize = 8;         // Byte size
-    dcbSerialParams.StopBits = ONESTOPBIT;// Stop bits
-    dcbSerialParams.Parity = NOPARITY;    // Parity
+  dcbSerialParams.BaudRate = CBR_115200; // Baud rate
+  dcbSerialParams.ByteSize = 8;          // Byte size
+  dcbSerialParams.StopBits = ONESTOPBIT; // Stop bits
+  dcbSerialParams.Parity = NOPARITY;     // Parity
 
-    if (!SetCommState(hComm, &dcbSerialParams)) {
-        perror("Error setting COM port state");
-        CloseHandle(hComm);
-        return NULL;
-    }
+  if (!SetCommState(hComm, &dcbSerialParams)) {
+    perror("Error setting COM port state");
+    CloseHandle(hComm);
+    return NULL;
+  }
 
-    // Set COM port timeouts
-    COMMTIMEOUTS timeouts = { 0 };
-    timeouts.ReadIntervalTimeout = 50;
-    timeouts.ReadTotalTimeoutConstant = 50;
-    timeouts.ReadTotalTimeoutMultiplier = 10;
+  // Set COM port timeouts
+  COMMTIMEOUTS timeouts = {0};
+  timeouts.ReadIntervalTimeout = 50;
+  timeouts.ReadTotalTimeoutConstant = 50;
+  timeouts.ReadTotalTimeoutMultiplier = 10;
 
-    if (!SetCommTimeouts(hComm, &timeouts)) {
-        perror("Error setting COM port timeouts");
-        CloseHandle(hComm);
-        return NULL;
-    }
-    return hComm;
+  if (!SetCommTimeouts(hComm, &timeouts)) {
+    perror("Error setting COM port timeouts");
+    CloseHandle(hComm);
+    return NULL;
+  }
+  return hComm;
 }
 
-int writePort(HANDLE port, uint8_t* buffer, unsigned long toWrite){
-    unsigned long amount;
-    if(!WriteFile(port, buffer, toWrite, &amount, NULL)){
-        return -1;
-    }
-    return (int)amount;
+int writePort(HANDLE port, uint8_t *buffer, unsigned long toWrite) {
+  unsigned long amount;
+  if (!WriteFile(port, buffer, toWrite, &amount, NULL)) {
+    return -1;
+  }
+  return (int)amount;
 }
 
-int readPort(HANDLE port, uint8_t* buffer, unsigned long toRead){
-    unsigned long amount;
-    if(!ReadFile(port, buffer, toRead, &amount, NULL)){
-        return -1;
-    }
-    return (int)amount;
+int readPort(HANDLE port, uint8_t *buffer, unsigned long toRead) {
+  unsigned long amount;
+  if (!ReadFile(port, buffer, toRead, &amount, NULL)) {
+    return -1;
+  }
+  return (int)amount;
 }
 #else
+const char *find_device_path(const char *name) {
+  struct udev *udev;
+  struct udev_enumerate *enumerate;
+  struct udev_list_entry *devices, *dev_list_entry;
+  struct udev_device *dev;
+  const char *value = NULL;
+
+  udev = udev_new();
+  if (!udev) {
+    fprintf(stderr, "Cannot create udev object\n");
+    udev_unref(udev);
+    return NULL;
+  }
+
+  enumerate = udev_enumerate_new(udev);
+  udev_enumerate_add_match_subsystem(enumerate, "tty");
+  udev_enumerate_scan_devices(enumerate);
+
+  devices = udev_enumerate_get_list_entry(enumerate);
+
+  udev_list_entry_foreach(dev_list_entry, devices) {
+    const char *path;
+    path = udev_list_entry_get_name(dev_list_entry);
+    dev = udev_device_new_from_syspath(udev, path);
+    struct udev_device *parent_dev =
+        udev_device_get_parent_with_subsystem_devtype(dev, "usb", "usb_device");
+
+    if (parent_dev) {
+      const char *device = udev_device_get_sysattr_value(parent_dev, "product");
+      if (device && strcmp(device, name) == 0) {
+        value = udev_device_get_devnode(dev);
+        if (value) {
+          int port = initConnection(value);
+
+          // Do a handshake
+          char handshake[10];
+          char response[33];
+          memset(response, 0, 33);
+          memset(handshake, 4, 10);
+          handshake[9] = 0;
+          writePort(port, (uint8_t *)handshake, 10);
+
+          // read response
+          int offset = 0;
+          while (offset < 33) {
+            int read = readPort(port, response + offset, 33);
+            if (read < 0) {
+              printf("Error reading from %s\n", value);
+              break;
+            }
+            if(read == 0){
+                break;
+            }
+            offset += read;
+          }
+          if(offset == 0){
+              continue;
+          }
+
+          // check response
+          if (strcmp(response + 1, "Pico connected") == 0) {
+            printf("Found device: %s -> %s\n", name, value);
+            break;
+          }
+
+          // close wrong port
+          close(port);
+        }
+      }
+    }
+    udev_device_unref(dev);
+  }
+
+  udev_enumerate_unref(enumerate);
+  udev_unref(udev);
+
+  return value;
+}
+
 int initConnection(const char *path) {
   int port = open(path, O_RDWR);
   if (port < 0) {
-    printf("Error while connecting: %s\n", strerror(errno));
+    printf("Error while connecting to %s : %s\n", path, strerror(errno));
     return 0;
   }
   printf("Connected successfully\n");
@@ -108,11 +189,11 @@ int initConnection(const char *path) {
   return port;
 }
 
-int writePort(int port, uint8_t* buffer, int amount){
-    return write(port, buffer, amount);
+int writePort(int port, uint8_t *buffer, int amount) {
+  return write(port, (void *)buffer, amount);
 }
 
-int readPort(int port, uint8_t* buffer, int amount){
-    return read(port, buffer, amount);
+int readPort(int port, uint8_t *buffer, int amount) {
+  return read(port, (void *)buffer, amount);
 }
 #endif
