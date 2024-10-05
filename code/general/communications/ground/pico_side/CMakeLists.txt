@@ -7,29 +7,29 @@ project(ground_protocol_pico C CXX ASM)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(PICO_HEADERS
-    ../../../debugging_util/debugging_config.h
-    ../../../debugging_util/debugging_util.h
-    ../../../debugging_util/diagnostics.h
-    ../../nrf24/nrf24_config.h
-    ../../nrf24/nrf24.h
-    ../../protocol_util/protocol_util.h
+    ./include
+    ../../../debugging_util/include/
+    ../../../diagnostics/include/
+    ../../nrf24/include/
+    ../../protocol_util/include/
 )
 
 set(PICO_SOURCES
-    ../../../debugging_util/debugging_util.c
-    ../../../debugging_util/diagnostics.c
-    ../../nrf24/nrf24.c
-    ../../protocol_util/protocol_util.c
+    ../../../debugging_util/src/debugging_util.c
+    ../../../diagnostics/src/diagnostics.c
+    ../../nrf24/src/nrf24.c
+    ../../protocol_util/src/protocol_util.c
     src/pico_transceiver.c
+    test/main.c
 )
 
 pico_sdk_init()
 
-add_executable(${PROJECT_NAME} ${PICO_SOURCES} ${PICO_HEADERS})
+add_executable(${PROJECT_NAME} ${PICO_SOURCES})
 
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
 
 pico_add_extra_outputs(${PROJECT_NAME})
 
-target_include_directories(${PROJECT_NAME} PRIVATE "../../pico/pico-sdk/src/rp2_common/hardware_spi/include" "../../nrf24" "../../../debugging_util" "../../protocol_util")
+target_include_directories(${PROJECT_NAME} PRIVATE ${PICO_HEADERS} "../../pico/pico-sdk/src/rp2_common/hardware_spi/include")
 target_link_libraries(${PROJECT_NAME} pico_stdlib hardware_spi hardware_pio hardware_uart)

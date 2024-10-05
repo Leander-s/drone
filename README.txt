@@ -51,14 +51,9 @@ pico read timouts are an issue. The nrf24 read on the pico transceiver times out
 Both pico seem to be stuck on read to make this happen. Need to sync better somehow.
         
 TODO:
+transmissions per second needs to be averaged and updated every second or something so its actually readable
 
-we need 4 floats sent over radio. Buffer is 32 bytes max. maybe f16 is enough but not defined in c.
 make FloatBytes something other than a union. Union is too breakable.
-
-pc ground controller ui
-
-kalman filter sensors
-get sensor data in sensor subproject
 
 Windows compatibility (done?):
     connection.h/.c
