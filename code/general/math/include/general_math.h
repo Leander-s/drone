@@ -26,7 +26,7 @@ typedef union {
   float data[4];
 } Quaternion;
 
-void quaternion_set(Quaternion* result, const vec3 *axis, const float degrees);
+void quaternion_set(Quaternion *result, const vec3 *axis, const float degrees);
 
 float quaternion_magnitude(const Quaternion *quat);
 
@@ -35,6 +35,10 @@ void quaternion_normalize(Quaternion *quat);
 float deg_to_rad(float deg);
 
 float rad_to_deg(float rad);
+
+int clamp_int(int x, int A, int B);
+
+float clamp_float(float x, float A, float B);
 
 void mult_vec3_scalar(const vec3 *vec, const float x, vec3 *dstVec);
 

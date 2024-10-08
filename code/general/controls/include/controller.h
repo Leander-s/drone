@@ -1,6 +1,7 @@
 #include "controller_config.h"
 #include "controls_math.h"
 
+#define THROTTLE_MOTOR_N 1
 #define PITCH_SERVO_N 1
 #define YAW_SERVO_N 1
 #define ROLL_SERVO_N 1
@@ -9,6 +10,21 @@ typedef enum {
     Manual,
     Auto
 } ControlMode;
+
+typedef struct {
+    Quaternion *current;
+
+    int pitchServoIDs[PITCH_SERVO_N];
+    int yawServoIDs[YAW_SERVO_N];
+    int rollServoIDs[ROLL_SERVO_N];
+
+    int throttleMotorIDs[THROTTLE_MOTOR_N];
+
+    void (*servo_init)(int id);
+    void (*servo_turn)(int id, int turn);
+    void (*motor_init)(int id);
+    void (*set_throttle)(int gp, float throttle);
+} ControllerCreateInfo;
 
 typedef struct {
     // target/current Quaternion are for autopilot
@@ -22,21 +38,23 @@ typedef struct {
 
     // Not sure how many servos for what
     // Not sure how the wings will look
-    int pitchServoIDs[1];
-    int yawServoIDs[1];
-    int rollServoIDs[1];
+    int pitchServoIDs[PITCH_SERVO_N] ;
+    int yawServoIDs[YAW_SERVO_N];
+    int rollServoIDs[ROLL_SERVO_N];
 
-    int throttleMotorID;
+    int throttleMotorIDs[THROTTLE_MOTOR_N];
 
     // function pointer to the function to turn a servo by an amount/with
     // a turn speed
+    void (*servo_init)(int id);
     void (*servo_turn)(int id, int turn);
+    void (*motor_init)(int id);
     void (*set_throttle)(int gp, float throttle);
 
     ControlMode mode;
 } Controller;
 
-Controller* controller_create();
+Controller* controller_create(ControllerCreateInfo* createInfo);
 
 // In case we use multithreading
 void controller_run();

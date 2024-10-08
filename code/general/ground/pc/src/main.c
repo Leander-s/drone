@@ -9,7 +9,7 @@ int main() {
   // Setting up transceiver
   GroundTransceiverCreateInfo createInfo; // Not sure how to go about this yet
 #ifdef _WIN32
-  createInfo.path_to_port = "COM4";
+  createInfo.path_to_port = find_device_path("Pico");
 #else
   createInfo.path_to_port = find_device_path("Pico");
 #endif
@@ -27,6 +27,7 @@ int main() {
   GUIData guiData;
   guiData.log = &link->log;
   guiData.sensorState = &sensorData;
+  guiData.controlState = &controlState;
 
   GUI *gui = gui_create(800, 600);
 

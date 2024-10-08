@@ -1,4 +1,6 @@
 #include "SDL3/SDL_error.h"
+#include "SDL3/SDL_events.h"
+#include "SDL3/SDL_keycode.h"
 #include "SDL3/SDL_pixels.h"
 #include "SDL3/SDL_rect.h"
 #include "SDL3/SDL_render.h"
@@ -35,6 +37,8 @@ GUI *gui_create(int width, int height) {
     return NULL;
   }
 
+  gui->updateCounter = 0;
+
   return gui;
 }
 
@@ -51,15 +55,30 @@ void gui_update(GUI *gui, const GUIData *data) {
 
   SDL_Event event;
   SDL_PollEvent(&event);
+
   switch (event.type) {
   case SDL_EVENT_QUIT:
     printf("Quitting\n");
     gui->shouldQuit = 1;
     return;
+  case SDL_EVENT_KEY_DOWN:
+    if (gui->updateCounter != 0)
+      break;
+    if (event.key.key == SDLK_LSHIFT) {
+      data->controlState->throttle =
+          (uint8_t)clamp_int(data->controlState->throttle++, 0, 255);
+    }
+    if (event.key.key == SDLK_LCTRL) {
+      data->controlState->throttle =
+          (uint8_t)clamp_int(data->controlState->throttle--, 0, 255);
+    }
+    break;
   case SDL_EVENT_WINDOW_RESIZED:
     SDL_GetWindowSizeInPixels(gui->window, &gui->width, &gui->height);
     break;
   }
+
+  gui->updateCounter = (gui->updateCounter + 1) % 20;
 }
 
 void gui_destroy(GUI *gui) {
@@ -134,7 +153,7 @@ Model *drone_model_create() {
   droneModel->vertices[6] = (vec3){.x = -0.5f, .y = 0.3f, .z = 0.1f};
   droneModel->vertices[7] = (vec3){.x = -0.5f, .y = -0.3f, .z = 0.1f};
 
-  /* Rect indices 
+  /* Rect indices
   droneModel->indices[0] = 0;
   droneModel->indices[1] = 1;
   droneModel->indices[2] = 2;
@@ -239,11 +258,11 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   };
 
   for (int i = 0; i < 8; i++) {
-    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i], &rotatedPoints[i]);
+    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i],
+                 &rotatedPoints[i]);
     translate_point(&projection, &viewPort, &rotatedPoints[i], 30.0f,
                     &screenPoints[i]);
   }
-
 
   /*
   SDL_Color colors[6];
@@ -299,7 +318,7 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   */
 
   /* Drawing lines
-  */
+   */
   for (int i = 0; i < 48; i += 2) {
     SDL_Color color = LIGHT_GREY;
     if (droneModel->indices[i] < 4 && droneModel->indices[i + 1] < 4) {
