@@ -7,68 +7,73 @@
 #include <pico/stdlib.h>
 #include <pico/time.h>
 
+// Funtion to init pwm
+void init_pwm(uint pin) {
+  gpio_set_function(pin, GPIO_FUNC_PWM);
+
+  // Get the PWM slice and channel associated with the GPIO
+  uint slice_num = pwm_gpio_to_slice_num(pin);
+
+  uint32_t f_sys = clock_get_hz(clk_sys);
+  uint32_t pwm_freq = 50;
+  uint16_t wrap = 62500;
+
+  pwm_set_wrap(slice_num, wrap);
+  pwm_set_clkdiv(slice_num, 40);
+
+  // Enable PWM output
+  pwm_set_enabled(slice_num, true);
+}
+
 // Function to set the PWM frequency and duty cycle
-void set_pwm_duty_cycle(uint slice_num, float duty_cycle) {
-  uint16_t minPulse = 1000;
-  uint16_t maxPulse = 2000;
+void set_pwm_duty_cycle(uint pin, float power) {
+  uint16_t minPulse = 3125;
+  uint16_t maxPulse = 6250;
 
-  float pulseWidth = minPulse + duty_cycle * (maxPulse - minPulse);
+  uint16_t pulseWidth = (uint16_t)(minPulse + power * (maxPulse - minPulse));
 
-  uint16_t level = (uint16_t)((pulseWidth / 20000.0f) * 65535.0f);
-  pwm_set_gpio_level(slice_num, level);
+  pwm_set_gpio_level(pin, pulseWidth);
 }
 
 int main() {
-  // Initialize the chosen GPIO pin for PWM
+  // init LED
   gpio_init(25);
   gpio_set_dir(25, GPIO_OUT);
   gpio_put(25, 0);
 
+  // Initialize the chosen GPIO pin for PWM
   uint gpio_pin = 1; // GPIO pin connected to the ESC signal
-  gpio_set_function(gpio_pin, GPIO_FUNC_PWM);
-
-  // Get the PWM slice and channel associated with the GPIO
-  uint slice_num = pwm_gpio_to_slice_num(gpio_pin);
-
-  uint32_t f_sys = clock_get_hz(clk_sys);
-  uint32_t pwm_freq = 50;
-  uint16_t wrap = f_sys / pwm_freq - 1;
-
-  pwm_set_wrap(slice_num, wrap);
-
-  // Step 1: Calibrate the ESC (Max throttle)
-  gpio_put(25, 1);
-  set_pwm_duty_cycle(slice_num, 1.0f);
-  sleep_ms(1000); // Wait for 5 seconds
-  gpio_put(25, 0);
+  init_pwm(gpio_pin);
 
   // throttle all the way down
   gpio_put(25, 1);
-  set_pwm_duty_cycle(slice_num, 0.0f);
-  sleep_ms(1000); // Wait for 5 seconds
+  set_pwm_duty_cycle(gpio_pin, 0.0f);
+  sleep_ms(5000); // Wait for 5 seconds
   gpio_put(25, 0);
 
-  // Enable PWM output
-  pwm_set_enabled(slice_num, true);
-
-  // Step 4: Run the motor at mid throttle
-  for (int i = 0; i < 0.5f; i += 0.1f) {
-    set_pwm_duty_cycle(slice_num, i);
+  for (float i = 0; i < 1.0f; i += 0.1f) {
+    set_pwm_duty_cycle(gpio_pin, i);
+    gpio_put(25, 1);
     sleep_ms(100);
+    gpio_put(25, 0);
+    sleep_ms(1000);
   }
 
-  set_pwm_duty_cycle(slice_num, 0.5f); // 50% duty cycle (1.5ms pulse)
+  gpio_put(25, 1);
+  sleep_ms(100);
+  gpio_put(25, 0);
+  set_pwm_duty_cycle(gpio_pin, 1.0f);
+  sleep_ms(1000);
 
-  // Keep motor running
-  for (int i = 0; i < 1000; i++) {
+  for (float i = 0.9f; i > 0.0f; i -= 0.1f) {
+    gpio_put(25, 1);
     sleep_ms(100);
-  }
-  for (int i = 0; i < 0.5f; i += 0.1f) {
-    set_pwm_duty_cycle(slice_num, 0.5f - i);
-    sleep_ms(100);
+    gpio_put(25, 0);
+    set_pwm_duty_cycle(gpio_pin, i);
+    sleep_ms(1000);
   }
 
-  set_pwm_duty_cycle(slice_num, 0);
+  set_pwm_duty_cycle(gpio_pin, 0.0f);
 
   /*
    * manually trying to run it
