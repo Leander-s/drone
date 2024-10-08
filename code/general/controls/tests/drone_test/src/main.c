@@ -42,7 +42,7 @@ int main() {
   gpio_put(25, 0);
 
   // Initialize the chosen GPIO pin for PWM
-  uint gpio_pin = 1; // GPIO pin connected to the ESC signal
+  uint gpio_pin = 0; // GPIO pin connected to the ESC signal
   init_pwm(gpio_pin);
 
   // throttle all the way down
