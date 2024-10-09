@@ -51,26 +51,26 @@ int main() {
   sleep_ms(5000); // Wait for 5 seconds
   gpio_put(25, 0);
 
-  for (float i = 0; i < 1.0f; i += 0.1f) {
+  for (float i = 0; i < 0.5f; i += 0.1f) {
     set_pwm_duty_cycle(gpio_pin, i);
     gpio_put(25, 1);
     sleep_ms(100);
     gpio_put(25, 0);
-    sleep_ms(1000);
+    sleep_ms(100);
   }
 
   gpio_put(25, 1);
   sleep_ms(100);
   gpio_put(25, 0);
-  set_pwm_duty_cycle(gpio_pin, 1.0f);
-  sleep_ms(1000);
+  set_pwm_duty_cycle(gpio_pin, 0.5f);
+  sleep_ms(100);
 
-  for (float i = 0.9f; i > 0.0f; i -= 0.1f) {
+  for (float i = 0.4f; i > 0.0f; i -= 0.1f) {
     gpio_put(25, 1);
     sleep_ms(100);
     gpio_put(25, 0);
     set_pwm_duty_cycle(gpio_pin, i);
-    sleep_ms(1000);
+    sleep_ms(100);
   }
 
   set_pwm_duty_cycle(gpio_pin, 0.0f);

@@ -12,6 +12,8 @@ int main() {
   dummyData.log = dummyLog;
   DroneSensorState sensorState = (DroneSensorState){.orientation = (Quaternion){.w = 0.2, .v = (vec3){.x = 0.3, .y = 0.2, .z = 0.1}}};
   dummyData.sensorState = &sensorState;
+  DroneControlState controlState = (DroneControlState){.throttle = 0, .pitch = 0, .yaw = 0, .roll = 0};
+  dummyData.controlState = &controlState;
   printf("Dummy data created\n");
   while (!main_gui->shouldQuit) {
     gui_update(main_gui, &dummyData);

@@ -4,27 +4,33 @@ Controller *controller_create(ControllerCreateInfo *createInfo) {
   Controller *result = (Controller *)malloc(sizeof(Controller));
   result->mode = Manual;
 
-  // init motor id
-  for (int i = 0; i < THROTTLE_MOTOR_N; i++) {
-    result->throttleMotorIDs[i] = createInfo->throttleMotorIDs[i];
-  }
-
-  // init servo ids
-  for (int i = 0; i < PITCH_SERVO_N; i++) {
-    result->pitchServoIDs[i] = createInfo->pitchServoIDs[i];
-  }
-  for (int i = 0; i < YAW_SERVO_N; i++) {
-    result->yawServoIDs[i] = createInfo->yawServoIDs[i];
-  }
-  for (int i = 0; i < ROLL_SERVO_N; i++) {
-    result->rollServoIDs[i] = createInfo->rollServoIDs[i];
-  }
-
   // init function
   result->servo_init = createInfo->servo_init;
   result->servo_turn = createInfo->servo_turn;
   result->motor_init = createInfo->motor_init;
   result->set_throttle = createInfo->set_throttle;
+
+  // init motor id and run function
+  for (int i = 0; i < THROTTLE_MOTOR_N; i++) {
+    result->throttleMotorIDs[i] = createInfo->throttleMotorIDs[i];
+    result->motor_init(result->throttleMotorIDs[i]);
+  }
+
+  // init servo ids
+  /*
+  for (int i = 0; i < PITCH_SERVO_N; i++) {
+    result->pitchServoIDs[i] = createInfo->pitchServoIDs[i];
+    result->servo_init(result->pitchServoIDs[i]);
+  }
+  for (int i = 0; i < YAW_SERVO_N; i++) {
+    result->yawServoIDs[i] = createInfo->yawServoIDs[i];
+    result->servo_init(result->yawServoIDs[i]);
+  }
+  for (int i = 0; i < ROLL_SERVO_N; i++) {
+    result->rollServoIDs[i] = createInfo->rollServoIDs[i];
+    result->servo_init(result->rollServoIDs[i]);
+  }
+  */
 
   // init control state
   result->controlState =

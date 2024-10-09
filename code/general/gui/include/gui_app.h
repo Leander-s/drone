@@ -25,6 +25,7 @@ Model *drone_model_create();
 void drone_model_destroy(Model *droneModel);
 
 void data_sheet_draw(GUI *gui, const GUIData *data);
+void hud_draw(GUI *gui, const GUIData *data);
 void drone_model_draw(GUI *gui, const GUIData *data);
 
 void line_draw(SDL_Renderer *renderer, int x, int y, int endX, int endY,

@@ -50,11 +50,27 @@ void gui_update(GUI *gui, const GUIData *data) {
 
   data_sheet_draw(gui, data);
   drone_model_draw(gui, data);
+  hud_draw(gui, data);
 
   SDL_RenderPresent(renderer);
 
   SDL_Event event;
   SDL_PollEvent(&event);
+
+  SDL_Keymod currentModState = SDL_GetModState();
+
+  if (gui->updateCounter == 0) {
+    if (currentModState & SDL_KMOD_LSHIFT) {
+      if (data->controlState->throttle != 255) {
+        data->controlState->throttle++;
+      }
+    }
+    if (currentModState & SDL_KMOD_LCTRL) {
+      if (data->controlState->throttle != 0) {
+        data->controlState->throttle--;
+      }
+    }
+  }
 
   switch (event.type) {
   case SDL_EVENT_QUIT:
@@ -64,21 +80,14 @@ void gui_update(GUI *gui, const GUIData *data) {
   case SDL_EVENT_KEY_DOWN:
     if (gui->updateCounter != 0)
       break;
-    if (event.key.key == SDLK_LSHIFT) {
-      data->controlState->throttle =
-          (uint8_t)clamp_int(data->controlState->throttle++, 0, 255);
-    }
-    if (event.key.key == SDLK_LCTRL) {
-      data->controlState->throttle =
-          (uint8_t)clamp_int(data->controlState->throttle--, 0, 255);
-    }
+    // for pitch/yaw/roll keys
     break;
   case SDL_EVENT_WINDOW_RESIZED:
     SDL_GetWindowSizeInPixels(gui->window, &gui->width, &gui->height);
     break;
   }
 
-  gui->updateCounter = (gui->updateCounter + 1) % 20;
+  gui->updateCounter = (gui->updateCounter + 1) % 1;
 }
 
 void gui_destroy(GUI *gui) {
@@ -86,6 +95,37 @@ void gui_destroy(GUI *gui) {
   SDL_DestroyRenderer(gui->renderer);
   SDL_DestroyWindow(gui->window);
   SDL_Quit();
+}
+
+void hud_draw(GUI *gui, const GUIData *data) {
+  SDL_Renderer *renderer = gui->renderer;
+  const int hudX = 0;
+  const int hudY = 0;
+  const int hudWidth = gui->width / 2;
+  const int hudHeight = gui->height;
+
+  const int botLeftX = hudWidth / 2;
+  const int botLeftY = hudHeight / 4 * 3;
+  const int botLeftWidth = hudWidth - botLeftX;
+  const int botLeftHeight = hudHeight - botLeftY;
+
+  // draw throttle
+  const int throttleBoxX = botLeftX + botLeftWidth - 20;
+  const int throttleBoxY = botLeftY;
+  const int throttleBoxWidth = 10;
+  const int throttleBoxHeight = botLeftHeight - 10;
+
+  // draw box
+  rect_draw(renderer, throttleBoxX, throttleBoxY, throttleBoxWidth,
+            throttleBoxHeight, &WHITE);
+
+  // draw throttle
+  const int throttleHeight =
+      (int)((float)(data->controlState->throttle) / 255 * throttleBoxHeight);
+
+  rect_fill(renderer, throttleBoxX,
+            throttleBoxY + throttleBoxHeight - throttleHeight, throttleBoxWidth,
+            throttleHeight, &WHITE);
 }
 
 void data_sheet_draw(GUI *gui, const GUIData *data) {

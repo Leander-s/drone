@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.10)
 set(LIBRARY_DIR "./lib")
 set(INCLUDE_DIR 
     "./include" 
-    "../../../pico/pico-sdk/src/rp2_common/pico_stdio/include" 
-    "../../../pico/pico-sdk/src/rp2_common/pico_stdlib/include"
-    "../../../pico/pico-sdk/src/rp2_common/hardware_i2c/include"
-    "../../../pico/pico-sdk/src/rp2_common/hardware_spi/include"
-    "../../../pico/pico-sdk/src/rp2_common/hardware_pwm/include"
+    "../../pico/pico-sdk/src/rp2_common/pico_stdio/include" 
+    "../../pico/pico-sdk/src/rp2_common/pico_stdlib/include"
+    "../../pico/pico-sdk/src/rp2_common/hardware_i2c/include"
+    "../../pico/pico-sdk/src/rp2_common/hardware_spi/include"
+    "../../pico/pico-sdk/src/rp2_common/hardware_pwm/include"
     "../communications/drone/include"
     "../communications/nrf24/include"
     "../communications/protocol_util/include"

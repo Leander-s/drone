@@ -13,6 +13,9 @@ void init_pwm(int pin){
 
   // Enable PWM output
   pwm_set_enabled(slice_num, true);
+
+  set_pwm(pin, 0.0f);
+  sleep_ms(5000);
 }
 
 void set_pwm(int pin, float level){
