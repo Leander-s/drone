@@ -1,4 +1,4 @@
-Requirements:
+# Requirements:
     Windows:
         python
         MinGW
@@ -11,10 +11,10 @@ Requirements:
         arm-none-eabi compilers (see raspberrypi pico setup)
         gcc
 
-Init:
+# Init:
     run init.py
 
-Build:
+# Build:
     from "drone/code/general/" directory run "python build.py b" to build the output
     from "drone/code/general/" directory run "python build.py r" to rebuild the files 
         (deletes all previously built files and rebuilds them)
@@ -31,11 +31,12 @@ Build:
     To build only one subprojects and tests (if given), run build.py or rebuild.py
     in the subprojects folder.
 
-IMPORTANT:
+# IMPORTANT:
     as of right now, you MUST manually set the COM port/dev file for the usb connection to the pico transceiver
     otherwise, it might just not be the right port
     the port can be set in drone/code/general/communications/ground/pc_side/src/main.c
 
+<!--
 drone/code/pico/*:
     This is where some tests for the pico and the pico-sdk are
 
@@ -64,3 +65,4 @@ Windows compatibility (done?):
 Foamboard frame
 
 Pico hat maximal 10 Mhz übertragungsrate also nicht ausreichend für video.
+-->
