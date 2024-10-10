@@ -10,9 +10,15 @@ Drone *drone_start() {
   // create drone controls
   ControllerCreateInfo controllerInfo =
       (ControllerCreateInfo){.current = &result->sensorState.orientation,
-                             .motor_init = init_pwm,
-                             .set_throttle = set_pwm,
-                             .throttleMotorIDs[0] = 0};
+                             .motor_init = init_throttle,
+                             .set_throttle = set_throttle,
+                             .servo_init = init_servo,
+                             .servo_turn = set_angle,
+                             .throttleMotorIDs[0] = 0,
+                             .leftPitchServoIDs[0] = 1,
+                             .rightPitchServoIDs[0] = 2,
+                             .yawServoIDs[0] = 3
+      };
   result->controller = controller_create(&controllerInfo);
   result->state = &result->controller->controlState;
 

@@ -15,6 +15,7 @@ typedef struct {
   int shouldQuit;
   Model *droneModel;
   int updateCounter;
+  uint8_t keyState[322];
 } GUI;
 
 GUI *gui_create(int width, int height);

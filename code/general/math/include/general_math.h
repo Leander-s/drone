@@ -56,3 +56,6 @@ void mult_quat_vec(const Quaternion *quat, const vec3 *vec, Quaternion *result);
 void mult_vec_quat(const vec3 *vec, const Quaternion *quat, Quaternion *result);
 
 void rotate_point(const Quaternion *quat, const vec3 *point, vec3 *dstPoint);
+
+void rotate_point_2D(const float angle, const float x, const float y,
+                     float *dstX, float *dstY);

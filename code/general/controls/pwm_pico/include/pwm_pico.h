@@ -7,5 +7,8 @@
 #include <pico/stdlib.h>
 #include <pico/time.h>
 
-void init_pwm(int pin);
-void set_pwm(int pin, float level);
+void init_throttle(int pin);
+void set_throttle(int pin, float level);
+
+void init_servo(int pin);
+void set_angle(int pin, float angle);

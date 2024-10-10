@@ -29,9 +29,9 @@ void init_pwm(uint pin) {
 
 // Function to set the PWM frequency and duty cycle
 void set_angle(int pin, float angle) {
-  float cycle = (angle / 180) * 5.0f + 5.0f;
+  float cycle = (angle / 180) * 1.5f + 0.5f;
 
-  uint16_t value = (uint16_t)(cycle/100.0f * WRAP);
+  uint16_t value = (uint16_t)(cycle/20.0f * 39062);
 
   pwm_set_chan_level(pwm_gpio_to_slice_num(pin), pwm_gpio_to_channel(pin),
                      value);
@@ -44,13 +44,21 @@ int main() {
   gpio_put(25, 0);
 
   // Initialize the chosen GPIO pin for PWM
-  uint gpio_pin = 0; // GPIO pin connected to the ESC signal
-  init_pwm(gpio_pin);
+  uint gpioPin1 = 0; // GPIO pin connected to the ESC signal
+  uint gpioPin2 = 1; // GPIO pin connected to the ESC signal
+                    
+  init_pwm(gpioPin1);
+  init_pwm(gpioPin2);
 
-  set_angle(gpio_pin, 180.0f);
-  sleep_ms(5000);
+  set_angle(gpioPin1, 180.0f);
+  sleep_ms(2000);
+  set_angle(gpioPin2, 180.0f);
+  sleep_ms(2000);
 
-  set_angle(gpio_pin, 0.0f);
+  set_angle(gpioPin1, 0.0f);
+  sleep_ms(2000);
+  set_angle(gpioPin2, 0.0f);
+  sleep_ms(2000);
 
   return 0;
 }

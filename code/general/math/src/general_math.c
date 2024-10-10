@@ -1,5 +1,11 @@
 #include <general_math.h>
 
+void rotate_point_2D(const float angle, const float x, const float y, float *dstX, float *dstY){
+    float rad = deg_to_rad(angle);
+    *dstX = x * cos(rad) - y * sin(rad);
+    *dstY = y * cos(rad) + x * sin(rad);
+}
+
 int clamp_int(int x, int A, int B){
     if(x > B) return B;
     if(x < A) return A;
