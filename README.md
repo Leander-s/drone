@@ -1,11 +1,11 @@
 # Requirements:
-    ## Windows:
+    Windows:
         python
         MinGW
         cmake
         arm-none-eabi compilers (see raspberrypi pico setup)
         gcc
-    ## Linux:
+    Linux:
         python
         cmake
         arm-none-eabi compilers (see raspberrypi pico setup)
@@ -16,7 +16,7 @@
     (Does not reliably work on windows atm)
 
 # Build:
-    ## Pico:
+    Pico:
         from "drone/code/general/" directory run "python build.py b" to build the output
         from "drone/code/general/" directory run "python build.py r" to rebuild the files 
             (deletes all previously built files and rebuilds them)
