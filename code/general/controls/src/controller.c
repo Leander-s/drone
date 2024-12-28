@@ -40,8 +40,8 @@ Controller *controller_create(ControllerCreateInfo *createInfo) {
 void controller_update(Controller *controller) {
 
   // map controls to angle
-  float yawAngle = (float)controller->controlState.yaw / 255 * 180;
-  float pitchAngle = (float)controller->controlState.pitch / 255 * 180;
+  float yawAngle = (float)(controller->controlState.yaw) / 255 * 180;
+  float pitchAngle = (float)(controller->controlState.pitch) / 255 * 180;
   float rollAngle = (float)(controller->controlState.roll - 127) / 255 * 180;
 
   // need to do some math to interpolate between pitch and roll
@@ -62,7 +62,7 @@ void controller_update(Controller *controller) {
 
   for (int i = 0; i < THROTTLE_MOTOR_N; i++) {
     controller->set_throttle(controller->throttleMotorIDs[i],
-                             (float)controller->controlState.throttle / 255);
+                             (float)(controller->controlState.throttle) / 255);
   }
 }
 

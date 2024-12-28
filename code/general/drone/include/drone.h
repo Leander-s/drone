@@ -3,10 +3,10 @@
 
 typedef struct {
     DroneTransceiver *transceiver;
-    DroneSensorState sensorState;
     DroneControlState *state;
     DroneSystemLog log;
     DroneSensor sensor;
+    DroneSensorState sensorState;
     Controller *controller;
 } Drone;
 

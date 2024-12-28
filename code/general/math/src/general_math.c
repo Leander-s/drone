@@ -42,6 +42,27 @@ void quaternion_normalize(Quaternion *quat) {
   quat->x /= magnitude;
 }
 
+EulerAngles quaternion_to_euler(const Quaternion *quat){
+    EulerAngles angles;
+
+    float sinr_cosp = 2 * (quat->w * quat->i + quat->j * quat->k);
+    float cosr_cosp = 1 - 2 * (quat->i * quat->i + quat->j * quat->j);
+    angles.roll = atan2f(sinr_cosp, cosr_cosp);
+
+    float sinp = 2 * (quat->w * quat->j - quat->k * quat->i);
+    if(fabsf(sinp) >= 1){
+        angles.pitch = copysignf(M_PI/2, sinp);
+    }else{
+        angles.pitch = asinf(sinp);
+    }
+
+    float siny_cosp = 2 * (quat->w * quat->k + quat->i * quat->j);
+    float cosy_cosp = 1 - 2 * (quat->j * quat->j + quat->k * quat->k);
+    angles.yaw = atan2f(siny_cosp, cosy_cosp);
+
+    return angles;
+}
+
 void mult_vec3_scalar(const vec3 *vec, const float x, vec3 *dstVec) {
   dstVec->x = vec->x * x;
   dstVec->y = vec->y * x;
