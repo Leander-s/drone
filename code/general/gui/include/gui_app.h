@@ -8,8 +8,15 @@ typedef struct {
 } GUIData;
 
 typedef struct {
+  // SDL
   SDL_Window *window;
   SDL_Renderer *renderer;
+
+  // OpenGL
+  GLuint *shaderProgram;
+  GLuint *VBO, *VAO, *IBO;
+
+  // logic
   int width;
   int height;
   int shouldQuit;

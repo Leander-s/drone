@@ -3,6 +3,9 @@
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
+// gl
+#include <GL/glew.h>
+
 // standard
 #include <stdio.h>
 #include <stdlib.h>

@@ -42,12 +42,11 @@ pico read timouts are an issue. The nrf24 read on the pico transceiver times out
 Both pico seem to be stuck on read to make this happen. Need to sync better somehow.
         
 TODO:
-FIX THE CONTROLS FINALLY
-
-actual OpenGL implementation
+OpenGL implementation (need to do all the rendering again)
     - depth buffer to get actual sides instead of lines
     - better model
     - maybe some lighting to get a sense of the orientation
+this shouldnt be that hard but it sounds like a lot so I will take a day
 
 transmissions per second needs to be averaged and updated every second or something so its actually readable
 

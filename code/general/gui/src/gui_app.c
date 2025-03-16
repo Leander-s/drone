@@ -5,9 +5,93 @@
 #include "SDL3/SDL_pixels.h"
 #include "SDL3/SDL_rect.h"
 #include "SDL3/SDL_render.h"
+#include "GL/glew.h"
+#include "SDL3/SDL_video.h"
 #include "general_math.h"
 #include <colors.h>
 #include <gui_app.h>
+
+char* readShaderSource(const char* filename) {
+    FILE* fp = fopen(filename, "r");
+    if (!fp) {
+        fprintf(stderr, "Unable to open shader file %s\n", filename);
+        exit(EXIT_FAILURE);
+    }
+    fseek(fp, 0, SEEK_END);
+    size_t size = ftell(fp);
+    rewind(fp);
+    char* source = malloc(size + 1);
+    fread(source, 1, size, fp);
+    source[size] = '\0';
+    fclose(fp);
+    return source;
+}
+
+void setupBuffers(GUI* gui) {
+    glGenVertexArrays(1, gui->VAO);
+    glGenBuffers(1, gui->VBO);
+    glGenBuffers(1, gui->shaderProgram);
+
+    glBindVertexArray(*gui->VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, *gui->VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(gui->droneModel->vertices), gui->droneModel->vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *gui->IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(gui->droneModel->indices), gui->droneModel->indices, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // color attribute
+    /*
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    */
+}
+
+GLuint compileShader(const char* path, GLenum type) {
+    char* src = readShaderSource(path);
+    GLuint shader = glCreateShader(type);
+    glShaderSource(shader, 1, (const GLchar**)&src, NULL);
+    glCompileShader(shader);
+    free(src);
+
+    GLint success;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        char log[512];
+        glGetShaderInfoLog(shader, 512, NULL, log);
+        fprintf(stderr, "Shader compile error (%s):\n%s\n", path, log);
+        exit(EXIT_FAILURE);
+    }
+    return shader;
+}
+
+
+void setupShaders(GLuint *shaderProgram) {
+    GLuint vertexShader = compileShader("shader.vert", GL_VERTEX_SHADER);
+    GLuint fragmentShader = compileShader("shader.frag", GL_FRAGMENT_SHADER);
+
+    *shaderProgram = glCreateProgram();
+    glAttachShader(*shaderProgram, vertexShader);
+    glAttachShader(*shaderProgram, fragmentShader);
+    glLinkProgram(*shaderProgram);
+
+    GLint success;
+    glGetProgramiv(*shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        char log[512];
+        glGetProgramInfoLog(*shaderProgram, 512, NULL, log);
+        fprintf(stderr, "Shader linking error:\n%s\n", log);
+        exit(EXIT_FAILURE);
+    }
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+}
+
 
 GUI *gui_create(int width, int height) {
   int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
@@ -29,14 +113,37 @@ GUI *gui_create(int width, int height) {
   printf("Creating model\n");
   gui->droneModel = drone_model_create();
   printf("Model created\n");
-  result = SDL_CreateWindowAndRenderer("Drone Controller", width, height,
-                                       SDL_WINDOW_RESIZABLE, &gui->window,
-                                       &gui->renderer);
+
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+  gui->window = SDL_CreateWindow(
+          "Drone Controller", width, height, SDL_WINDOW_OPENGL
+          );
   printf("Window and renderer created\n");
-  if (result != 0) {
-    SDL_Log("Creating window and renderer failed : %s\n", SDL_GetError());
-    return NULL;
+  if (!gui->window) {
+    SDL_Log("Creating window failed : %s\n", SDL_GetError());
+    return EXIT_FAILURE;
   }
+
+  SDL_GLContext glContext = SDL_GL_CreateContext(gui->window);
+  if(!glContext){
+    SDL_Log("Creating context failed : %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  glewExperimental = GL_TRUE;
+  if(glewInit() != GLEW_OK) {
+    SDL_Log("GLEW initialization failed");
+    return EXIT_FAILURE;
+  }
+
+  glEnable(GL_DEPTH_TEST);
+  setupShaders(gui->shaderProgram);
+  setupBuffers(gui);
 
   gui->updateCounter = 0;
   memset(gui->keyState, 0, 322);
@@ -45,16 +152,12 @@ GUI *gui_create(int width, int height) {
 }
 
 void gui_update(GUI *gui, const GUIData *data) {
-  SDL_Renderer *renderer = gui->renderer;
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
 
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  SDL_RenderClear(renderer);
-
-  data_sheet_draw(gui, data);
+  // data_sheet_draw(gui, data);
   drone_model_draw(gui, data);
-  hud_draw(gui, data);
-
-  SDL_RenderPresent(renderer);
+  // hud_draw(gui, data);
 
   SDL_Event event;
   SDL_PollEvent(&event);
@@ -123,8 +226,10 @@ void gui_update(GUI *gui, const GUIData *data) {
 }
 
 void gui_destroy(GUI *gui) {
+  glDeleteBuffers(1, gui->VBO);
+  glDeleteBuffers(1, gui->VAO);
+  glDeleteBuffers(1, gui->IBO);
   drone_model_destroy(gui->droneModel);
-  SDL_DestroyRenderer(gui->renderer);
   SDL_DestroyWindow(gui->window);
   SDL_Quit();
 }
@@ -369,89 +474,21 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   create_mvp((float)gui->width / 2.0f / gui->height, deg_to_rad(60), 100.0f,
              0.1f, &projection);
 
-  vec3 rotatedPoints[8];
-  vec2 screenPoints[8];
+  GLuint uOrientation = glGetUniformLocation(*gui->shaderProgram, "uOrientation");
+  GLuint uProjection = glGetUniformLocation(*gui->shaderProgram, "uProjection");
 
-  Quaternion iq = (Quaternion){
-      .x = data->sensorState->orientation.w,
-      .i = -data->sensorState->orientation.v.x,
-      .j = -data->sensorState->orientation.v.y,
-      .k = -data->sensorState->orientation.v.z,
-  };
+  glUniform4f(
+          uOrientation,
+          data->sensorState->orientation.w, 
+          data->sensorState->orientation.i,
+          data->sensorState->orientation.j,
+          data->sensorState->orientation.k);
 
-  for (int i = 0; i < 8; i++) {
-    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i],
-                 &rotatedPoints[i]);
-    translate_point(&projection, &viewPort, &rotatedPoints[i], 30.0f,
-                    &screenPoints[i]);
-  }
+  glUniformMatrix4fv(uProjection, 1, GL_FALSE, (float*)&projection); 
 
-  /*
-  SDL_Color colors[6];
-  colors[0] = RED;
-  colors[1] = BLUE;
-  colors[2] = GREEN;
-  colors[3] = LIGHT_GREY;
-  colors[4] = WHITE;
-  colors[5] = GREY;
-
-  for (int i = 0; i < 24; i += 4) {
-    SDL_Vertex verts[4];
-    int indices[6];
-    indices[0] = 2;
-    indices[1] = 1;
-    indices[2] = 0;
-    indices[3] = 3;
-    indices[4] = 2;
-    indices[5] = 0;
-    SDL_Color color = colors[i / 4];
-    for (int j = 0; j < 4; j++) {
-      verts[j] = (SDL_Vertex){
-          .position =
-              (SDL_FPoint){.x = screenPoints[droneModel->indices[i + j]].x,
-                           .y = screenPoints[droneModel->indices[i + j]].y},
-          .color = (SDL_FColor){.r = (float)color.r / 255,
-                                .g = (float)color.g / 255,
-                                .b = (float)color.b / 255,
-                                .a = 1.0},
-      };
-    }
-    if (!SDL_RenderGeometry(gui->renderer, NULL, verts, 4, indices, 6)) {
-      printf("Error on rendering : %s\n", SDL_GetError());
-    }
-  }
-
-  SDL_Vertex test[3];
-  test[0] = (SDL_Vertex){
-      .position = (SDL_FPoint){.x = 400, .y = 150},
-      .color = (SDL_FColor){.r = 1.0, .g = 0.0, .b = 0.0, .a = 1.0},
-  };
-  test[1] = (SDL_Vertex){
-      .position = (SDL_FPoint){.x = 200, .y = 450},
-      .color = (SDL_FColor){.r = 0.0, .g = 1.0, .b = 0.0, .a = 1.0},
-  };
-  test[2] = (SDL_Vertex){
-      .position = (SDL_FPoint){.x = 600, .y = 450},
-      .color = (SDL_FColor){.r = 0.0, .g = 0.0, .b = 1.0, .a = 1.0},
-  };
-  if (!SDL_RenderGeometry(gui->renderer, NULL, test, 3, NULL, 0)) {
-    printf("Error on test rendering : %s\n", SDL_GetError());
-  }
-  */
-
-  /* Drawing lines
-   */
-  for (int i = 0; i < 48; i += 2) {
-    SDL_Color color = LIGHT_GREY;
-    if (droneModel->indices[i] < 4 && droneModel->indices[i + 1] < 4) {
-      color = RED;
-    }
-    int startIndex = droneModel->indices[i];
-    int endIndex = droneModel->indices[i + 1];
-    line_draw(gui->renderer, screenPoints[startIndex].x,
-              screenPoints[startIndex].y, screenPoints[endIndex].x,
-              screenPoints[endIndex].y, &color);
-  }
+  glUseProgram(*gui->shaderProgram);
+  glBindVertexArray(*gui->VAO);
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void line_draw(SDL_Renderer *renderer, int x, int y, int endX, int endY,
