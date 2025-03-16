@@ -40,19 +40,19 @@ Controller *controller_create(ControllerCreateInfo *createInfo) {
 void controller_update(Controller *controller) {
 
   // map controls to angle
-  float yawAngle = (float)(controller->controlState.yaw) / 255 * 180;
-  float pitchAngle = (float)(controller->controlState.pitch) / 255 * 180;
-  float rollAngle = (float)(controller->controlState.roll - 127) / 255 * 180;
+  float yawAngle = (float)(controller->controlState.yaw) / 255.0f * 180.0f;
+  float pitchAngle = (float)(controller->controlState.pitch) / 255.0f * 180.0f;
+  float rollAngle = ((float)(controller->controlState.roll) - 127.0f) / 255.0f * 180.0f;
 
   // need to do some math to interpolate between pitch and roll
   for (int i = 0; i < PITCH_SERVO_LEFT_N; i++) {
     // turn pitch servos the way they have to turn
-    float angle = clamp_float(pitchAngle + rollAngle, 0.0f, 180.0f);
+    float angle = clamp_float(pitchAngle - rollAngle, 0.0f, 180.0f);
     controller->servo_turn(controller->leftPitchServoIDs[i], angle);
   }
   for (int i = 0; i < PITCH_SERVO_RIGHT_N; i++) {
     // turn pitch servos the way they have to turn
-    float angle = clamp_float(pitchAngle - rollAngle, 0.0f, 180.0f);
+    float angle = clamp_float(pitchAngle + rollAngle, 0.0f, 180.0f);
     controller->servo_turn(controller->rightPitchServoIDs[i], angle);
   }
   for (int i = 0; i < YAW_SERVO_N; i++) {

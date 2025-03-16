@@ -52,7 +52,7 @@ void drone_protocol_update(DroneTransceiver *transceiver) {
   drone_protocol_prepare_data(transceiver);
   int readBytes = drone_read(transceiver);
   int sentBytes = drone_send(transceiver);
-  if (readBytes > 0) {
+  if (readBytes == 32) {
     drone_protocol_handle_message(transceiver);
   }
 }

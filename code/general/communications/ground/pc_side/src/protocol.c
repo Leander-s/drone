@@ -50,11 +50,14 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 
 // This is for use in a main loop instead of multithreaded
 int ground_transceiver_update(GroundTransceiver *transceiver) {
+  // This just gets the pointers so they're easier to work with
+  // No actual functionality
   DroneControlState *controlState = transceiver->controlState;
   DroneSensorState *sensorState = transceiver->sensorState;
   uint32_t bufferSize = transceiver->bufferSize;
   uint8_t *sendBuffer = transceiver->sendBuffer;
   uint8_t *recvBuffer = transceiver->recvBuffer;
+  // Initialize the buffers to 0
   memset(sendBuffer, 0, transceiver->bufferSize);
   memset(recvBuffer, 0, transceiver->bufferSize);
 
@@ -104,9 +107,11 @@ int ground_transceiver_handle_data(GroundTransceiver *transceiver) {
   read_int_bytes_b(&picoLog.readTimeouts, data + 36);
   read_float_bytes_b(&picoLog.transmissionsPerSecond, data + 40);
 
-  transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
-  transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
-  transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
+  if (picoLog.transmissionsPerSecond.f > 0.0f) {
+    transceiver->log.usbDisconnects = picoLog.usbDisconnects.i;
+    transceiver->log.picoReadTimeouts = picoLog.readTimeouts.i;
+    transceiver->log.transmissionsPerSecond = picoLog.transmissionsPerSecond.f;
+  }
 
   if (data[0] == 0) {
     // no data, probably read timout
@@ -157,6 +162,9 @@ void ground_transceiver_destroy(GroundTransceiver *transceiver) {
 int ground_transceiver_send(GroundTransceiver *transceiver) {
   int sentBytes = 0;
   encode_buffer(transceiver->sendBuffer, transceiver->bufferSize);
+  // I think this is fine?
+  // writing until something has been written, then stopping
+  // maybe unnecessary or even harmful but not a critical error yet
   while (sentBytes == 0) {
     sentBytes = writePort(transceiver->port, transceiver->sendBuffer,
                           transceiver->bufferSize);

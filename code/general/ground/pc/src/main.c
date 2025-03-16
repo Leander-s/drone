@@ -1,4 +1,5 @@
 #include "connection.h"
+#include "protocol_util.h"
 #include <config.h>
 
 int main() {
@@ -34,6 +35,19 @@ int main() {
   while (!gui->shouldQuit) {
     // sending to drone/receiving from drone
     ground_transceiver_update(link);
+
+    /*
+     * This is printing the decoded sendbuffer so hopefully what is received
+     * by the drone
+    uint8_t sendBufferCopy[64];
+    memcpy(&sendBufferCopy, link->sendBuffer, 64);
+    decode_buffer(sendBufferCopy, 64);
+    printf("[");
+    for(int i = 0; i < 32; i++){
+        printf("%u, ", sendBufferCopy[i]); 
+    }
+    printf("]\n");
+    */
 
     // updating gui
     gui_update(gui, &guiData);

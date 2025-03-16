@@ -29,12 +29,38 @@ void init_pwm(uint pin) {
 
 // Function to set the PWM frequency and duty cycle
 void set_angle(int pin, float angle) {
-  float cycle = (angle / 180) * 1.5f + 0.5f;
+  float cycle = (angle / 180.0f) * 2.0f + 0.5f;
 
   uint16_t value = (uint16_t)(cycle/20.0f * 39062);
 
   pwm_set_chan_level(pwm_gpio_to_slice_num(pin), pwm_gpio_to_channel(pin),
                      value);
+}
+
+float set_for(int pin, int pitch, uint32_t time_us){
+  int done = 0;
+  uint32_t start = time_us_32();
+  while(!done){
+      float angle = (float)(127 + pitch) / 255 * 180;
+      set_angle(pin, angle);
+      uint32_t current = time_us_32();
+      if(current - start > time_us){
+          done = 1;
+      }
+  }
+}
+
+float set_one_sec(int pin, int pitch){
+  int done = 0;
+  uint32_t start = time_us_32();
+  while(!done){
+      float angle = (float)(127 + pitch) / 255 * 180;
+      set_angle(pin, angle);
+      uint32_t current = time_us_32();
+      if(current - start > 1000000){
+          done = 1;
+      }
+  }
 }
 
 int main() {
@@ -44,21 +70,23 @@ int main() {
   gpio_put(25, 0);
 
   // Initialize the chosen GPIO pin for PWM
-  uint gpioPin1 = 0; // GPIO pin connected to the ESC signal
-  uint gpioPin2 = 1; // GPIO pin connected to the ESC signal
+  uint gpioPin1 = 3; // GPIO pin connected to the ESC signal
                     
   init_pwm(gpioPin1);
-  init_pwm(gpioPin2);
 
   set_angle(gpioPin1, 180.0f);
-  sleep_ms(2000);
-  set_angle(gpioPin2, 180.0f);
   sleep_ms(2000);
 
   set_angle(gpioPin1, 0.0f);
   sleep_ms(2000);
-  set_angle(gpioPin2, 0.0f);
-  sleep_ms(2000);
+
+  set_one_sec(gpioPin1, 0);
+  for(int i = -127; i < 0; i++){
+      set_for(gpioPin1, i, 100000);
+  }
+  for(int i = 0; i < 127; i++){
+      set_for(gpioPin1, i, 100000);
+  }
 
   return 0;
 }

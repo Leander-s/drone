@@ -45,7 +45,7 @@ void init_servo(int pin) {
 }
 
 void set_angle(int pin, float angle) {
-  float cycle = (angle / 180) * 1.5f + 0.5f;
+  float cycle = (angle / 180.0f) * 2.0f + 0.5f;
 
   uint16_t value = (uint16_t)(cycle / 20.0f * 39062);
 

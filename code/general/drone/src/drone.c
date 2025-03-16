@@ -44,8 +44,7 @@ void drone_update(Drone *drone) {
   // When steering, keep going
   // When not steering, stabelize drone by getting last rotation and correcting
   // it
-  /*
-  int steering = (drone->state->yaw != 127) && (drone->state->roll != 127) &&
+  int steering = (drone->state->yaw != 127) || (drone->state->roll != 127) || 
                  (drone->state->pitch != 127);
 
   Quaternion prevRot = (Quaternion){
@@ -55,10 +54,12 @@ void drone_update(Drone *drone) {
       .w = drone->sensor.state->orientation.w,
   };
 
-  */
   sensor_update(&drone->sensor);
-  /*
 
+  controller_update(drone->controller);
+
+  /*
+   * Automatically stabelizing, not implemented fully yet
   // update the controls
   if (steering) {
     controller_update(drone->controller);
@@ -83,9 +84,11 @@ void drone_update(Drone *drone) {
   mult_quat_quat(&relativeRot, &drone->sensor.state->orientation, &temp);
 
   mult_quat_quat(&prevInv, &temp, &localRot);
-  */
+  
+  // still need to correct after this
 
-  controller_update(drone->controller);
+  //  controller_update(drone->controller);
+  */
 }
 
 void drone_end(Drone *drone) {
