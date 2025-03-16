@@ -26,15 +26,27 @@ typedef union {
   float data[4];
 } Quaternion;
 
-void quaternion_set(Quaternion* result, const vec3 *axis, const float degrees);
+typedef struct {
+    float roll;
+    float pitch;
+    float yaw;
+} EulerAngles;
+
+void quaternion_set(Quaternion *result, const vec3 *axis, const float degrees);
 
 float quaternion_magnitude(const Quaternion *quat);
 
 void quaternion_normalize(Quaternion *quat);
 
+EulerAngles quaternion_to_euler(const Quaternion *quat);
+
 float deg_to_rad(float deg);
 
 float rad_to_deg(float rad);
+
+int clamp_int(int x, int A, int B);
+
+float clamp_float(float x, float A, float B);
 
 void mult_vec3_scalar(const vec3 *vec, const float x, vec3 *dstVec);
 
@@ -52,3 +64,6 @@ void mult_quat_vec(const Quaternion *quat, const vec3 *vec, Quaternion *result);
 void mult_vec_quat(const vec3 *vec, const Quaternion *quat, Quaternion *result);
 
 void rotate_point(const Quaternion *quat, const vec3 *point, vec3 *dstPoint);
+
+void rotate_point_2D(const float angle, const float x, const float y,
+                     float *dstX, float *dstY);

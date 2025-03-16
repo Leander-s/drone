@@ -1,5 +1,23 @@
 #include <general_math.h>
 
+void rotate_point_2D(const float angle, const float x, const float y, float *dstX, float *dstY){
+    float rad = deg_to_rad(angle);
+    *dstX = x * cos(rad) - y * sin(rad);
+    *dstY = y * cos(rad) + x * sin(rad);
+}
+
+int clamp_int(int x, int A, int B){
+    if(x > B) return B;
+    if(x < A) return A;
+    return x;
+}
+
+float clamp_float(float x, float A, float B){
+    if(x > B) return B;
+    if(x < A) return A;
+    return x;
+}
+
 float deg_to_rad(float deg) { return deg * M_PI / 180; }
 
 float rad_to_deg(float rad) { return rad * 180 / M_PI; }
@@ -22,6 +40,27 @@ void quaternion_normalize(Quaternion *quat) {
   quat->j /= magnitude;
   quat->k /= magnitude;
   quat->x /= magnitude;
+}
+
+EulerAngles quaternion_to_euler(const Quaternion *quat){
+    EulerAngles angles;
+
+    float sinr_cosp = 2 * (quat->w * quat->i + quat->j * quat->k);
+    float cosr_cosp = 1 - 2 * (quat->i * quat->i + quat->j * quat->j);
+    angles.roll = atan2f(sinr_cosp, cosr_cosp);
+
+    float sinp = 2 * (quat->w * quat->j - quat->k * quat->i);
+    if(fabsf(sinp) >= 1){
+        angles.pitch = copysignf(M_PI/2, sinp);
+    }else{
+        angles.pitch = asinf(sinp);
+    }
+
+    float siny_cosp = 2 * (quat->w * quat->k + quat->i * quat->j);
+    float cosy_cosp = 1 - 2 * (quat->j * quat->j + quat->k * quat->k);
+    angles.yaw = atan2f(siny_cosp, cosy_cosp);
+
+    return angles;
 }
 
 void mult_vec3_scalar(const vec3 *vec, const float x, vec3 *dstVec) {

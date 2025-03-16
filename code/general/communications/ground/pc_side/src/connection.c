@@ -1,18 +1,68 @@
 #include <connection.h>
-#include <libudev.h>
-#include <termios.h>
 
 #ifdef _WIN32
-HANDLE initConnection(const char *path) {
+const char *find_device_path(const char *name)
+{
+  HANDLE hComm;
+  char portName[15];
+
+  for (int i = 1; i <= 256; i++)
+  {
+    snprintf(portName, sizeof(portName), "\\\\.\\COM%d", i);
+    hComm = CreateFileA(portName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+    char handshake[10];
+    char response[33];
+    memset(response, 0, 33);
+    memset(handshake, 4, 10);
+    handshake[9] = 0;
+    writePort(hComm, (uint8_t *)handshake, 10);
+
+    // read response
+    int offset = 0;
+    while (offset < 33)
+    {
+      int read = readPort(hComm, response + offset, 33);
+      if (read < 0)
+      {
+        printf("Error reading from %s\n", portName);
+        break;
+      }
+      if (read == 0)
+      {
+        break;
+      }
+      offset += read;
+    }
+    if (offset == 0)
+    {
+      continue;
+    }
+
+    // check response
+    if (strcmp(response + 1, "Pico connected") == 0)
+    {
+      printf("Found device: %s -> %s\n", name, portName);
+      CloseHandle(hComm);
+      break;
+    }
+
+    CloseHandle(hComm);
+  }
+  return portName;
+}
+
+HANDLE initConnection(const char *path)
+{
   HANDLE hComm = CreateFile(path,                         // Port name
                             GENERIC_READ | GENERIC_WRITE, // Read/Write
                             0,                            // No sharing
                             NULL,                         // No security
-                            OPEN_EXISTING, // Open existing port only
-                            0,             // Non-overlapped I/O
-                            NULL);         // Null for Comm devices
+                            OPEN_EXISTING,                // Open existing port only
+                            0,                            // Non-overlapped I/O
+                            NULL);                        // Null for Comm devices
 
-  if (hComm == INVALID_HANDLE_VALUE) {
+  if (hComm == INVALID_HANDLE_VALUE)
+  {
     perror("Error opening COM port");
     return NULL;
   }
@@ -21,7 +71,8 @@ HANDLE initConnection(const char *path) {
   DCB dcbSerialParams = {0};
   dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
 
-  if (!GetCommState(hComm, &dcbSerialParams)) {
+  if (!GetCommState(hComm, &dcbSerialParams))
+  {
     perror("Error getting COM port state");
     CloseHandle(hComm);
     return NULL;
@@ -32,7 +83,8 @@ HANDLE initConnection(const char *path) {
   dcbSerialParams.StopBits = ONESTOPBIT; // Stop bits
   dcbSerialParams.Parity = NOPARITY;     // Parity
 
-  if (!SetCommState(hComm, &dcbSerialParams)) {
+  if (!SetCommState(hComm, &dcbSerialParams))
+  {
     perror("Error setting COM port state");
     CloseHandle(hComm);
     return NULL;
@@ -44,7 +96,8 @@ HANDLE initConnection(const char *path) {
   timeouts.ReadTotalTimeoutConstant = 50;
   timeouts.ReadTotalTimeoutMultiplier = 10;
 
-  if (!SetCommTimeouts(hComm, &timeouts)) {
+  if (!SetCommTimeouts(hComm, &timeouts))
+  {
     perror("Error setting COM port timeouts");
     CloseHandle(hComm);
     return NULL;
@@ -52,23 +105,28 @@ HANDLE initConnection(const char *path) {
   return hComm;
 }
 
-int writePort(HANDLE port, uint8_t *buffer, unsigned long toWrite) {
+int writePort(HANDLE port, uint8_t *buffer, unsigned long toWrite)
+{
   unsigned long amount;
-  if (!WriteFile(port, buffer, toWrite, &amount, NULL)) {
+  if (!WriteFile(port, buffer, toWrite, &amount, NULL))
+  {
     return -1;
   }
   return (int)amount;
 }
 
-int readPort(HANDLE port, uint8_t *buffer, unsigned long toRead) {
+int readPort(HANDLE port, uint8_t *buffer, unsigned long toRead)
+{
   unsigned long amount;
-  if (!ReadFile(port, buffer, toRead, &amount, NULL)) {
+  if (!ReadFile(port, buffer, toRead, &amount, NULL))
+  {
     return -1;
   }
   return (int)amount;
 }
 #else
-const char *find_device_path(const char *name) {
+const char *find_device_path(const char *name)
+{
   struct udev *udev;
   struct udev_enumerate *enumerate;
   struct udev_list_entry *devices, *dev_list_entry;
@@ -76,7 +134,8 @@ const char *find_device_path(const char *name) {
   const char *value = NULL;
 
   udev = udev_new();
-  if (!udev) {
+  if (!udev)
+  {
     fprintf(stderr, "Cannot create udev object\n");
     udev_unref(udev);
     return NULL;
@@ -88,18 +147,22 @@ const char *find_device_path(const char *name) {
 
   devices = udev_enumerate_get_list_entry(enumerate);
 
-  udev_list_entry_foreach(dev_list_entry, devices) {
+  udev_list_entry_foreach(dev_list_entry, devices)
+  {
     const char *path;
     path = udev_list_entry_get_name(dev_list_entry);
     dev = udev_device_new_from_syspath(udev, path);
     struct udev_device *parent_dev =
         udev_device_get_parent_with_subsystem_devtype(dev, "usb", "usb_device");
 
-    if (parent_dev) {
+    if (parent_dev)
+    {
       const char *device = udev_device_get_sysattr_value(parent_dev, "product");
-      if (device && strcmp(device, name) == 0) {
+      if (device && strcmp(device, name) == 0)
+      {
         value = udev_device_get_devnode(dev);
-        if (value) {
+        if (value)
+        {
           int port = initConnection(value);
 
           // Do a handshake
@@ -112,24 +175,30 @@ const char *find_device_path(const char *name) {
 
           // read response
           int offset = 0;
-          while (offset < 33) {
+          while (offset < 33)
+          {
             int read = readPort(port, response + offset, 33);
-            if (read < 0) {
+            if (read < 0)
+            {
               printf("Error reading from %s\n", value);
               break;
             }
-            if(read == 0){
-                break;
+            if (read == 0)
+            {
+              break;
             }
             offset += read;
           }
-          if(offset == 0){
-              continue;
+          if (offset == 0)
+          {
+            continue;
           }
 
           // check response
-          if (strcmp(response + 1, "Pico connected") == 0) {
+          if (strcmp(response + 1, "Pico connected") == 0)
+          {
             printf("Found device: %s -> %s\n", name, value);
+            close(port);
             break;
           }
 
@@ -147,9 +216,11 @@ const char *find_device_path(const char *name) {
   return value;
 }
 
-int initConnection(const char *path) {
+int initConnection(const char *path)
+{
   int port = open(path, O_RDWR);
-  if (port < 0) {
+  if (port < 0)
+  {
     printf("Error while connecting to %s : %s\n", path, strerror(errno));
     return 0;
   }
@@ -157,7 +228,8 @@ int initConnection(const char *path) {
 
   struct termios tty;
 
-  if (tcgetattr(port, &tty) != 0) {
+  if (tcgetattr(port, &tty) != 0)
+  {
     printf("Error from tcgetattr: %s\n", strerror(errno));
     return 0l;
   }
@@ -182,18 +254,21 @@ int initConnection(const char *path) {
 
   cfsetspeed(&tty, B115200);
 
-  if (tcsetattr(port, TCSANOW, &tty) != 0) {
+  if (tcsetattr(port, TCSANOW, &tty) != 0)
+  {
     printf("Error from tcsetattr: %s\n", strerror(errno));
   }
 
   return port;
 }
 
-int writePort(int port, uint8_t *buffer, int amount) {
+int writePort(int port, uint8_t *buffer, int amount)
+{
   return write(port, (void *)buffer, amount);
 }
 
-int readPort(int port, uint8_t *buffer, int amount) {
+int readPort(int port, uint8_t *buffer, int amount)
+{
   return read(port, (void *)buffer, amount);
 }
 #endif

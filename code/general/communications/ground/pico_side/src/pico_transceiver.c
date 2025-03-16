@@ -40,14 +40,17 @@ void pico_transceiver_update(PicoTransceiver *trans) {
     busy_wait_for_connect();
     return;
   }
+  // completely disregard any incomplete transmissions 
   if (result < 32) {
     return;
   }
+  // not sure how this works anymore
   if ((trans->fromPC[36] - 1) & 1) {
     trans->log.usbDisconnects.i++;
     busy_wait_for_connect();
     return;
   }
+  decode_buffer(trans->fromPC, 64);
   encode_buffer(trans->fromPC, 32);
   int bytesSent = nrf24_send(trans->fromPC, 32);
   int bytesReceived = nrf24_read(trans->toPC, 32, READ_TIMEOUT);

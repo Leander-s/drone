@@ -1,4 +1,4 @@
-Requirements:
+# Requirements:
     Windows:
         python
         MinGW
@@ -11,31 +11,22 @@ Requirements:
         arm-none-eabi compilers (see raspberrypi pico setup)
         gcc
 
-Init:
+# Init:
     run init.py
+    (Does not reliably work on windows atm)
 
-Build:
-    from "drone/code/general/" directory run "python build.py b" to build the output
-    from "drone/code/general/" directory run "python build.py r" to rebuild the files 
-        (deletes all previously built files and rebuilds them)
+# Build:
+    Pico:
+        from "drone/code/general/" directory run "python build.py b" to build the output
+        from "drone/code/general/" directory run "python build.py r" to rebuild the files 
+            (deletes all previously built files and rebuilds them)
 
-    3 Output files:
-        drone/code/general/drone/build -> *.uf2 goes in the drones pico
-        drone/code/general/ground/pc/build -> *.exe/*(unix executable) for pc
-        drone/code/general/ground/pico/build -> *.uf2 goes in pico connected to pc as transceiver
+        3 Output files:
+            drone/code/general/drone/build -> *.uf2 goes in the drones pico
+            drone/code/general/ground/pc/build -> *.exe or a unix executable for pc
+            drone/code/general/ground/pico/build -> *.uf2 goes in pico connected to pc as transceiver
 
-    right now, all the subprojects produce static libraries that go in the relevant lib folders.
-    For example drone/code/general/drone/lib for drone files
-
-    there is a build.py and rebuild.py in every subproject directory. 
-    To build only one subprojects and tests (if given), run build.py or rebuild.py
-    in the subprojects folder.
-
-IMPORTANT:
-    as of right now, you MUST manually set the COM port/dev file for the usb connection to the pico transceiver
-    otherwise, it might just not be the right port
-    the port can be set in drone/code/general/communications/ground/pc_side/src/main.c
-
+<!--
 drone/code/pico/*:
     This is where some tests for the pico and the pico-sdk are
 
@@ -51,6 +42,13 @@ pico read timouts are an issue. The nrf24 read on the pico transceiver times out
 Both pico seem to be stuck on read to make this happen. Need to sync better somehow.
         
 TODO:
+FIX THE CONTROLS FINALLY
+
+actual OpenGL implementation
+    - depth buffer to get actual sides instead of lines
+    - better model
+    - maybe some lighting to get a sense of the orientation
+
 transmissions per second needs to be averaged and updated every second or something so its actually readable
 
 make FloatBytes something other than a union. Union is too breakable.
@@ -64,3 +62,4 @@ Windows compatibility (done?):
 Foamboard frame
 
 Pico hat maximal 10 Mhz übertragungsrate also nicht ausreichend für video.
+-->

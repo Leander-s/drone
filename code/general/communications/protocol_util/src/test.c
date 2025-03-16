@@ -49,23 +49,21 @@ void test_equal(const char *testName, uint8_t *buffer1, uint8_t *buffer2,
 }
 
 int main() {
-  uint8_t test[64];
-  memset(test, 1, 64);
-  test[0] = 3;
-  memset(test + 28, 0, 4);
-  memset(test + 60, 0, 4);
-  test[4] = 255;
-  test[50] = 255;
+  uint8_t test[32];
+  uint8_t testOther[32];
+  memset(test, 0, 32);
 
-  uint8_t testCopy[64];
-  memcpy(testCopy, test, 64);
+  test[0] = 127;
+  test[1] = 127;
+  test[2] = 127;
+  test[3] = 200;
+
+  memcpy(testOther, test, 32);
 
   encode_buffer(test, 32);
-  encode_buffer(test + 32, 32);
-  test_sendable("Sendable test", test, 64);
+  test_sendable("Sendable test", test, 32);
 
   decode_buffer(test, 32);
-  decode_buffer(test + 32, 32);
-  test_equal("Equality test", test, testCopy, 64);
-  printf("This is the first : %d\n", test[0]);
+  test_equal("Equality test", test, testOther, 32);
+  printf("This is the yawAngle: %f\n", (float)test[3]/255.0f * 180.0f);
 }

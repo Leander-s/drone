@@ -1,4 +1,5 @@
 #include "connection.h"
+#include "protocol_util.h"
 #include <config.h>
 
 int main() {
@@ -9,7 +10,7 @@ int main() {
   // Setting up transceiver
   GroundTransceiverCreateInfo createInfo; // Not sure how to go about this yet
 #ifdef _WIN32
-  createInfo.path_to_port = "COM4";
+  createInfo.path_to_port = find_device_path("Pico");
 #else
   createInfo.path_to_port = find_device_path("Pico");
 #endif
@@ -27,12 +28,26 @@ int main() {
   GUIData guiData;
   guiData.log = &link->log;
   guiData.sensorState = &sensorData;
+  guiData.controlState = &controlState;
 
   GUI *gui = gui_create(800, 600);
 
   while (!gui->shouldQuit) {
     // sending to drone/receiving from drone
     ground_transceiver_update(link);
+
+    /*
+     * This is printing the decoded sendbuffer so hopefully what is received
+     * by the drone
+    uint8_t sendBufferCopy[64];
+    memcpy(&sendBufferCopy, link->sendBuffer, 64);
+    decode_buffer(sendBufferCopy, 64);
+    printf("[");
+    for(int i = 0; i < 32; i++){
+        printf("%u, ", sendBufferCopy[i]); 
+    }
+    printf("]\n");
+    */
 
     // updating gui
     gui_update(gui, &guiData);

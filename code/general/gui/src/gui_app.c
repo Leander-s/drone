@@ -1,4 +1,7 @@
 #include "SDL3/SDL_error.h"
+#include "SDL3/SDL_events.h"
+#include "SDL3/SDL_keyboard.h"
+#include "SDL3/SDL_keycode.h"
 #include "SDL3/SDL_pixels.h"
 #include "SDL3/SDL_rect.h"
 #include "SDL3/SDL_render.h"
@@ -35,6 +38,9 @@ GUI *gui_create(int width, int height) {
     return NULL;
   }
 
+  gui->updateCounter = 0;
+  memset(gui->keyState, 0, 322);
+
   return gui;
 }
 
@@ -46,20 +52,74 @@ void gui_update(GUI *gui, const GUIData *data) {
 
   data_sheet_draw(gui, data);
   drone_model_draw(gui, data);
+  hud_draw(gui, data);
 
   SDL_RenderPresent(renderer);
 
   SDL_Event event;
   SDL_PollEvent(&event);
+
+  SDL_Keymod currentModState = SDL_GetModState();
+
+  if (gui->updateCounter == 0) {
+    if (currentModState & SDL_KMOD_LSHIFT) {
+      if (data->controlState->throttle != 255) {
+        data->controlState->throttle++;
+      }
+    }
+    if (currentModState & SDL_KMOD_LCTRL) {
+      if (data->controlState->throttle != 0) {
+        data->controlState->throttle--;
+      }
+    }
+  }
+
+  data->controlState->pitch = 127;
+  data->controlState->roll = 127;
+  data->controlState->yaw = 127;
+
+  if (gui->keyState[SDLK_W]) {
+    data->controlState->pitch -= 60;
+  }
+  if (gui->keyState[SDLK_S]) {
+    data->controlState->pitch += 60;
+  }
+  if (gui->keyState[SDLK_A]) {
+    data->controlState->roll -= 60;
+  }
+  if (gui->keyState[SDLK_D]) {
+    data->controlState->roll += 60;
+  }
+  if (gui->keyState[SDLK_Q]) {
+    data->controlState->yaw -= 60;
+  }
+  if (gui->keyState[SDLK_E]) {
+    data->controlState->yaw += 60;
+  }
+
   switch (event.type) {
   case SDL_EVENT_QUIT:
     printf("Quitting\n");
     gui->shouldQuit = 1;
     return;
+  case SDL_EVENT_KEY_DOWN:
+    if (event.key.key > 321) {
+      break;
+    }
+    gui->keyState[event.key.key] = 1;
+    break;
+  case SDL_EVENT_KEY_UP:
+    if (event.key.key > 321) {
+      break;
+    }
+    gui->keyState[event.key.key] = 0;
+    break;
   case SDL_EVENT_WINDOW_RESIZED:
     SDL_GetWindowSizeInPixels(gui->window, &gui->width, &gui->height);
     break;
   }
+
+  gui->updateCounter = (gui->updateCounter + 1) % 1;
 }
 
 void gui_destroy(GUI *gui) {
@@ -67,6 +127,87 @@ void gui_destroy(GUI *gui) {
   SDL_DestroyRenderer(gui->renderer);
   SDL_DestroyWindow(gui->window);
   SDL_Quit();
+}
+
+void hud_draw(GUI *gui, const GUIData *data) {
+  SDL_Renderer *renderer = gui->renderer;
+  const int hudX = 0;
+  const int hudY = 0;
+  const int hudWidth = gui->width / 2;
+  const int hudHeight = gui->height;
+
+  const int botLeftX = hudWidth / 2;
+  const int botLeftY = hudHeight / 4 * 3;
+  const int botLeftWidth = hudWidth - botLeftX;
+  const int botLeftHeight = hudHeight - botLeftY;
+
+  const int botRightX = 0;
+  const int botRightY = hudHeight / 4 * 3;
+  const int botRightWidth = hudWidth / 2;
+  const int botRightHeight = hudHeight - botLeftY;
+
+  // draw throttle
+  const int throttleBoxX = botLeftX + botLeftWidth - 20;
+  const int throttleBoxY = botLeftY;
+  const int throttleBoxWidth = 10;
+  const int throttleBoxHeight = botLeftHeight - 10;
+
+  // draw box
+  rect_draw(renderer, throttleBoxX, throttleBoxY, throttleBoxWidth,
+            throttleBoxHeight, &WHITE);
+
+  // draw throttle
+  const int throttleHeight =
+      (int)((float)(data->controlState->throttle) / 255 * throttleBoxHeight);
+
+  rect_fill(renderer, throttleBoxX,
+            throttleBoxY + throttleBoxHeight - throttleHeight, throttleBoxWidth,
+            throttleHeight, &WHITE);
+
+  // draw pitch/yaw
+
+  // draw box
+  int boxX = botRightX + 10;
+  int boxY = botRightY;
+  int boxWidth = botRightWidth/2;
+  int boxHeight = botRightHeight/2 - 10;
+
+  rect_draw(renderer, boxX, boxY, boxWidth, boxHeight, &WHITE);
+
+  // draw crosshair
+  line_draw(renderer, boxX, boxY + boxHeight / 2, boxX + boxWidth,
+            boxY + boxHeight / 2, &WHITE);
+
+  line_draw(renderer, boxX + boxWidth / 2, boxY, boxX + boxWidth / 2,
+            boxY + boxHeight, &WHITE);
+
+  // draw indicator
+  int indX = boxX + (float)data->controlState->yaw / 255 * boxWidth;
+  int indY = boxY + (float)(255 - data->controlState->pitch) / 255 * boxHeight;
+
+  rect_fill(renderer, indX - 5, indY - 5, 10, 10, &WHITE);
+
+  // draw roll
+  
+  int rollLineX = botRightX + botRightWidth/4 + 10;
+  int rollLineY = botRightY + boxHeight + boxHeight/2 - 10;
+
+  int rollLineLeftX = 10;
+  int rollLineRightX = rollLineX + (rollLineX - rollLineLeftX);
+
+  float angle = (float)(data->controlState->roll - 127)/255 * 90;
+
+  float startX, startY, endX, endY;
+
+  rotate_point_2D(angle, rollLineLeftX - rollLineX, 0, &startX, &startY);
+  rotate_point_2D(angle, rollLineRightX - rollLineX, 0, &endX, &endY);
+
+  startX += rollLineX;
+  startY += rollLineY;
+  endX += rollLineX;
+  endY += rollLineY;
+
+  line_draw(renderer, startX, startY, endX, endY, &WHITE);
 }
 
 void data_sheet_draw(GUI *gui, const GUIData *data) {
@@ -134,7 +275,7 @@ Model *drone_model_create() {
   droneModel->vertices[6] = (vec3){.x = -0.5f, .y = 0.3f, .z = 0.1f};
   droneModel->vertices[7] = (vec3){.x = -0.5f, .y = -0.3f, .z = 0.1f};
 
-  /* Rect indices 
+  /* Rect indices
   droneModel->indices[0] = 0;
   droneModel->indices[1] = 1;
   droneModel->indices[2] = 2;
@@ -239,11 +380,11 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   };
 
   for (int i = 0; i < 8; i++) {
-    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i], &rotatedPoints[i]);
+    rotate_point(&data->sensorState->orientation, &droneModel->vertices[i],
+                 &rotatedPoints[i]);
     translate_point(&projection, &viewPort, &rotatedPoints[i], 30.0f,
                     &screenPoints[i]);
   }
-
 
   /*
   SDL_Color colors[6];
@@ -299,7 +440,7 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   */
 
   /* Drawing lines
-  */
+   */
   for (int i = 0; i < 48; i += 2) {
     SDL_Color color = LIGHT_GREY;
     if (droneModel->indices[i] < 4 && droneModel->indices[i + 1] < 4) {
