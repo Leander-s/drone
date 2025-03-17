@@ -28,7 +28,7 @@ typedef struct {
 typedef struct {
   // Vertex and index array or constant since we only need the drone model
   // for now, i test with a cube
-  vec3 vertices[8];
+  float vertices[8 * 3 * 6];
   int indices[48];
 } Model;
 

@@ -1,11 +1,13 @@
 #version 330 core
 
-layout(location = 0) in vec3 position;
+layout(location = 0) in vec3 aPosition;
+layout(location = 1) in vec3 aNormal;
 
 uniform mat4 uProjection;
 uniform vec4 uOrientation;
 
 out vec3 fragColor;
+out vec3 fNormal;
 
 vec3 rotateByQuaternion(vec3 point, vec4 q) {
     vec3 u = q.xyz;
@@ -17,7 +19,8 @@ vec3 rotateByQuaternion(vec3 point, vec4 q) {
 }
 
 void main() {
-    vec3 point = rotateByQuaternion(position, uOrientation);
+    vec3 point = rotateByQuaternion(aPosition, uOrientation);
     gl_Position = uProjection * vec4(point, 1.0f);
-    fragColor = vec3(0.5f, 0.5f, 0.5f, 1.0f);
+    fragColor = vec3(0.5f, 0.5f, 0.5f);
+    fNormal = aNormal;
 }

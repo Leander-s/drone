@@ -41,13 +41,17 @@ void setupBuffers(GUI* gui) {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(gui->droneModel->indices), gui->droneModel->indices, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // color attribute
-    /*
+    // normal attribute
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    /*
+    // color attribute
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(2);
     */
 }
 
@@ -71,8 +75,8 @@ GLuint compileShader(const char* path, GLenum type) {
 
 
 void setupShaders(GLuint *shaderProgram) {
-    GLuint vertexShader = compileShader("shader.vert", GL_VERTEX_SHADER);
-    GLuint fragmentShader = compileShader("shader.frag", GL_FRAGMENT_SHADER);
+    GLuint vertexShader = compileShader("../shaders/shader.vert", GL_VERTEX_SHADER);
+    GLuint fragmentShader = compileShader("../shaders/shader.frag", GL_FRAGMENT_SHADER);
 
     *shaderProgram = glCreateProgram();
     glAttachShader(*shaderProgram, vertexShader);
@@ -123,23 +127,28 @@ GUI *gui_create(int width, int height) {
   gui->window = SDL_CreateWindow(
           "Drone Controller", width, height, SDL_WINDOW_OPENGL
           );
-  printf("Window and renderer created\n");
   if (!gui->window) {
     SDL_Log("Creating window failed : %s\n", SDL_GetError());
-    return EXIT_FAILURE;
+    return NULL;
   }
+  
+  printf("Window and renderer created\n");
 
   SDL_GLContext glContext = SDL_GL_CreateContext(gui->window);
   if(!glContext){
     SDL_Log("Creating context failed : %s\n", SDL_GetError());
-    return EXIT_FAILURE;
+    return NULL;
   }
+
+  printf("glContext created\n");
 
   glewExperimental = GL_TRUE;
   if(glewInit() != GLEW_OK) {
     SDL_Log("GLEW initialization failed");
-    return EXIT_FAILURE;
+    return NULL;
   }
+
+  printf("Glew initialization");
 
   glEnable(GL_DEPTH_TEST);
   setupShaders(gui->shaderProgram);
@@ -152,6 +161,7 @@ GUI *gui_create(int width, int height) {
 }
 
 void gui_update(GUI *gui, const GUIData *data) {
+  printf("Updating\n");
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
@@ -371,14 +381,52 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 
 Model *drone_model_create() {
   Model *droneModel = malloc(sizeof(Model));
-  droneModel->vertices[0] = (vec3){.x = 0.5f, .y = -0.3f, .z = -0.1f};
-  droneModel->vertices[1] = (vec3){.x = 0.5f, .y = 0.3f, .z = -0.1f};
-  droneModel->vertices[2] = (vec3){.x = 0.5f, .y = 0.3f, .z = 0.1f};
-  droneModel->vertices[3] = (vec3){.x = 0.5f, .y = -0.3f, .z = 0.1f};
-  droneModel->vertices[4] = (vec3){.x = -0.5f, .y = -0.3f, .z = -0.1f};
-  droneModel->vertices[5] = (vec3){.x = -0.5f, .y = 0.3f, .z = -0.1f};
-  droneModel->vertices[6] = (vec3){.x = -0.5f, .y = 0.3f, .z = 0.1f};
-  droneModel->vertices[7] = (vec3){.x = -0.5f, .y = -0.3f, .z = 0.1f};
+  float verts[8 * 3 * 6] = {
+      0.5f, -0.3f, -0.1f, 0.0f, -1.0f, 0.0f,  // 0 
+      0.5f, -0.3f, -0.1f, 1.0f, 0.0f, 0.0f,   // 1
+      0.5f, -0.3f, -0.1f, 0.0f, 0.0f, -1.0f,  // 2
+
+      0.5f, 0.3f, -0.1f, 0.0f, 1.0f, 0.0f,    // 3
+      0.5f, 0.3f, -0.1f, 1.0f, 0.0f, 0.0f,    // 4
+      0.5f, 0.3f, -0.1f, 0.0f, 0.0f, -1.0f,   // 5
+
+      0.5f, 0.3f, 0.1f, 0.0f, 1.0f, 0.0f,     // 6
+      0.5f, 0.3f, 0.1f, 1.0f, 0.0f, 0.0f,     // 7
+      0.5f, 0.3f, 0.1f, 0.0f, 0.0f, 1.0f,     // 8
+ 
+      0.5f, -0.3f, 0.1f, 0.0f, -1.0f, 0.0f,   // 9
+      0.5f, -0.3f, 0.1f, 1.0f, 0.0f, 0.0f,    // 10
+      0.5f, -0.3f, 0.1f, 0.0f, 0.0f, 1.0f,    // 11
+
+      -0.5f, -0.3f, -0.1f, 0.0f, -1.0f, 0.0f, // 12
+      -0.5f, -0.3f, -0.1f, -1.0f, 0.0f, 0.0f, // 13 
+      -0.5f, -0.3f, -0.1f, 0.0f, 0.0f, -1.0f, // 14 
+
+      -0.5f, 0.3f, -0.1f, 0.0f, 1.0f, 0.0f,   // 15
+      -0.5f, 0.3f, -0.1f, -1.0f, 0.0f, 0.0f,  // 16
+      -0.5f, 0.3f, -0.1f, 0.0f, 0.0f, -1.0f,  // 17
+
+      -0.5f, 0.3f, 0.1f, 0.0f, 1.0f, 0.0f,    // 18
+      -0.5f, 0.3f, 0.1f, -1.0f, 0.0f, 0.0f,   // 19
+      -0.5f, 0.3f, 0.1f, 0.0f, 0.0f, 1.0f,    // 20
+
+      -0.5f, -0.3f, 0.1f, 0.0f, -1.0f, 0.0f,  // 21
+      -0.5f, -0.3f, 0.1f, -1.0f, 0.0f, 0.0f,  // 22
+      -0.5f, -0.3f, 0.1f, 0.0f, 0.0f, 1.0f,   // 23
+  };
+
+  memcpy(droneModel->vertices, verts, 8 * 3 * 6 * 4);
+
+  int indices[] = {
+      0, 9, 12, 0, 12, 21,   // back
+      1, 4, 7, 1, 7, 10,     // right
+      2, 5, 14, 2, 14, 17,   // bottom
+      3, 6, 15, 3, 15, 18,   // front
+      8, 11, 20, 11, 20, 23, // top 
+      13, 16, 19, 13, 19, 22,// left
+  };
+
+  memcpy(droneModel->indices, indices, 6 * 6 * 4);
 
   /* Rect indices
   droneModel->indices[0] = 0;
@@ -412,6 +460,7 @@ Model *drone_model_create() {
   droneModel->indices[23] = 6;
   */
 
+  /* Lines
   droneModel->indices[0] = 0;
   droneModel->indices[1] = 1;
   droneModel->indices[2] = 1;
@@ -460,6 +509,7 @@ Model *drone_model_create() {
   droneModel->indices[45] = 10;
   droneModel->indices[46] = 15;
   droneModel->indices[47] = 11;
+  */
 
   return droneModel;
 }
