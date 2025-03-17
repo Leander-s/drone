@@ -22,7 +22,7 @@ float deg_to_rad(float deg) { return deg * M_PI / 180; }
 
 float rad_to_deg(float rad) { return rad * 180 / M_PI; }
 
-void quaternion_set(Quaternion *quat, const vec3 *axis, const float degrees) {
+void quaternion_set(Quaternion *quat, const vector3 *axis, const float degrees) {
   float angle = deg_to_rad(degrees);
   quat->x = cos(angle / 2);
   quat->i = sin(angle / 2) * axis->x;
@@ -63,19 +63,19 @@ EulerAngles quaternion_to_euler(const Quaternion *quat){
     return angles;
 }
 
-void mult_vec3_scalar(const vec3 *vec, const float x, vec3 *dstVec) {
+void mult_vec3_scalar(const vector3 *vec, const float x, vector3 *dstVec) {
   dstVec->x = vec->x * x;
   dstVec->y = vec->y * x;
   dstVec->z = vec->z * x;
 }
 
-void vec3_add(const vec3 *vec1, const vec3 *vec2, vec3 *dstVec) {
+void vec3_add(const vector3 *vec1, const vector3 *vec2, vector3 *dstVec) {
   dstVec->x = vec1->x + vec2->x;
   dstVec->y = vec1->y + vec2->y;
   dstVec->z = vec1->z + vec2->z;
 }
 
-float vec3_dot(const vec3 *vec1, const vec3 *vec2) {
+float vec3_dot(const vector3 *vec1, const vector3 *vec2) {
   float result = 0;
   for (int i = 0; i < 3; i++) {
     result += vec1->data[i] * vec2->data[i];
@@ -83,7 +83,7 @@ float vec3_dot(const vec3 *vec1, const vec3 *vec2) {
   return result;
 }
 
-void vec3_cross(const vec3 *vec1, const vec3 *vec2, vec3 *dstVec) {
+void vec3_cross(const vector3 *vec1, const vector3 *vec2, vector3 *dstVec) {
   dstVec->x = (vec1->y * vec2->z - vec1->z * vec2->y);
   dstVec->y = (vec1->z * vec2->x - vec1->x * vec2->z);
   dstVec->z = (vec1->x * vec2->y - vec1->y * vec2->x);
@@ -92,15 +92,15 @@ void vec3_cross(const vec3 *vec1, const vec3 *vec2, vec3 *dstVec) {
 void mult_quat_quat(const Quaternion *quat1, const Quaternion *quat2,
                     Quaternion *result) {
     /*
-  vec3 axisPart1;
+  vector3 axisPart1;
   mult_vec3_scalar(&quat1->v, quat2->w, &axisPart1);
-  vec3 axisPart2;
+  vector3 axisPart2;
   mult_vec3_scalar(&quat2->v, quat1->w, &axisPart2);
-  vec3 axisPart3;
+  vector3 axisPart3;
   vec3_add(&axisPart1, &axisPart2, &axisPart3);
-  vec3 axisPart4;
+  vector3 axisPart4;
   vec3_cross(&quat1->v, &quat2->v, &axisPart4);
-  vec3 newV;
+  vector3 newV;
   vec3_add(&axisPart3, &axisPart4, &newV);
   float newW = quat1->w * quat2->w - vec3_dot(&quat2->v, &quat1->v);
   result->v = newV;
@@ -114,7 +114,7 @@ void mult_quat_quat(const Quaternion *quat1, const Quaternion *quat2,
   quaternion_normalize(result);
 }
 
-void mult_quat_vec(const Quaternion *quat, const vec3 *vec,
+void mult_quat_vec(const Quaternion *quat, const vector3 *vec,
                    Quaternion *result) {
   Quaternion vecQ;
   vecQ.v = *vec;
@@ -122,7 +122,7 @@ void mult_quat_vec(const Quaternion *quat, const vec3 *vec,
   mult_quat_quat(quat, &vecQ, result);
 }
 
-void mult_vec_quat(const vec3 *vec, const Quaternion *quat,
+void mult_vec_quat(const vector3 *vec, const Quaternion *quat,
                    Quaternion *result) {
   Quaternion vecQ;
   vecQ.v = *vec;
@@ -130,7 +130,7 @@ void mult_vec_quat(const vec3 *vec, const Quaternion *quat,
   mult_quat_quat(&vecQ, quat, result);
 }
 
-void rotate_point(const Quaternion *quat, const vec3 *point, vec3 *dstPoint) {
+void rotate_point(const Quaternion *quat, const vector3 *point, vector3 *dstPoint) {
   if (point->x == 0 && point->y == 0 && point->z == 0) {
     *dstPoint = *point;
     return;

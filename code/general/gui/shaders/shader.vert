@@ -21,6 +21,6 @@ vec3 rotateByQuaternion(vec3 point, vec4 q) {
 void main() {
     vec3 point = rotateByQuaternion(aPosition, uOrientation);
     gl_Position = uProjection * vec4(point, 1.0f);
-    fragColor = vec3(0.5f, 0.5f, 0.5f);
-    fNormal = aNormal;
+    fragColor = vec3(1.0f, 1.0f, 1.0f);
+    fNormal = rotateByQuaternion(aNormal, uOrientation);
 }

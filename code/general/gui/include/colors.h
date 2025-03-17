@@ -1,5 +1,5 @@
 #pragma once
-#include "gui_config.h"
+#include <SDL3/SDL.h>
 
 const SDL_Color WHITE = {.r = 255, .g = 255, .b = 255, .a = 255};
 const SDL_Color BLACK = {.r = 0, .g = 0, .b = 0, .a = 255};

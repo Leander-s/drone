@@ -11,10 +11,11 @@ typedef struct {
   // SDL
   SDL_Window *window;
   SDL_Renderer *renderer;
+  SDL_GLContext glContext;
 
   // OpenGL
-  GLuint *shaderProgram;
-  GLuint *VBO, *VAO, *IBO;
+  GLuint shaderProgram;
+  GLuint VBO, VAO, IBO;
 
   // logic
   int width;

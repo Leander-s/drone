@@ -48,6 +48,9 @@ OpenGL implementation (need to do all the rendering again)
     - maybe some lighting to get a sense of the orientation
 this shouldnt be that hard but it sounds like a lot so I will take a day
 
+Everything math related needs to be handled by glm (vectors, matrices) -> get
+rid of my math code
+
 transmissions per second needs to be averaged and updated every second or something so its actually readable
 
 make FloatBytes something other than a union. Union is too breakable.

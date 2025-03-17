@@ -1,3 +1,4 @@
+#include "GL/glew.h"
 #include "SDL3/SDL_error.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_keyboard.h"
@@ -5,97 +6,100 @@
 #include "SDL3/SDL_pixels.h"
 #include "SDL3/SDL_rect.h"
 #include "SDL3/SDL_render.h"
-#include "GL/glew.h"
 #include "SDL3/SDL_video.h"
-#include "general_math.h"
 #include <colors.h>
 #include <gui_app.h>
 
-char* readShaderSource(const char* filename) {
-    FILE* fp = fopen(filename, "r");
-    if (!fp) {
-        fprintf(stderr, "Unable to open shader file %s\n", filename);
-        exit(EXIT_FAILURE);
-    }
-    fseek(fp, 0, SEEK_END);
-    size_t size = ftell(fp);
-    rewind(fp);
-    char* source = malloc(size + 1);
-    fread(source, 1, size, fp);
-    source[size] = '\0';
-    fclose(fp);
-    return source;
+char *readShaderSource(const char *filename) {
+  FILE *fp = fopen(filename, "r");
+  if (!fp) {
+    fprintf(stderr, "Unable to open shader file %s\n", filename);
+    exit(EXIT_FAILURE);
+  }
+  fseek(fp, 0, SEEK_END);
+  size_t size = ftell(fp);
+  rewind(fp);
+  char *source = malloc(size + 1);
+  fread(source, 1, size, fp);
+  source[size] = '\0';
+  fclose(fp);
+  return source;
 }
 
-void setupBuffers(GUI* gui) {
-    glGenVertexArrays(1, gui->VAO);
-    glGenBuffers(1, gui->VBO);
-    glGenBuffers(1, gui->shaderProgram);
+void setupBuffers(GUI *gui) {
+  glGenVertexArrays(1, &gui->VAO);
+  glGenBuffers(1, &gui->VBO);
+  glGenBuffers(1, &gui->IBO);
 
-    glBindVertexArray(*gui->VAO);
+  glBindVertexArray(gui->VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, *gui->VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gui->droneModel->vertices), gui->droneModel->vertices, GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, gui->VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(gui->droneModel->vertices),
+               gui->droneModel->vertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *gui->IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(gui->droneModel->indices), gui->droneModel->indices, GL_STATIC_DRAW);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gui->IBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(gui->droneModel->indices),
+               gui->droneModel->indices, GL_STATIC_DRAW);
 
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+  // position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
+  glEnableVertexAttribArray(0);
 
-    // normal attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+  // normal attribute
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+                        (void *)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
 
-    /*
-    // color attribute
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-    */
+  /*
+  // color attribute
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 *
+  sizeof(float))); glEnableVertexAttribArray(2);
+  */
 }
 
-GLuint compileShader(const char* path, GLenum type) {
-    char* src = readShaderSource(path);
-    GLuint shader = glCreateShader(type);
-    glShaderSource(shader, 1, (const GLchar**)&src, NULL);
-    glCompileShader(shader);
-    free(src);
+GLuint compileShader(const char *path, GLenum type) {
+  char *src = readShaderSource(path);
+  GLuint shader = glCreateShader(type);
+  glShaderSource(shader, 1, (const GLchar **)&src, NULL);
+  glCompileShader(shader);
+  free(src);
 
-    GLint success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        char log[512];
-        glGetShaderInfoLog(shader, 512, NULL, log);
-        fprintf(stderr, "Shader compile error (%s):\n%s\n", path, log);
-        exit(EXIT_FAILURE);
-    }
-    return shader;
+  GLint success;
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    char log[512];
+    glGetShaderInfoLog(shader, 512, NULL, log);
+    fprintf(stderr, "Shader compile error (%s):\n%s\n", path, log);
+    exit(EXIT_FAILURE);
+  }
+  return shader;
 }
 
+GLuint setupShaders() {
+  GLuint vertexShader =
+      compileShader("../shaders/shader.vert", GL_VERTEX_SHADER);
+  GLuint fragmentShader =
+      compileShader("../shaders/shader.frag", GL_FRAGMENT_SHADER);
 
-void setupShaders(GLuint *shaderProgram) {
-    GLuint vertexShader = compileShader("../shaders/shader.vert", GL_VERTEX_SHADER);
-    GLuint fragmentShader = compileShader("../shaders/shader.frag", GL_FRAGMENT_SHADER);
+  printf("Creating program");
+  GLuint shaderProgram = glCreateProgram();
+  glAttachShader(shaderProgram, vertexShader);
+  glAttachShader(shaderProgram, fragmentShader);
+  glLinkProgram(shaderProgram);
 
-    *shaderProgram = glCreateProgram();
-    glAttachShader(*shaderProgram, vertexShader);
-    glAttachShader(*shaderProgram, fragmentShader);
-    glLinkProgram(*shaderProgram);
+  GLint success;
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  if (!success) {
+    char log[512];
+    glGetProgramInfoLog(shaderProgram, 512, NULL, log);
+    fprintf(stderr, "Shader linking error:\n%s\n", log);
+    exit(EXIT_FAILURE);
+  }
 
-    GLint success;
-    glGetProgramiv(*shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        char log[512];
-        glGetProgramInfoLog(*shaderProgram, 512, NULL, log);
-        fprintf(stderr, "Shader linking error:\n%s\n", log);
-        exit(EXIT_FAILURE);
-    }
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
+  return shaderProgram;
 }
-
 
 GUI *gui_create(int width, int height) {
   int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
@@ -111,47 +115,84 @@ GUI *gui_create(int width, int height) {
   }
 
   GUI *gui = malloc(sizeof(GUI));
+  if (!gui) {
+    SDL_Log("Failed to allocate memory for GUI");
+    return NULL;
+  }
+
   gui->width = width;
   gui->height = height;
   gui->shouldQuit = 0;
-  printf("Creating model\n");
-  gui->droneModel = drone_model_create();
-  printf("Model created\n");
 
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS,
+                      SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 
-  gui->window = SDL_CreateWindow(
-          "Drone Controller", width, height, SDL_WINDOW_OPENGL
-          );
+  gui->window =
+      SDL_CreateWindow("Drone Controller", width, height, SDL_WINDOW_OPENGL);
   if (!gui->window) {
     SDL_Log("Creating window failed : %s\n", SDL_GetError());
     return NULL;
   }
-  
+
   printf("Window and renderer created\n");
 
-  SDL_GLContext glContext = SDL_GL_CreateContext(gui->window);
-  if(!glContext){
+  gui->glContext = SDL_GL_CreateContext(gui->window);
+  if (!gui->glContext) {
     SDL_Log("Creating context failed : %s\n", SDL_GetError());
+    return NULL;
+  }
+  // Explicitly make context current (to be safe)
+  if (SDL_GL_MakeCurrent(gui->window, gui->glContext) != 0) {
+    fprintf(stderr, "SDL_GL_MakeCurrent Error: %s\n", SDL_GetError());
+    SDL_GL_DestroyContext(gui->glContext);
+    SDL_DestroyWindow(gui->window);
+    SDL_Quit();
     return NULL;
   }
 
   printf("glContext created\n");
 
+  const GLubyte *version = glGetString(GL_VERSION);
+  if (!version) {
+    fprintf(stderr, "No valid OpenGL context!\n");
+    SDL_GL_DestroyContext(gui->glContext);
+    SDL_DestroyWindow(gui->window);
+    SDL_Quit();
+    return NULL;
+  }
+  printf("OpenGL version: %s\n", version);
+
   glewExperimental = GL_TRUE;
-  if(glewInit() != GLEW_OK) {
+
+  printf("Initilizing glew\n");
+  GLenum err = glewInit();
+  if (err != GLEW_OK) {
     SDL_Log("GLEW initialization failed");
     return NULL;
   }
 
-  printf("Glew initialization");
+  printf("GLEW version: %s\n", glewGetString(GLEW_VERSION));
+  if (GLEW_VERSION_3_3) {
+    printf("OpenGL 3.3 is supported\n");
+  } else {
+    printf("OpenGL 3.3 is NOT supported\n");
+  }
+
+  gui->droneModel = drone_model_create();
 
   glEnable(GL_DEPTH_TEST);
-  setupShaders(gui->shaderProgram);
+  err = glGetError();
+  if (err != GL_NO_ERROR) {
+    printf("Error in depth test: 0x%x\n", err);
+  }
+
+  gui->shaderProgram = setupShaders();
+
   setupBuffers(gui);
 
   gui->updateCounter = 0;
@@ -161,13 +202,15 @@ GUI *gui_create(int width, int height) {
 }
 
 void gui_update(GUI *gui, const GUIData *data) {
-  printf("Updating\n");
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glDisable(GL_CULL_FACE);
 
   // data_sheet_draw(gui, data);
   drone_model_draw(gui, data);
   // hud_draw(gui, data);
+  
+  SDL_GL_SwapWindow(gui->window);
 
   SDL_Event event;
   SDL_PollEvent(&event);
@@ -236,10 +279,11 @@ void gui_update(GUI *gui, const GUIData *data) {
 }
 
 void gui_destroy(GUI *gui) {
-  glDeleteBuffers(1, gui->VBO);
-  glDeleteBuffers(1, gui->VAO);
-  glDeleteBuffers(1, gui->IBO);
+  glDeleteBuffers(1, &gui->VBO);
+  glDeleteBuffers(1, &gui->VAO);
+  glDeleteBuffers(1, &gui->IBO);
   drone_model_destroy(gui->droneModel);
+  SDL_GL_DestroyContext(gui->glContext);
   SDL_DestroyWindow(gui->window);
   SDL_Quit();
 }
@@ -284,8 +328,8 @@ void hud_draw(GUI *gui, const GUIData *data) {
   // draw box
   int boxX = botRightX + 10;
   int boxY = botRightY;
-  int boxWidth = botRightWidth/2;
-  int boxHeight = botRightHeight/2 - 10;
+  int boxWidth = botRightWidth / 2;
+  int boxHeight = botRightHeight / 2 - 10;
 
   rect_draw(renderer, boxX, boxY, boxWidth, boxHeight, &WHITE);
 
@@ -303,14 +347,14 @@ void hud_draw(GUI *gui, const GUIData *data) {
   rect_fill(renderer, indX - 5, indY - 5, 10, 10, &WHITE);
 
   // draw roll
-  
-  int rollLineX = botRightX + botRightWidth/4 + 10;
-  int rollLineY = botRightY + boxHeight + boxHeight/2 - 10;
+
+  int rollLineX = botRightX + botRightWidth / 4 + 10;
+  int rollLineY = botRightY + boxHeight + boxHeight / 2 - 10;
 
   int rollLineLeftX = 10;
   int rollLineRightX = rollLineX + (rollLineX - rollLineLeftX);
 
-  float angle = (float)(data->controlState->roll - 127)/255 * 90;
+  float angle = (float)(data->controlState->roll - 127) / 255 * 90;
 
   float startX, startY, endX, endY;
 
@@ -382,48 +426,48 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 Model *drone_model_create() {
   Model *droneModel = malloc(sizeof(Model));
   float verts[8 * 3 * 6] = {
-      0.5f, -0.3f, -0.1f, 0.0f, -1.0f, 0.0f,  // 0 
-      0.5f, -0.3f, -0.1f, 1.0f, 0.0f, 0.0f,   // 1
-      0.5f, -0.3f, -0.1f, 0.0f, 0.0f, -1.0f,  // 2
+      0.5f,  -0.1f, -0.3f, 0.0f,  -1.0f, 0.0f,  // 0
+      0.5f,  -0.1f, -0.3f, 1.0f,  0.0f,  0.0f,  // 1
+      0.5f,  -0.1f, -0.3f, 0.0f,  0.0f,  -1.0f, // 2
 
-      0.5f, 0.3f, -0.1f, 0.0f, 1.0f, 0.0f,    // 3
-      0.5f, 0.3f, -0.1f, 1.0f, 0.0f, 0.0f,    // 4
-      0.5f, 0.3f, -0.1f, 0.0f, 0.0f, -1.0f,   // 5
+      0.5f,  0.1f,  -0.3f, 0.0f,  1.0f,  0.0f,  // 3
+      0.5f,  0.1f,  -0.3f, 1.0f,  0.0f,  0.0f,  // 4
+      0.5f,  0.1f,  -0.3f, 0.0f,  0.0f,  -1.0f, // 5
 
-      0.5f, 0.3f, 0.1f, 0.0f, 1.0f, 0.0f,     // 6
-      0.5f, 0.3f, 0.1f, 1.0f, 0.0f, 0.0f,     // 7
-      0.5f, 0.3f, 0.1f, 0.0f, 0.0f, 1.0f,     // 8
- 
-      0.5f, -0.3f, 0.1f, 0.0f, -1.0f, 0.0f,   // 9
-      0.5f, -0.3f, 0.1f, 1.0f, 0.0f, 0.0f,    // 10
-      0.5f, -0.3f, 0.1f, 0.0f, 0.0f, 1.0f,    // 11
+      0.5f,  0.1f,  0.3f,  0.0f,  1.0f,  0.0f, // 6
+      0.5f,  0.1f,  0.3f,  1.0f,  0.0f,  0.0f, // 7
+      0.5f,  0.1f,  0.3f,  0.0f,  0.0f,  1.0f, // 8
 
-      -0.5f, -0.3f, -0.1f, 0.0f, -1.0f, 0.0f, // 12
-      -0.5f, -0.3f, -0.1f, -1.0f, 0.0f, 0.0f, // 13 
-      -0.5f, -0.3f, -0.1f, 0.0f, 0.0f, -1.0f, // 14 
+      0.5f,  -0.1f, 0.3f,  0.0f,  -1.0f, 0.0f, // 9
+      0.5f,  -0.1f, 0.3f,  1.0f,  0.0f,  0.0f, // 10
+      0.5f,  -0.1f, 0.3f,  0.0f,  0.0f,  1.0f, // 11
 
-      -0.5f, 0.3f, -0.1f, 0.0f, 1.0f, 0.0f,   // 15
-      -0.5f, 0.3f, -0.1f, -1.0f, 0.0f, 0.0f,  // 16
-      -0.5f, 0.3f, -0.1f, 0.0f, 0.0f, -1.0f,  // 17
+      -0.5f, -0.1f, -0.3f, 0.0f,  -1.0f, 0.0f,  // 12
+      -0.5f, -0.1f, -0.3f, -1.0f, 0.0f,  0.0f,  // 13
+      -0.5f, -0.1f, -0.3f, 0.0f,  0.0f,  -1.0f, // 14
 
-      -0.5f, 0.3f, 0.1f, 0.0f, 1.0f, 0.0f,    // 18
-      -0.5f, 0.3f, 0.1f, -1.0f, 0.0f, 0.0f,   // 19
-      -0.5f, 0.3f, 0.1f, 0.0f, 0.0f, 1.0f,    // 20
+      -0.5f, 0.1f,  -0.3f, 0.0f,  1.0f,  0.0f,  // 15
+      -0.5f, 0.1f,  -0.3f, -1.0f, 0.0f,  0.0f,  // 16
+      -0.5f, 0.1f,  -0.3f, 0.0f,  0.0f,  -1.0f, // 17
 
-      -0.5f, -0.3f, 0.1f, 0.0f, -1.0f, 0.0f,  // 21
-      -0.5f, -0.3f, 0.1f, -1.0f, 0.0f, 0.0f,  // 22
-      -0.5f, -0.3f, 0.1f, 0.0f, 0.0f, 1.0f,   // 23
+      -0.5f, 0.1f,  0.3f,  0.0f,  1.0f,  0.0f, // 18
+      -0.5f, 0.1f,  0.3f,  -1.0f, 0.0f,  0.0f, // 19
+      -0.5f, 0.1f,  0.3f,  0.0f,  0.0f,  1.0f, // 20
+
+      -0.5f, -0.1f, 0.3f,  0.0f,  -1.0f, 0.0f, // 21
+      -0.5f, -0.1f, 0.3f,  -1.0f, 0.0f,  0.0f, // 22
+      -0.5f, -0.1f, 0.3f,  0.0f,  0.0f,  1.0f, // 23
   };
 
   memcpy(droneModel->vertices, verts, 8 * 3 * 6 * 4);
 
-  int indices[] = {
-      0, 9, 12, 0, 12, 21,   // back
-      1, 4, 7, 1, 7, 10,     // right
-      2, 5, 14, 2, 14, 17,   // bottom
-      3, 6, 15, 3, 15, 18,   // front
-      8, 11, 20, 11, 20, 23, // top 
-      13, 16, 19, 13, 19, 22,// left
+  int indices[6 * 6] = {
+      0,  9,  12, 9,  21, 12, // bottom 
+      1,  10,  7,  7,  4,  1, // right
+      2,  5,  14, 2,  14, 17, // front
+      15,  6,  3, 15,  18, 6, // top
+      8,  11, 20, 11, 20, 23, // back
+      13, 16, 19, 13, 19, 22, // left
   };
 
   memcpy(droneModel->indices, indices, 6 * 6 * 4);
@@ -519,26 +563,29 @@ void drone_model_destroy(Model *droneModel) { free(droneModel); }
 void drone_model_draw(GUI *gui, const GUIData *data) {
   Model *droneModel = gui->droneModel;
 
-  mat4 projection, viewPort;
-  create_view_port(gui->width / 2.0f, gui->height, 100.0f, 0.1f, &viewPort);
-  create_mvp((float)gui->width / 2.0f / gui->height, deg_to_rad(60), 100.0f,
-             0.1f, &projection);
+  mat4 projection;
+  // mat4 projection, viewPort;
+  // create_view_port(gui->width / 2.0f, gui->height, 100.0f, 0.1f, viewPort);
+  create_mvp((float)gui->width / gui->height, deg_to_rad(60.0f), 100.0f,
+             0.1f, projection);
 
-  GLuint uOrientation = glGetUniformLocation(*gui->shaderProgram, "uOrientation");
-  GLuint uProjection = glGetUniformLocation(*gui->shaderProgram, "uProjection");
+  GLuint uOrientation =
+      glGetUniformLocation(gui->shaderProgram, "uOrientation");
+  GLuint uProjection = glGetUniformLocation(gui->shaderProgram, "uProjection");
 
-  glUniform4f(
-          uOrientation,
-          data->sensorState->orientation.w, 
-          data->sensorState->orientation.i,
-          data->sensorState->orientation.j,
-          data->sensorState->orientation.k);
+  glUniform4f(uOrientation, data->sensorState->orientation.w,
+              data->sensorState->orientation.i,
+              data->sensorState->orientation.j,
+              data->sensorState->orientation.k);
 
-  glUniformMatrix4fv(uProjection, 1, GL_FALSE, (float*)&projection); 
+  glUniformMatrix4fv(uProjection, 1, GL_FALSE, (float *)projection);
 
-  glUseProgram(*gui->shaderProgram);
-  glBindVertexArray(*gui->VAO);
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+
+  glUseProgram(gui->shaderProgram);
+  glBindVertexArray(gui->VAO);
+  glDrawElements(GL_TRIANGLES, sizeof(gui->droneModel->indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 }
 
 void line_draw(SDL_Renderer *renderer, int x, int y, int endX, int endY,

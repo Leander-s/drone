@@ -10,7 +10,7 @@ int main() {
                                          .usbDisconnects = 0};
   GUIData dummyData;
   dummyData.log = dummyLog;
-  DroneSensorState sensorState = (DroneSensorState){.orientation = (Quaternion){.w = 0.2, .v = (vec3){.x = 0.3, .y = 0.2, .z = 0.1}}};
+  DroneSensorState sensorState = (DroneSensorState){.orientation = (Quaternion){.w = 0.0, .v = (vector3){.x = 1.0f, .y = 0.0f, .z = 0.0f}}};
   dummyData.sensorState = &sensorState;
   DroneControlState controlState = (DroneControlState){.throttle = 0, .pitch = 0, .yaw = 0, .roll = 0};
   dummyData.controlState = &controlState;

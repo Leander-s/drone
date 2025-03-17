@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
-#include <math.h>
-#include <string.h>
 #include <general_math.h>
+#include <cglm/cglm.h>
+#include <string.h>
 
 typedef union {
   struct {
@@ -9,7 +9,7 @@ typedef union {
     float y;
   };
   float data[2];
-} vec2;
+} vector2;
 
 typedef union {
   struct {
@@ -19,28 +19,28 @@ typedef union {
     float w;
   };
   float data[4];
-} vec4;
+} vector4;
 
 typedef struct {
-  vec4 col[4];
-} mat4;
+  vector4 col[4];
+} matrix4;
 
 typedef struct {
   // Vertex and index array or constant since we only need the drone model
   // for now, i test with a cube
   float vertices[8 * 3 * 6];
-  int indices[48];
+  int indices[6 * 6];
 } Model;
 
-void translate_point(const mat4 *mvp, const mat4 *viewPort, const vec3 *point,
-                     const float zoom, vec2 *dstPoint);
+void translate_point(const matrix4 *mvp, const matrix4 *viewPort, const vector3 *point,
+                     const float zoom, vector2 *dstPoint);
 
 void create_mvp(const float aspectRatio, const float fov, const float far,
-                const float near, mat4 *result);
+                const float near, mat4 result);
 
 void create_view_port(const float width, const float height, const float far,
-                      const float near, mat4 *result);
+                      const float near, matrix4 *result);
 
-void mult_mat_vec(const mat4 *mat, const vec4 *vec, vec4 *dstVec);
+void mult_mat_vec(const matrix4 *mat, const vector4 *vec, vector4 *dstVec);
 
-void mult_mat_mat(const mat4 *first, const mat4 *second, mat4 *result);
+void mult_mat_mat(const matrix4 *first, const matrix4 *second, matrix4 *result);
