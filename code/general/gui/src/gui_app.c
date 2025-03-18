@@ -52,8 +52,9 @@ void setupBuffers(GUI *gui) {
 
   /*
   // color attribute
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 *
-  sizeof(float))); glEnableVertexAttribArray(2);
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float),
+          (void*)(6 * sizeof(float))); 
+  glEnableVertexAttribArray(2);
   */
 }
 
@@ -133,7 +134,7 @@ GUI *gui_create(int width, int height) {
                       SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 
   gui->window =
-      SDL_CreateWindow("Drone Controller", width, height, SDL_WINDOW_OPENGL);
+      SDL_CreateWindow("Drone Controller", width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
   if (!gui->window) {
     SDL_Log("Creating window failed : %s\n", SDL_GetError());
     return NULL;
@@ -272,6 +273,7 @@ void gui_update(GUI *gui, const GUIData *data) {
     break;
   case SDL_EVENT_WINDOW_RESIZED:
     SDL_GetWindowSizeInPixels(gui->window, &gui->width, &gui->height);
+    glViewport(0, 0, event.window.data1, event.window.data2);
     break;
   }
 
@@ -425,49 +427,57 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
 
 Model *drone_model_create() {
   Model *droneModel = malloc(sizeof(Model));
-  float verts[8 * 3 * 6] = {
-      0.5f,  -0.1f, -0.3f, 0.0f,  -1.0f, 0.0f,  // 0
-      0.5f,  -0.1f, -0.3f, 1.0f,  0.0f,  0.0f,  // 1
-      0.5f,  -0.1f, -0.3f, 0.0f,  0.0f,  -1.0f, // 2
+  float verts[8 * 3 * 6] = { 
+      // right, bottom, front
+      0.3f,  -0.1f, -0.5f, 0.0f,  -1.0f, 0.0f,  // 0, bottom
+      0.3f,  -0.1f, -0.5f, 1.0f,  0.0f,  0.0f,  // 1, right
+      0.3f,  -0.1f, -0.5f, 0.0f,  0.0f,  -1.0f, // 2, front
 
-      0.5f,  0.1f,  -0.3f, 0.0f,  1.0f,  0.0f,  // 3
-      0.5f,  0.1f,  -0.3f, 1.0f,  0.0f,  0.0f,  // 4
-      0.5f,  0.1f,  -0.3f, 0.0f,  0.0f,  -1.0f, // 5
+      // right, top, front
+      0.3f,  0.1f,  -0.5f, 0.0f,  1.0f,  0.0f,  // 3, top
+      0.3f,  0.1f,  -0.5f, 1.0f,  0.0f,  0.0f,  // 4, right
+      0.3f,  0.1f,  -0.5f, 0.0f,  0.0f,  -1.0f, // 5, front
 
-      0.5f,  0.1f,  0.3f,  0.0f,  1.0f,  0.0f, // 6
-      0.5f,  0.1f,  0.3f,  1.0f,  0.0f,  0.0f, // 7
-      0.5f,  0.1f,  0.3f,  0.0f,  0.0f,  1.0f, // 8
+      // right, top, back
+      0.3f,  0.1f,  0.5f,  0.0f,  1.0f,  0.0f, // 6, top
+      0.3f,  0.1f,  0.5f,  1.0f,  0.0f,  0.0f, // 7, right
+      0.3f,  0.1f,  0.5f,  0.0f,  0.0f,  1.0f, // 8, back
 
-      0.5f,  -0.1f, 0.3f,  0.0f,  -1.0f, 0.0f, // 9
-      0.5f,  -0.1f, 0.3f,  1.0f,  0.0f,  0.0f, // 10
-      0.5f,  -0.1f, 0.3f,  0.0f,  0.0f,  1.0f, // 11
+      // right, bottom, back
+      0.3f,  -0.1f, 0.5f,  0.0f,  -1.0f, 0.0f, // 9, bottom
+      0.3f,  -0.1f, 0.5f,  1.0f,  0.0f,  0.0f, // 10, right
+      0.3f,  -0.1f, 0.5f,  0.0f,  0.0f,  1.0f, // 11, back
 
-      -0.5f, -0.1f, -0.3f, 0.0f,  -1.0f, 0.0f,  // 12
-      -0.5f, -0.1f, -0.3f, -1.0f, 0.0f,  0.0f,  // 13
-      -0.5f, -0.1f, -0.3f, 0.0f,  0.0f,  -1.0f, // 14
+      // left, bottom, front
+      -0.3f, -0.1f, -0.5f, 0.0f,  -1.0f, 0.0f,  // 12, bottom
+      -0.3f, -0.1f, -0.5f, -1.0f, 0.0f,  0.0f,  // 13, left
+      -0.3f, -0.1f, -0.5f, 0.0f,  0.0f,  -1.0f, // 14, front
 
-      -0.5f, 0.1f,  -0.3f, 0.0f,  1.0f,  0.0f,  // 15
-      -0.5f, 0.1f,  -0.3f, -1.0f, 0.0f,  0.0f,  // 16
-      -0.5f, 0.1f,  -0.3f, 0.0f,  0.0f,  -1.0f, // 17
+      // left, top, front
+      -0.3f, 0.1f,  -0.5f, 0.0f,  1.0f,  0.0f,  // 15, top
+      -0.3f, 0.1f,  -0.5f, -1.0f, 0.0f,  0.0f,  // 16, left
+      -0.3f, 0.1f,  -0.5f, 0.0f,  0.0f,  -1.0f, // 17, front
 
-      -0.5f, 0.1f,  0.3f,  0.0f,  1.0f,  0.0f, // 18
-      -0.5f, 0.1f,  0.3f,  -1.0f, 0.0f,  0.0f, // 19
-      -0.5f, 0.1f,  0.3f,  0.0f,  0.0f,  1.0f, // 20
+      // left, top, back
+      -0.3f, 0.1f,  0.5f,  0.0f,  1.0f,  0.0f, // 18, top
+      -0.3f, 0.1f,  0.5f,  -1.0f, 0.0f,  0.0f, // 19, left
+      -0.3f, 0.1f,  0.5f,  0.0f,  0.0f,  1.0f, // 20, back
 
-      -0.5f, -0.1f, 0.3f,  0.0f,  -1.0f, 0.0f, // 21
-      -0.5f, -0.1f, 0.3f,  -1.0f, 0.0f,  0.0f, // 22
-      -0.5f, -0.1f, 0.3f,  0.0f,  0.0f,  1.0f, // 23
+      // left, bottom, back
+      -0.3f, -0.1f, 0.5f,  0.0f,  -1.0f, 0.0f, // 21, bottom
+      -0.3f, -0.1f, 0.5f,  -1.0f, 0.0f,  0.0f, // 22, left
+      -0.3f, -0.1f, 0.5f,  0.0f,  0.0f,  1.0f, // 23, back
   };
 
   memcpy(droneModel->vertices, verts, 8 * 3 * 6 * 4);
 
   int indices[6 * 6] = {
       0,  9,  12, 9,  21, 12, // bottom 
-      1,  10,  7,  7,  4,  1, // right
-      2,  5,  14, 2,  14, 17, // front
+      1,  7,  10,  1,  4,  7, // right
+      2,  14,  5, 14,  17, 5, // front
       15,  6,  3, 15,  18, 6, // top
-      8,  11, 20, 11, 20, 23, // back
-      13, 16, 19, 13, 19, 22, // left
+      8,  20, 11, 11, 20, 23, // back
+      13, 19, 16, 13, 22, 19, // left
   };
 
   memcpy(droneModel->indices, indices, 6 * 6 * 4);
@@ -582,6 +592,7 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
 
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
+  glFrontFace(GL_CCW);
 
   glUseProgram(gui->shaderProgram);
   glBindVertexArray(gui->VAO);

@@ -24,7 +24,7 @@ void create_mvp(const float aspectRatio, const float fov, const float near,
 
   glm_mat4_identity(model);
   glm_translate(model, (vec3){0.0f, 0.0f, -1.0f});
-  glm_rotate(model, glm_rad(0.0f), (vec3){0.0f, 1.0f, 0.0f});
+  //glm_rotate(model, glm_rad(0.0f), (vec3){0.0f, 1.0f, 0.0f});
   glm_scale(model, (vec3){1.0f, 1.0f, 1.0f});
 
   vec3 eye = {0.0f, 0.0f, 0.5f};
