@@ -28,8 +28,10 @@ typedef struct {
 typedef struct {
   // Vertex and index array or constant since we only need the drone model
   // for now, i test with a cube
-  float vertices[8 * 3 * 6];
-  int indices[6 * 6];
+  float *vertices;
+  int *indices;
+  int vertexCount;
+  int indexCount;
 } Model;
 
 void translate_point(const matrix4 *mvp, const matrix4 *viewPort, const vector3 *point,
