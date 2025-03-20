@@ -10,8 +10,8 @@ out vec3 fragColor;
 out vec3 fNormal;
 
 vec3 rotateByQuaternion(vec3 point, vec4 q) {
-    vec3 u = vec3(-q.z, q.w, -q.y);
-    float s = q.x;
+    vec3 u = q.xyz;
+    float s = q.w;
 
     return 2.0 * dot(u, point) * u
          + (s*s - dot(u, u)) * point

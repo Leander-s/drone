@@ -4,8 +4,6 @@
 #include "SDL3/SDL_keyboard.h"
 #include "SDL3/SDL_keycode.h"
 #include "SDL3/SDL_pixels.h"
-#include "SDL3/SDL_rect.h"
-#include "SDL3/SDL_render.h"
 #include "SDL3/SDL_surface.h"
 #include "SDL3/SDL_video.h"
 #include "SDL3_ttf/SDL_ttf.h"
@@ -29,51 +27,97 @@ char *readShaderSource(const char *filename) {
   return source;
 }
 
+void createBuffer(GLuint *vao, GLuint *vbo, GLuint *ebo, int position,
+                  int normal, int color, int texture) {
+  glGenVertexArrays(1, vao);
+  glBindVertexArray(*vao);
+
+  if (vbo != NULL) {
+    glGenBuffers(1, vbo);
+  }
+  if (ebo != NULL) {
+    glGenBuffers(1, ebo);
+  }
+
+  glBindBuffer(GL_ARRAY_BUFFER, *vbo);
+
+  int vertexSize = position + color + normal + texture;
+  int offset = 0;
+
+  if (position != 0) {
+    // position attribute
+    glVertexAttribPointer(offset, position, GL_FLOAT, GL_FALSE,
+                          vertexSize * sizeof(float), (void *)0);
+    glEnableVertexAttribArray(offset);
+    offset++;
+  }
+
+  if (normal != 0) {
+    // normal attribute
+    glVertexAttribPointer(offset, normal, GL_FLOAT, GL_FALSE,
+                          vertexSize * sizeof(float),
+                          (void *)(position * sizeof(float)));
+    glEnableVertexAttribArray(offset);
+    offset++;
+  }
+
+  if (color != 0) {
+    // color attribute
+    glVertexAttribPointer(offset, color, GL_FLOAT, GL_FALSE,
+                          vertexSize * sizeof(float),
+                          (void *)((position + normal) * sizeof(float)));
+    glEnableVertexAttribArray(offset);
+    offset++;
+  }
+
+  if (texture != 0) {
+    // color attribute
+    glVertexAttribPointer(
+        offset, texture, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float),
+        (void *)((position + normal + color) * sizeof(float)));
+    glEnableVertexAttribArray(offset);
+    offset++;
+  }
+
+  glBindVertexArray(0);
+}
+
+void sendToBuffer(GLuint vao, GLuint vertexBuffer, GLuint indexBuffer,
+                  const float *vertices, int vertexCount, int vertexSize,
+                  const int *indices, int indexCount) {
+  glBindVertexArray(vao);
+  glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+  glBufferData(GL_ARRAY_BUFFER, vertexCount * vertexSize * sizeof(float),
+               vertices, GL_STATIC_DRAW);
+
+  if (indices == NULL) {
+    glBindVertexArray(0);
+    return;
+  }
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(int), indices,
+               GL_STATIC_DRAW);
+  glBindVertexArray(0);
+}
+
 void setupBuffers(GUI *gui) {
-  glGenVertexArrays(1, &gui->VAO_3D);
-  glGenBuffers(1, &gui->VBO_3D);
-  glGenBuffers(1, &gui->IBO_3D);
-
-  glGenVertexArrays(1, &gui->VAO_text);
-  glGenBuffers(1, &gui->VBO_text);
-  glGenBuffers(1, &gui->IBO_text);
-
-  glGenVertexArrays(1, &gui->VAO_HUD_rects);
-  glGenBuffers(1, &gui->VBO_HUD_rects);
-  glGenBuffers(1, &gui->IBO_HUD_rects);
+  createBuffer(&gui->VAO_3D, &gui->VBO_3D, &gui->IBO_3D, 3, 3, 0, 0);
+  createBuffer(&gui->VAO_HUD_py_indicator, &gui->VBO_HUD_py_indicator,
+               &gui->IBO_HUD_py_indicator, 2, 0, 3, 0);
+  createBuffer(&gui->VAO_HUD_roll, &gui->VBO_HUD_roll, &gui->IBO_HUD_roll, 2, 0,
+               3, 0);
+  createBuffer(&gui->VAO_HUD_lines, &gui->VBO_HUD_lines, &gui->IBO_HUD_lines, 2,
+               0, 3, 0);
+  createBuffer(&gui->VAO_HUD_throttle, &gui->VBO_HUD_throttle,
+               &gui->IBO_HUD_throttle, 2, 0, 3, 0);
+  createBuffer(&gui->VAO_text, &gui->VBO_text, NULL, 2, 0, 0, 2);
 
   // 3D
-  glBindVertexArray(gui->VAO_3D);
-
-  glBindBuffer(GL_ARRAY_BUFFER, gui->VBO_3D);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(gui->droneModel->vertices),
-               gui->droneModel->vertices, GL_STATIC_DRAW);
-
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gui->IBO_3D);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(gui->droneModel->indices),
-               gui->droneModel->indices, GL_STATIC_DRAW);
-
-  // position attribute
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-
-  // normal attribute
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
-                        (void *)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-
-  /*
-  // color attribute
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float),
-          (void*)(6 * sizeof(float)));
-  glEnableVertexAttribArray(2);
-  */
+  sendToBuffer(gui->VAO_3D, gui->VBO_3D, gui->IBO_3D, gui->droneModel->vertices,
+               gui->droneModel->vertexCount, gui->droneModel->vertexSize,
+               gui->droneModel->indices, gui->droneModel->indexCount);
 
   // text
-  glBindVertexArray(gui->VAO_text);
-
-  glBindBuffer(GL_ARRAY_BUFFER, gui->VBO_text);
-
   float vertices[] = {
       // x, y,   u, v
       0.0f, 0.0f, 0.0f, 1.0f, // Bottom-left
@@ -85,41 +129,30 @@ void setupBuffers(GUI *gui) {
       0.0f, 1.0f, 0.0f, 0.0f  // Top-left
   };
 
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-  // position attribute
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-
-  // texcoord attribute
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float),
-                        (void *)(2 * sizeof(float)));
-  glEnableVertexAttribArray(1);
+  sendToBuffer(gui->VAO_text, gui->VBO_text, gui->IBO_text, vertices, 6, 4,
+               NULL, 0);
 
   // HUD
-  glBindVertexArray(gui->VAO_HUD_rects);
-
-  // position attribute
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-
-  // color attribute
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
-                        (void *)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-
-  // HUD
-  glBindVertexArray(gui->VAO_HUD_lines);
-
-  // position attribute
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-
-  // color attribute
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
-                        (void *)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-
+  // HUD lines
+  sendToBuffer(gui->VAO_HUD_lines, gui->VBO_HUD_lines, gui->IBO_HUD_lines,
+               gui->hudModels[0]->vertices, gui->hudModels[0]->vertexCount,
+               gui->hudModels[0]->vertexSize, gui->hudModels[0]->indices,
+               gui->hudModels[0]->indexCount);
+  // HUD py_indicator
+  sendToBuffer(gui->VAO_HUD_py_indicator, gui->VBO_HUD_py_indicator,
+               gui->IBO_HUD_py_indicator, gui->hudModels[1]->vertices,
+               gui->hudModels[1]->vertexCount, gui->hudModels[1]->vertexSize,
+               gui->hudModels[1]->indices, gui->hudModels[1]->indexCount);
+  // HUD roll
+  sendToBuffer(gui->VAO_HUD_roll, gui->VBO_HUD_roll, gui->IBO_HUD_roll,
+               gui->hudModels[2]->vertices, gui->hudModels[2]->vertexCount,
+               gui->hudModels[2]->vertexSize, gui->hudModels[2]->indices,
+               gui->hudModels[2]->indexCount);
+  // HUD throttle
+  sendToBuffer(gui->VAO_HUD_throttle, gui->VBO_HUD_throttle,
+               gui->IBO_HUD_throttle, gui->hudModels[3]->vertices,
+               gui->hudModels[3]->vertexCount, gui->hudModels[3]->vertexSize,
+               gui->hudModels[3]->indices, gui->hudModels[3]->indexCount);
   glBindVertexArray(0);
 }
 
@@ -145,23 +178,23 @@ GLuint setupShaders(const char *vertPath, const char *fragPath) {
   GLuint vertexShader = compileShader(vertPath, GL_VERTEX_SHADER);
   GLuint fragmentShader = compileShader(fragPath, GL_FRAGMENT_SHADER);
 
-  GLuint shaderProgram_3D = glCreateProgram();
-  glAttachShader(shaderProgram_3D, vertexShader);
-  glAttachShader(shaderProgram_3D, fragmentShader);
-  glLinkProgram(shaderProgram_3D);
+  GLuint shaderProgram = glCreateProgram();
+  glAttachShader(shaderProgram, vertexShader);
+  glAttachShader(shaderProgram, fragmentShader);
+  glLinkProgram(shaderProgram);
 
   GLint success;
-  glGetProgramiv(shaderProgram_3D, GL_LINK_STATUS, &success);
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
   if (!success) {
     char log[512];
-    glGetProgramInfoLog(shaderProgram_3D, 512, NULL, log);
+    glGetProgramInfoLog(shaderProgram, 512, NULL, log);
     fprintf(stderr, "Shader linking error:\n%s\n", log);
     exit(EXIT_FAILURE);
   }
 
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
-  return shaderProgram_3D;
+  return shaderProgram;
 }
 
 GUI *gui_create(int width, int height) {
@@ -259,10 +292,14 @@ GUI *gui_create(int width, int height) {
       setupShaders("../shaders/shader.vert", "../shaders/shader.frag");
   gui->shaderProgram_text =
       setupShaders("../shaders/text.vert", "../shaders/text.frag");
+  gui->shaderProgram_HUD_roll =
+      setupShaders("../shaders/hud_roll.vert", "../shaders/hud.frag");
+  gui->shaderProgram_HUD_lines =
+      setupShaders("../shaders/hud_lines.vert", "../shaders/hud.frag");
+  gui->shaderProgram_HUD_throttle =
+      setupShaders("../shaders/hud_throttle.vert", "../shaders/hud.frag");
   gui->shaderProgram_HUD_rects =
-      setupShaders("../shaders/hud_rects.vert", "../shaders/hud_rects.frag");
-  gui->shaderProgram_HUD_lines=
-      setupShaders("../shaders/hud_lines.vert", "../shaders/hud_lines.frag");
+      setupShaders("../shaders/hud_rect.vert", "../shaders/hud.frag");
 
   setupBuffers(gui);
 
@@ -277,7 +314,7 @@ void gui_update(GUI *gui, const GUIData *data) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glViewport(0, 0, gui->width / 2, gui->height);
-  // hud_draw(gui, data);
+  hud_draw(gui, data);
   drone_model_draw(gui, data);
 
   glViewport(gui->width / 2, 0, gui->width / 2, gui->height);
@@ -355,17 +392,23 @@ void gui_destroy(GUI *gui) {
   glDeleteBuffers(1, &gui->VBO_3D);
   glDeleteBuffers(1, &gui->VAO_3D);
   glDeleteBuffers(1, &gui->IBO_3D);
-  glDeleteBuffers(1, &gui->VBO_HUD_rects);
-  glDeleteBuffers(1, &gui->VAO_HUD_rects);
-  glDeleteBuffers(1, &gui->IBO_HUD_rects);
-  glDeleteBuffers(1, &gui->VBO_HUD_lines);
+  glDeleteBuffers(1, &gui->VAO_HUD_throttle);
+  glDeleteBuffers(1, &gui->VBO_HUD_throttle);
+  glDeleteBuffers(1, &gui->IBO_HUD_throttle);
   glDeleteBuffers(1, &gui->VAO_HUD_lines);
+  glDeleteBuffers(1, &gui->VBO_HUD_lines);
   glDeleteBuffers(1, &gui->IBO_HUD_lines);
+  glDeleteBuffers(1, &gui->VAO_HUD_py_indicator);
+  glDeleteBuffers(1, &gui->VBO_HUD_py_indicator);
+  glDeleteBuffers(1, &gui->IBO_HUD_py_indicator);
+  glDeleteBuffers(1, &gui->VAO_HUD_roll);
+  glDeleteBuffers(1, &gui->VBO_HUD_roll);
+  glDeleteBuffers(1, &gui->IBO_HUD_roll);
   glDeleteBuffers(1, &gui->VBO_text);
   glDeleteBuffers(1, &gui->VAO_text);
   glDeleteBuffers(1, &gui->IBO_text);
   model_destroy(gui->droneModel);
-  for(int i = 0; i < 4; i++){
+  for (int i = 0; i < 4; i++) {
     model_destroy(gui->hudModels[i]);
   }
   SDL_GL_DestroyContext(gui->glContext);
@@ -374,84 +417,36 @@ void gui_destroy(GUI *gui) {
 }
 
 void hud_draw(GUI *gui, const GUIData *data) {
-  SDL_Renderer *renderer = gui->renderer;
-  const int hudX = 0;
-  const int hudY = 0;
-  const int hudWidth = gui->width / 2;
-  const int hudHeight = gui->height;
+  glUseProgram(gui->shaderProgram_HUD_lines);
+  glBindVertexArray(gui->VAO_HUD_lines);
+  glDrawElements(GL_LINES, gui->hudModels[0]->indexCount, GL_UNSIGNED_INT, 0);
 
-  const int botLeftX = hudWidth / 2;
-  const int botLeftY = hudHeight / 4 * 3;
-  const int botLeftWidth = hudWidth - botLeftX;
-  const int botLeftHeight = hudHeight - botLeftY;
+  glUseProgram(gui->shaderProgram_HUD_rects);
+  vec2 translation = {-0.7f, -0.5f};
+  translation[0] += ((float)(data->controlState->yaw-127) / 255 * 2.0f) * 0.1f;
+  translation[1] += ((float)(data->controlState->pitch-127) / 255 * 2.0f) * 0.1f;
+  glBindVertexArray(gui->VAO_HUD_py_indicator);
+  GLuint uTranslation =
+      glGetUniformLocation(gui->shaderProgram_HUD_rects, "uTranslation");
+  glUniform2f(uTranslation, translation[0], translation[1]);
+  glDrawElements(GL_TRIANGLES, gui->hudModels[1]->indexCount, GL_UNSIGNED_INT,
+                 0);
 
-  const int botRightX = 0;
-  const int botRightY = hudHeight / 4 * 3;
-  const int botRightWidth = hudWidth / 2;
-  const int botRightHeight = hudHeight - botLeftY;
+  glUseProgram(gui->shaderProgram_HUD_roll);
+  glBindVertexArray(gui->VAO_HUD_roll);
+  float roll = (float)data->controlState->roll / 255 * 2.0f - 1.0f;
+  GLuint uAngle = glGetUniformLocation(gui->shaderProgram_HUD_roll, "uAngle");
+  glUniform1f(uAngle, roll);
+  glDrawElements(GL_LINES, gui->hudModels[2]->indexCount, GL_UNSIGNED_INT, 0);
 
-  // draw throttle
-  const int throttleBoxX = botLeftX + botLeftWidth - 20;
-  const int throttleBoxY = botLeftY;
-  const int throttleBoxWidth = 10;
-  const int throttleBoxHeight = botLeftHeight - 10;
-
-  // draw box
-  rect_draw(renderer, throttleBoxX, throttleBoxY, throttleBoxWidth,
-            throttleBoxHeight, &WHITE);
-
-  // draw throttle
-  const int throttleHeight =
-      (int)((float)(data->controlState->throttle) / 255 * throttleBoxHeight);
-
-  rect_fill(renderer, throttleBoxX,
-            throttleBoxY + throttleBoxHeight - throttleHeight, throttleBoxWidth,
-            throttleHeight, &WHITE);
-
-  // draw pitch/yaw
-
-  // draw box
-  int boxX = botRightX + 10;
-  int boxY = botRightY;
-  int boxWidth = botRightWidth / 2;
-  int boxHeight = botRightHeight / 2 - 10;
-
-  rect_draw(renderer, boxX, boxY, boxWidth, boxHeight, &WHITE);
-
-  // draw crosshair
-  line_draw(renderer, boxX, boxY + boxHeight / 2, boxX + boxWidth,
-            boxY + boxHeight / 2, &WHITE);
-
-  line_draw(renderer, boxX + boxWidth / 2, boxY, boxX + boxWidth / 2,
-            boxY + boxHeight, &WHITE);
-
-  // draw indicator
-  int indX = boxX + (float)data->controlState->yaw / 255 * boxWidth;
-  int indY = boxY + (float)(255 - data->controlState->pitch) / 255 * boxHeight;
-
-  rect_fill(renderer, indX - 5, indY - 5, 10, 10, &WHITE);
-
-  // draw roll
-
-  int rollLineX = botRightX + botRightWidth / 4 + 10;
-  int rollLineY = botRightY + boxHeight + boxHeight / 2 - 10;
-
-  int rollLineLeftX = 10;
-  int rollLineRightX = rollLineX + (rollLineX - rollLineLeftX);
-
-  float angle = (float)(data->controlState->roll - 127) / 255 * 90;
-
-  float startX, startY, endX, endY;
-
-  rotate_point_2D(angle, rollLineLeftX - rollLineX, 0, &startX, &startY);
-  rotate_point_2D(angle, rollLineRightX - rollLineX, 0, &endX, &endY);
-
-  startX += rollLineX;
-  startY += rollLineY;
-  endX += rollLineX;
-  endY += rollLineY;
-
-  line_draw(renderer, startX, startY, endX, endY, &WHITE);
+  glUseProgram(gui->shaderProgram_HUD_throttle);
+  glBindVertexArray(gui->VAO_HUD_throttle);
+  float throttle = (float)data->controlState->throttle / 255;
+  GLuint uThrottle =
+      glGetUniformLocation(gui->shaderProgram_HUD_throttle, "uThrottle");
+  glUniform1f(uThrottle, throttle);
+  glDrawElements(GL_TRIANGLES, gui->hudModels[3]->indexCount, GL_UNSIGNED_INT,
+                 0);
 }
 
 void data_sheet_draw(GUI *gui, const GUIData *data) {
@@ -463,9 +458,6 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
   const int padding = 20;
   const int textX = x + padding;
   int yOffset = padding;
-
-  // rect_fill(renderer, x, y, width, height, &DARK_GREY);
-  // rect_draw(renderer, x, y, width, height, &GREY);
 
   text_draw(gui, textX, yOffset, "System logs", 30, &LIGHT_GREY);
   yOffset += 30;
@@ -507,83 +499,105 @@ void data_sheet_draw(GUI *gui, const GUIData *data) {
   yOffset += padding;
 }
 
-Model **hud_models_create(){
-    Model **hud = malloc(4 * sizeof(Model*));
+Model **hud_models_create() {
+  Model **hud = malloc(4 * sizeof(Model *));
 
-    // lines for pitch/yaw/throttle
-    float lines_verts[] = {
-        // Pitch/Yaw lines
-        -0.8f, -0.6f, 1.0f, 1.0f, 1.0f, // bottom-left      0
-        -0.6f, -0.6f, 1.0f, 1.0f, 1.0f, // bottom-right     1
-        -0.6f, -0.4f, 1.0f, 1.0f, 1.0f, // top-right        2
-        -0.8f, -0.4f, 1.0f, 1.0f, 1.0f, // top-left         3
-        -0.7f, -0.4f, 1.0f, 1.0f, 1.0f, // top-center       4
-        -0.7f, -0.6f, 1.0f, 1.0f, 1.0f, // bottom-center    5
-        -0.8f, -0.5f, 1.0f, 1.0f, 1.0f, // left-center      6
-        -0.6f, -0.5f, 1.0f, 1.0f, 1.0f, // right-center     7
+  // lines for pitch/yaw/throttle
+  float lines_verts[] = {
+      // Pitch/Yaw lines
+      -0.8f, -0.6f, 1.0f, 1.0f, 1.0f, // bottom-left      0
+      -0.6f, -0.6f, 1.0f, 1.0f, 1.0f, // bottom-right     1
+      -0.6f, -0.4f, 1.0f, 1.0f, 1.0f, // top-right        2
+      -0.8f, -0.4f, 1.0f, 1.0f, 1.0f, // top-left         3
+      -0.7f, -0.4f, 1.0f, 1.0f, 1.0f, // top-center       4
+      -0.7f, -0.6f, 1.0f, 1.0f, 1.0f, // bottom-center    5
+      -0.8f, -0.5f, 1.0f, 1.0f, 1.0f, // left-center      6
+      -0.6f, -0.5f, 1.0f, 1.0f, 1.0f, // right-center     7
 
-        // Throttle lines
-        0.8f, -0.8f, 1.0f, 1.0f, 1.0f,  // bottom-right     8
-        0.7f, -0.8f, 1.0f, 1.0f, 1.0f,  // bottom-left      9
-        0.7f, 0.0f, 1.0f, 1.0f, 1.0f,   // top-left         10
-        0.8f, 0.0f, 1.0f, 1.0f, 1.0f,   // bottom-left      11
-    };
+      // Throttle lines
+      0.8f, -0.8f, 1.0f, 1.0f, 1.0f, // bottom-right     8
+      0.7f, -0.8f, 1.0f, 1.0f, 1.0f, // bottom-left      9
+      0.7f, 0.0f, 1.0f, 1.0f, 1.0f,  // top-left         10
+      0.8f, 0.0f, 1.0f, 1.0f, 1.0f,  // bottom-left      11
+  };
 
-    int lines_indices[] = {
-        // Pitch/Yaw lines
-        0, 1, 1, 2, 2, 3, 3, 0, // outline
-        4, 5, 6, 7,             // cross 
+  int lines_indices[] = {                        // Pitch/Yaw lines
+                         0, 1, 1, 2, 2, 3, 3, 0, // outline
+                         4, 5, 6, 7,             // cross
 
-        // Throttle lines
-        8, 9, 9, 10, 10, 11, 11, 8
-    };
+                         // Throttle lines
+                         8, 9, 9, 10, 10, 11, 11, 8};
 
-    hud[0] = malloc(sizeof(Model));
-    hud[0]->vertexCount = sizeof(lines_verts) / sizeof(float);
-    hud[0]->vertices = malloc(sizeof(lines_verts));
-    memcpy(hud[0]->vertices, lines_verts, sizeof(lines_verts));
+  hud[0] = malloc(sizeof(Model));
+  hud[0]->vertexCount = sizeof(lines_verts) / sizeof(float);
+  hud[0]->vertices = malloc(sizeof(lines_verts));
+  memcpy(hud[0]->vertices, lines_verts, sizeof(lines_verts));
 
-    hud[0]->indexCount = sizeof(lines_indices) / sizeof(float);
-    hud[0]->indices = malloc(sizeof(lines_indices));
-    memcpy(hud[0]->indices, lines_indices, sizeof(lines_indices));
+  hud[0]->indexCount = sizeof(lines_indices) / sizeof(float);
+  hud[0]->indices = malloc(sizeof(lines_indices));
+  memcpy(hud[0]->indices, lines_indices, sizeof(lines_indices));
 
-    // indicator for pitch/yaw
-    float py_ind_verts[] = {
-        -0.05f, -0.05f, 1.0f, 1.0f, 1.0f,   // bottom-left      0
-        0.05f, -0.05f, 1.0f, 1.0f, 1.0f,    // bottom-right     1
-        0.05f, 0.05f, 1.0f, 1.0f, 1.0f,     // top-right        2
-        -0.05f, 0.05f, 1.0f, 1.0f, 1.0f,    // top-left         3
-    };
+  hud[0]->vertexSize = 5;
 
-    int py_ind_indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
+  // indicator for pitch/yaw
+  float py_ind_verts[] = {
+      -0.01f, -0.01f, 1.0f, 1.0f, 1.0f, // bottom-left      0
+      0.01f,  -0.01f, 1.0f, 1.0f, 1.0f, // bottom-right     1
+      0.01f,  0.01f,  1.0f, 1.0f, 1.0f, // top-right        2
+      -0.01f, 0.01f,  1.0f, 1.0f, 1.0f, // top-left         3
+  };
 
-    hud[1] = malloc(sizeof(Model));
-    hud[1]->vertexCount = sizeof(py_ind_verts) / sizeof(float);
-    hud[1]->vertices = malloc(sizeof(py_ind_verts));
-    memcpy(hud[1]->vertices, py_ind_verts, sizeof(py_ind_verts));
+  int py_ind_indices[] = {0, 1, 2, 2, 3, 0};
 
-    hud[1]->indexCount = sizeof(py_ind_indices) / sizeof(float);
-    hud[1]->indices = malloc(sizeof(py_ind_indices));
-    memcpy(hud[1]->indices, py_ind_indices, sizeof(py_ind_indices));
+  hud[1] = malloc(sizeof(Model));
+  hud[1]->vertexCount = sizeof(py_ind_verts) / sizeof(float);
+  hud[1]->vertices = malloc(sizeof(py_ind_verts));
+  memcpy(hud[1]->vertices, py_ind_verts, sizeof(py_ind_verts));
 
-    // lines for roll
-    float roll_verts[] = {
-    };
+  hud[1]->indexCount = sizeof(py_ind_indices) / sizeof(float);
+  hud[1]->indices = malloc(sizeof(py_ind_indices));
+  memcpy(hud[1]->indices, py_ind_indices, sizeof(py_ind_indices));
 
-    int roll_indices[] = {
-    };
+  hud[1]->vertexSize = 5;
 
-    // indicator for throttle
-    float throttle_verts[] = {
-    };
+  // lines for roll
+  float roll_verts[] = {
+      -0.1f, 0.0f, 1.0f, 1.0f, 1.0f, 0.1f, 0.0f, 1.0f, 1.0f, 1.0f,
+  };
 
-    int throttle_indices[] = {
-    };
+  int roll_indices[] = {0, 1};
 
-    return hud;
+  hud[2] = malloc(sizeof(Model));
+  hud[2]->vertexCount = sizeof(roll_verts) / sizeof(float);
+  hud[2]->vertices = malloc(sizeof(roll_verts));
+  memcpy(hud[2]->vertices, roll_verts, sizeof(roll_verts));
+
+  hud[2]->indexCount = sizeof(roll_indices) / sizeof(float);
+  hud[2]->indices = malloc(sizeof(roll_indices));
+  memcpy(hud[2]->indices, roll_indices, sizeof(roll_indices));
+
+  hud[2]->vertexSize = 5;
+
+  // indicator for throttle
+  float throttle_verts[] = {
+      -0.05f, 0.0f, 1.0f, 1.0f, 1.0f, 0.05f,  0.0f, 1.0f, 1.0f, 1.0f,
+      0.05f,  1.0f, 1.0f, 1.0f, 1.0f, -0.05f, 1.0f, 1.0f, 1.0f, 1.0f,
+  };
+
+  int throttle_indices[] = {0, 1, 2, 2, 3, 0};
+
+  hud[3] = malloc(sizeof(Model));
+  hud[3]->vertexCount = sizeof(throttle_verts) / sizeof(float);
+  hud[3]->vertices = malloc(sizeof(throttle_verts));
+  memcpy(hud[3]->vertices, throttle_verts, sizeof(throttle_verts));
+
+  hud[3]->indexCount = sizeof(throttle_indices) / sizeof(float);
+  hud[3]->indices = malloc(sizeof(throttle_indices));
+  memcpy(hud[3]->indices, throttle_indices, sizeof(throttle_indices));
+
+  hud[3]->vertexSize = 5;
+
+  return hud;
 }
 
 Model *drone_model_create() {
@@ -630,7 +644,7 @@ Model *drone_model_create() {
       -0.3f, -0.1f, 0.5f, 0.0f, 0.0f, 1.0f,  // 23, back
   };
 
-  droneModel->vertexCount = sizeof(verts)/4;
+  droneModel->vertexCount = sizeof(verts) / 4;
   droneModel->vertices = malloc(sizeof(verts));
   memcpy(droneModel->vertices, verts, sizeof(verts));
 
@@ -643,17 +657,19 @@ Model *drone_model_create() {
       13, 19, 16, 13, 22, 19, // left
   };
 
-  droneModel->indexCount = sizeof(indices)/4;
+  droneModel->indexCount = sizeof(indices) / 4;
   droneModel->indices = malloc(sizeof(indices));
   memcpy(droneModel->indices, indices, sizeof(indices));
+
+  droneModel->vertexSize = 6;
 
   return droneModel;
 }
 
-void model_destroy(Model *model) { 
-    free(model->vertices);
-    free(model->indices);
-    free(model); 
+void model_destroy(Model *model) {
+  free(model->vertices);
+  free(model->indices);
+  free(model);
 }
 
 void drone_model_draw(GUI *gui, const GUIData *data) {
@@ -685,40 +701,8 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   glFrontFace(GL_CCW);
 
   glBindVertexArray(gui->VAO_3D);
-  glDrawElements(GL_TRIANGLES, gui->droneModel->indexCount,
-                 GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, gui->droneModel->indexCount, GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
-}
-
-void line_draw(SDL_Renderer *renderer, int x, int y, int endX, int endY,
-               const SDL_Color *color) {
-  SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a);
-
-  SDL_RenderLine(renderer, x, y, endX, endY);
-}
-
-void rect_draw(SDL_Renderer *renderer, int x, int y, int w, int h,
-               const SDL_Color *color) {
-  SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a);
-
-  SDL_FRect rect;
-  rect.x = x;
-  rect.y = y;
-  rect.w = w;
-  rect.h = h;
-  SDL_RenderRect(renderer, &rect);
-}
-
-void rect_fill(SDL_Renderer *renderer, int x, int y, int w, int h,
-               const SDL_Color *color) {
-  SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a);
-
-  SDL_FRect rect;
-  rect.x = x;
-  rect.y = y;
-  rect.w = w;
-  rect.h = h;
-  SDL_RenderFillRect(renderer, &rect);
 }
 
 void text_draw(GUI *gui, int x, int y, const char *text, int fontSize,

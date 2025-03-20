@@ -14,11 +14,14 @@ typedef struct {
   SDL_GLContext glContext;
 
   // OpenGL
-  GLuint shaderProgram_3D, shaderProgram_HUD_rects, shaderProgram_HUD_lines, shaderProgram_text;
-  GLuint VBO_3D, VAO_3D, IBO_3D;
-  GLuint VBO_HUD_rects, VAO_HUD_rects, IBO_HUD_rects;
-  GLuint VBO_HUD_lines, VAO_HUD_lines, IBO_HUD_lines;
-  GLuint VBO_text, VAO_text, IBO_text;
+  GLuint shaderProgram_3D, shaderProgram_HUD_rects, shaderProgram_HUD_lines,
+      shaderProgram_text, shaderProgram_HUD_throttle, shaderProgram_HUD_roll;
+  GLuint VAO_3D, VBO_3D, IBO_3D;
+  GLuint VAO_HUD_roll, VBO_HUD_roll, IBO_HUD_roll;
+  GLuint VAO_HUD_throttle, VBO_HUD_throttle, IBO_HUD_throttle;
+  GLuint VAO_HUD_py_indicator, VBO_HUD_py_indicator, IBO_HUD_py_indicator;
+  GLuint VAO_HUD_lines, VBO_HUD_lines, IBO_HUD_lines;
+  GLuint VAO_text, VBO_text, IBO_text;
 
   // logic
   int width;
@@ -49,5 +52,5 @@ void rect_draw(SDL_Renderer *renderer, int x, int y, int w, int h,
                const SDL_Color *color);
 void rect_fill(SDL_Renderer *renderer, int x, int y, int w, int h,
                const SDL_Color *color);
-void text_draw(GUI *gui, int x, int y, const char *text,
-               int fontSize, const SDL_Color *color);
+void text_draw(GUI *gui, int x, int y, const char *text, int fontSize,
+               const SDL_Color *color);

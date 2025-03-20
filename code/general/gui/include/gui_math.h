@@ -32,6 +32,7 @@ typedef struct {
   int *indices;
   int vertexCount;
   int indexCount;
+  int vertexSize;
 } Model;
 
 void translate_point(const matrix4 *mvp, const matrix4 *viewPort, const vector3 *point,
