@@ -9,7 +9,7 @@ out vec4 FragColor;
 vec3 lightpos = vec3(0.0f, 2.0f, 1.0f);
 vec3 lightvec = lightpos - fPos;
 float ambient = 0.1f;
-float shininess = 64;
+float shininess = 32;
 
 void main() {
     vec3 view = vec3(0.0f, 0.0f, -1.0f);

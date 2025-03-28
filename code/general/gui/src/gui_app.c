@@ -101,7 +101,7 @@ void sendToBuffer(GLuint vao, GLuint vertexBuffer, GLuint indexBuffer,
 }
 
 void setupBuffers(GUI *gui) {
-  createBuffer(&gui->VAO_3D, &gui->VBO_3D, &gui->IBO_3D, 3, 3, 0, 0);
+  createBuffer(&gui->VAO_3D, &gui->VBO_3D, &gui->IBO_3D, 3, 3, 3, 0);
   createBuffer(&gui->VAO_HUD_py_indicator, &gui->VBO_HUD_py_indicator,
                &gui->IBO_HUD_py_indicator, 2, 0, 3, 0);
   createBuffer(&gui->VAO_HUD_roll, &gui->VBO_HUD_roll, &gui->IBO_HUD_roll, 2, 0,
@@ -604,44 +604,44 @@ Model *drone_model_create() {
   Model *droneModel = malloc(sizeof(Model));
   float verts[] = {
       // right, bottom, front
-      0.3f, -0.1f, -0.5f, 0.0f, -1.0f, 0.0f, // 0, bottom
-      0.3f, -0.1f, -0.5f, 1.0f, 0.0f, 0.0f,  // 1, right
-      0.3f, -0.1f, -0.5f, 0.0f, 0.0f, -1.0f, // 2, front
+      0.3f, -0.1f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 0, bottom
+      0.3f, -0.1f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f ,1.0f,  // 1, right
+      0.3f, -0.1f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f, // 2, front
 
       // right, top, front
-      0.3f, 0.1f, -0.5f, 0.0f, 1.0f, 0.0f,  // 3, top
-      0.3f, 0.1f, -0.5f, 1.0f, 0.0f, 0.0f,  // 4, right
-      0.3f, 0.1f, -0.5f, 0.0f, 0.0f, -1.0f, // 5, front
+      0.3f, 0.1f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 3, top
+      0.3f, 0.1f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,  // 4, right
+      0.3f, 0.1f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f, // 5, front
 
       // right, top, back
-      0.3f, 0.1f, 0.5f, 0.0f, 1.0f, 0.0f, // 6, top
-      0.3f, 0.1f, 0.5f, 1.0f, 0.0f, 0.0f, // 7, right
-      0.3f, 0.1f, 0.5f, 0.0f, 0.0f, 1.0f, // 8, back
+      0.3f, 0.1f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 6, top
+      0.3f, 0.1f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 7, right
+      0.3f, 0.1f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // 8, back
 
       // right, bottom, back
-      0.3f, -0.1f, 0.5f, 0.0f, -1.0f, 0.0f, // 9, bottom
-      0.3f, -0.1f, 0.5f, 1.0f, 0.0f, 0.0f,  // 10, right
-      0.3f, -0.1f, 0.5f, 0.0f, 0.0f, 1.0f,  // 11, back
+      0.3f, -0.1f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 9, bottom
+      0.3f, -0.1f, 0.5f, 1.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f, // 10, right
+      0.3f, -0.1f, 0.5f, 0.0f, 0.0f, 1.0f,  1.0f, 1.0f, 1.0f, // 11, back
 
       // left, bottom, front
-      -0.3f, -0.1f, -0.5f, 0.0f, -1.0f, 0.0f, // 12, bottom
-      -0.3f, -0.1f, -0.5f, -1.0f, 0.0f, 0.0f, // 13, left
-      -0.3f, -0.1f, -0.5f, 0.0f, 0.0f, -1.0f, // 14, front
+      -0.3f, -0.1f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 12, bottom
+      -0.3f, -0.1f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 13, left
+      -0.3f, -0.1f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f, // 14, front
 
       // left, top, front
-      -0.3f, 0.1f, -0.5f, 0.0f, 1.0f, 0.0f,  // 15, top
-      -0.3f, 0.1f, -0.5f, -1.0f, 0.0f, 0.0f, // 16, left
-      -0.3f, 0.1f, -0.5f, 0.0f, 0.0f, -1.0f, // 17, front
+      -0.3f, 0.1f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,  // 15, top
+      -0.3f, 0.1f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 16, left
+      -0.3f, 0.1f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f, // 17, front
 
       // left, top, back
-      -0.3f, 0.1f, 0.5f, 0.0f, 1.0f, 0.0f,  // 18, top
-      -0.3f, 0.1f, 0.5f, -1.0f, 0.0f, 0.0f, // 19, left
-      -0.3f, 0.1f, 0.5f, 0.0f, 0.0f, 1.0f,  // 20, back
+      -0.3f, 0.1f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,  // 18, top
+      -0.3f, 0.1f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 19, left
+      -0.3f, 0.1f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // 20, back
 
       // left, bottom, back
-      -0.3f, -0.1f, 0.5f, 0.0f, -1.0f, 0.0f, // 21, bottom
-      -0.3f, -0.1f, 0.5f, -1.0f, 0.0f, 0.0f, // 22, left
-      -0.3f, -0.1f, 0.5f, 0.0f, 0.0f, 1.0f,  // 23, back
+      -0.3f, -0.1f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 21, bottom
+      -0.3f, -0.1f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 22, left
+      -0.3f, -0.1f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // 23, back
   };
 
   droneModel->vertexCount = sizeof(verts) / 4;
@@ -682,6 +682,11 @@ void drone_model_draw(GUI *gui, const GUIData *data) {
   // create_view_port(gui->width / 2.0f, gui->height, 100.0f, 0.1f, viewPort);
   create_mvp((float)gui->width / 2 / gui->height, deg_to_rad(60.0f), 100.0f,
              0.1f, projection);
+  mat4 model;
+  glm_mat4_identity(model);
+  glm_translate(model, (vec3){0.0f, 0.0f, -1.0f});
+  glm_scale(model, (vec3){1.0f, 1.0f, 1.0f});
+  glm_mat4_mul(projection, model, projection);
 
   GLuint uOrientation =
       glGetUniformLocation(gui->shaderProgram_3D, "uOrientation");
