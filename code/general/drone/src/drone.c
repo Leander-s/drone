@@ -16,7 +16,7 @@ Drone *drone_start() {
                              .servo_init = init_servo,
                              .servo_turn = set_angle,
                              .throttleMotorIDs[0] = 0,
-                             .leftPitchServoIDs[0] = 1,
+                             .leftPitchServoIDs[0] = 5,
                              .rightPitchServoIDs[0] = 2,
                              .yawServoIDs[0] = 3};
   result->controller = controller_create(&controllerInfo);
