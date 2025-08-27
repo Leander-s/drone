@@ -4,6 +4,12 @@
 [submodule "code/general/gui/SDL"]
 	path = code/general/gui/SDL
 	url = https://github.com/libsdl-org/SDL
+	branch = main
 [submodule "code/general/gui/SDL_ttf"]
 	path = code/general/gui/SDL_ttf
 	url = https://github.com/libsdl-org/SDL_ttf
+	branch = main
+[submodule "code/general/gui/cglm"]
+    path = code/general/gui/cglm
+    url = https://github.com/recp/cglm.git
+	branch = main
