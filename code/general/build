@@ -29,7 +29,7 @@ def build_project(root, path, pico_sdk):
     if windows:
         os.system('cmake -G "MinGW Makefiles" ..')
     elif linux:
-        os.system('cmake ..')
+        os.system('cmake .. -G Ninja')
 
     os.system('make')
     os.chdir(root)

@@ -4,7 +4,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 // GL
-#include <GL/glew.h>
+#include <glad/glad.h>
 
 // standard
 #include <stdio.h>
