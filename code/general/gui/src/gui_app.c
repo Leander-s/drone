@@ -1,3 +1,4 @@
+#include "SDL3/SDL_video.h"
 #include <colors.h>
 #include <gui_app.h>
 #include <gui_config.h>
@@ -227,7 +228,7 @@ GUI *gui_create(int width, int height) {
 
         gui->window =
             SDL_CreateWindow("Drone Controller", width, height,
-                             SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+                             SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
         if (!gui->window) {
                 SDL_Log("Creating window failed : %s\n", SDL_GetError());
                 return NULL;

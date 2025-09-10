@@ -48,6 +48,8 @@ OpenGL implementation (need to do all the rendering again)
     - maybe some lighting to get a sense of the orientation
 this shouldnt be that hard but it sounds like a lot so I will take a day
 
+Better cmake setup
+
 Everything math related needs to be handled by glm (vectors, matrices) -> get
 rid of my math code
 
