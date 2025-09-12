@@ -13,6 +13,8 @@ drone_target_sdk_path = "../../pico/pico-sdk"
 
 ground_target_sdk_path = "../" + drone_target_sdk_path
 
+toolchain_path = "./toolchain.cmake"
+
 
 def set_pico_sdk_path(path):
     os.environ["PICO_SDK_PATH"] = path
@@ -27,9 +29,11 @@ def build_project(root, path, pico_sdk):
     set_pico_sdk_path(pico_sdk)
 
     if windows:
-        os.system('cmake -G "MinGW Makefiles" ..')
+        os.system(
+            'cmake .. -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -G "MinGW Makefiles"'
+        )
     elif linux:
-        os.system('cmake .. -G Ninja')
+        os.system('cmake .. -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -G Ninja')
 
     os.system('make')
     os.chdir(root)
