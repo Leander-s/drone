@@ -13,37 +13,59 @@ drone_target_sdk_path = "../../pico/pico-sdk"
 
 ground_target_sdk_path = "../" + drone_target_sdk_path
 
-toolchain_path = "./toolchain.cmake"
+toolchain_path = "toolchain.cmake"
 
 
 def set_pico_sdk_path(path):
     os.environ["PICO_SDK_PATH"] = path
 
 
-def build_project(root, path, pico_sdk):
+def set_pico_toolchain_path(path):
+    os.environ["PICO_TOOLCHAIN_PATH"] = path
+
+
+def build_project(root, path, pico_sdk, drone_project: bool):
     os.chdir(path)
     if not os.path.isdir("build"):
         os.mkdir("build")
     os.chdir("build")
 
     set_pico_sdk_path(pico_sdk)
+    set_pico_toolchain_path(
+        os.path.abspath(root) + "/tools" + "/toolchain" + "/bin"
+    )
+
+    local_toolchain_path = os.path.abspath(root) + "/" + toolchain_path
+    print(local_toolchain_path)
+
+    cmake_command = 'cmake ..'
+    make_command = ''
+
+    if (drone_project):
+        cmake_command += f' -DCMAKE_TOOLCHAIN_FILE={local_toolchain_path}'
 
     if windows:
-        os.system(
-            'cmake .. -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -G "MinGW Makefiles"'
-        )
+        make_command = 'make'
+        cmake_command += ' -G "MinGW Makefiles"'
+        os.system(cmake_command)
     elif linux:
-        os.system('cmake .. -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -G Ninja')
+        make_command = 'ninja'
+        cmake_command += ' -G Ninja'
+        os.system(cmake_command)
 
-    os.system('make')
+    if make_command == '':
+        os.chdir(root)
+        return
+
+    os.system(make_command)
     os.chdir(root)
 
 
-def rebuild_project(root, path, pico_sdk):
+def rebuild_project(root, path, pico_sdk, drone_project: bool):
     os.chdir(path)
     if os.path.isdir("build"):
         shutil.rmtree("build")
-        build_project(root, os.getcwd(), pico_sdk)
+        build_project(root, os.getcwd(), pico_sdk, drone_project)
 
 
 def clean_folder(path):
@@ -55,9 +77,9 @@ def build_drone(mode):
     root = os.getcwd()
 
     if mode == "b":
-        build_project(root, "drone", drone_target_sdk_path)
+        build_project(root, "drone", drone_target_sdk_path, True)
     else:
-        rebuild_project(root, "drone", drone_target_sdk_path)
+        rebuild_project(root, "drone", drone_target_sdk_path, True)
 
 
 def build_ground(mode):
@@ -65,14 +87,14 @@ def build_ground(mode):
 
     if mode == "b":
         build_project(
-            root, "ground/pc", ground_target_sdk_path)
+            root, "ground/pc", ground_target_sdk_path, False)
         build_project(
-            root, "ground/pico", ground_target_sdk_path)
+            root, "ground/pico", ground_target_sdk_path, False)
     else:
         rebuild_project(
-            root, "ground/pc", ground_target_sdk_path)
+            root, "ground/pc", ground_target_sdk_path, False)
         rebuild_project(
-            root, "ground/pico", ground_target_sdk_path)
+            root, "ground/pico", ground_target_sdk_path, False)
 
 
 def build(mode):

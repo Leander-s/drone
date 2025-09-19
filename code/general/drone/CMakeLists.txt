@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.13)
 
 set(LIBRARY_DIR "./lib")
 set(INCLUDE_DIR 

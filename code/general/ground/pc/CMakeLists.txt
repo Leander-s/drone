@@ -11,6 +11,7 @@ set(INCLUDE_DIR
     "../../gui/include"
     "../../gui/SDL/include"
     "../../gui/SDL_ttf/include"
+    "../../gui/cglm/include"
     "../../communications/protocol_util/include"
 )
 set(SOURCE_DIR
