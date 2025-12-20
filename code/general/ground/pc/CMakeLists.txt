@@ -42,5 +42,5 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_directories(${PROJECT_NAME} PRIVATE "../../gui/SDL/build" "../../gui/SDL_ttf/build")
-target_link_libraries(${PROJECT_NAME} ${LIBRARY_FILES} GLEW GL SDL3 SDL3_ttf m udev cglm)
+target_link_libraries(${PROJECT_NAME} ${LIBRARY_FILES} GL SDL3 SDL3_ttf m udev)
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR} )

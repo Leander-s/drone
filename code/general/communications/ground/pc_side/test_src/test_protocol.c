@@ -15,9 +15,8 @@ ground_transceiver_create(GroundTransceiverCreateInfo *info) {
   result->recvBuffer = malloc(info->bufferSize);
   result->port = initConnection(info->path_to_port);
   result->bufferSize = info->bufferSize;
-  result->controlState =
-      (DroneControlState){.throttle = 0, .pitch = 127, .roll = 127, .yaw = 127};
-  result->sensorState = (DroneSensorState){};
+  result->controlState = info->controlState;
+  result->sensorState = info->sensorState;
 
   ground_transceiver_read(result);
   printf("%s\n", result->recvBuffer);
@@ -38,35 +37,35 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
   inputHandler *input = createInputHandler();
 
   while (1) {
-    DroneControlState controlState = transceiver->controlState;
-    DroneSensorState sensorState = transceiver->sensorState;
+    DroneControlState* controlState = transceiver->controlState;
+    DroneSensorState* sensorState = transceiver->sensorState;
     uint32_t bufferSize = transceiver->bufferSize;
     uint8_t *sendBuffer = transceiver->sendBuffer;
     memset(sendBuffer, 0, transceiver->bufferSize);
 
     // inputs should be done somewhere else in future
-    controlState.pitch = 127;
-    controlState.roll = 127;
-    controlState.yaw = 127;
-    controlState.throttle = controlState.throttle;
+    controlState->pitch = 127;
+    controlState->roll = 127;
+    controlState->yaw = 127;
+    controlState->throttle = controlState->throttle;
     if (key_down(input, XK_W))
-      controlState.pitch = 0;
+      controlState->pitch = 0;
     if (key_down(input, XK_S))
-      controlState.pitch = 254;
+      controlState->pitch = 254;
     if (key_down(input, XK_A))
-      controlState.roll = 0;
+      controlState->roll = 0;
     if (key_down(input, XK_D))
-      controlState.roll = 254;
+      controlState->roll = 254;
     if (key_down(input, XK_Q))
-      controlState.yaw = 0;
+      controlState->yaw = 0;
     if (key_down(input, XK_E))
-      controlState.yaw = 254;
+      controlState->yaw = 254;
     if (key_down(input, XK_Shift_L))
-      controlState.throttle += 1;
+      controlState->throttle += 1;
     if (key_down(input, XK_Control_L))
-      controlState.throttle -= 1;
+      controlState->throttle -= 1;
 
-    controlState.throttle = clamp(controlState.throttle, 0, 254);
+    controlState->throttle = clamp(controlState->throttle, 0, 254);
 
     // quit on P
     if (key_down(input, XK_P)) {
@@ -76,10 +75,10 @@ void ground_transceiver_run(GroundTransceiver *transceiver) {
 
     // sending/receiving data
     // adding 1 everywhere so read() doesnt terminate early
-    sendBuffer[0] = controlState.throttle;
-    sendBuffer[1] = controlState.pitch;
-    sendBuffer[2] = controlState.roll;
-    sendBuffer[3] = controlState.yaw;
+    sendBuffer[0] = controlState->throttle;
+    sendBuffer[1] = controlState->pitch;
+    sendBuffer[2] = controlState->roll;
+    sendBuffer[3] = controlState->yaw;
 
     int result;
     result = ground_transceiver_send(transceiver);
