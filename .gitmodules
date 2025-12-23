@@ -1,12 +1,12 @@
 [submodule "code/pico/pico-sdk"]
 	path = code/pico/pico-sdk
-	url = git@github.com:raspberrypi/pico-sdk.git
+	url = https://github.com/raspberrypi/pico-sdk.git
 [submodule "code/pc/src/gui/SDL"]
 	path = code/pc/src/gui/SDL
-	url = git@github.com:libsdl-org/SDL.git
+	url = https://github.com/libsdl-org/SDL.git
 [submodule "code/pc/src/gui/SDL_ttf"]
 	path = code/pc/src/gui/SDL_ttf
-	url = git@github.com:libsdl-org/SDL_ttf.git
+	url = https://github.com/libsdl-org/SDL_ttf.git
 [submodule "code/pc/src/gui/cglm"]
 	path = code/pc/src/gui/cglm
-	url = git@github.com:recp/cglm.git
+	url = https://github.com/recp/cglm.git
