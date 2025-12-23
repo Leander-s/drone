@@ -31,9 +31,9 @@ To rebuild
     ./build r
 Outputs:
     
-    code/bin/pico_drone/    -> *.uf2 goes in the drones pico
-    code/bin/pico_transceiver/  -> *.uf2 goes in pico connected to pc as transceiver
-    code/bin/pc/    -> *.exe or a unix executable for pc
+- code/bin/pico_drone/    -> *.uf2 goes in the drones pico
+- code/bin/pico_transceiver/  -> *.uf2 goes in pico connected to pc as transceiver
+- code/bin/pc/    -> *.exe or a unix executable for pc
 
 <!--
 drone/code/pico/*:
