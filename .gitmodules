@@ -3,13 +3,10 @@
 	url = git@github.com:raspberrypi/pico-sdk.git
 [submodule "code/pc/src/gui/SDL"]
 	path = code/pc/src/gui/SDL
-	url = https://github.com/libsdl-org/SDL
-	branch = main
+	url = git@github.com:libsdl-org/SDL.git
 [submodule "code/pc/src/gui/SDL_ttf"]
 	path = code/pc/src/gui/SDL_ttf
-	url = https://github.com/libsdl-org/SDL_ttf
-	branch = main
+	url = git@github.com:libsdl-org/SDL_ttf.git
 [submodule "code/pc/src/gui/cglm"]
-    path = code/pc/src/gui/cglm
-    url = https://github.com/recp/cglm.git
-	branch = main
+	path = code/pc/src/gui/cglm
+	url = git@github.com:recp/cglm.git

@@ -1,4 +1,13 @@
-#include "util.h"
+#include <hardware/gpio.h>
+#include <hardware/spi.h>
+#include <pico/binary_info/code.h>
+#include <pico/stdio.h>
+#include <pico/stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <tusb.h>
+
+#define LED_PIN 25
 
 // PINs
 #define SPI_PORT spi0
@@ -64,8 +73,8 @@
 #define RX_MODE_NO_CRC (PRIM_RX | PWR_UP)
 
 void nrf24_init();
-void nrf24_send(char *data, int len);
-void nrf24_read(char *data, int len);
+int nrf24_send(uint8_t *data, uint32_t len);
+int nrf24_read(uint8_t *data, uint32_t len, int timeout_us);
 
 void set_mode(uint8_t mode);
 uint8_t nrf24_read_register(uint8_t reg);
