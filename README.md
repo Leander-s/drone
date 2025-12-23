@@ -1,14 +1,14 @@
 # Requirements:
 ## Windows
-python
-MinGW
-cmake
-gcc
+- python
+- MinGW
+- cmake
+- gcc
 
 ## Linux
-python
-cmake
-gcc
+- python
+- cmake
+- gcc
 
 ## ARM compilers
 The ARM toolchain should be installed automatically by the init script. Should this not work, install it using 
