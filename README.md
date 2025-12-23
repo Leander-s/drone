@@ -8,6 +8,7 @@
 ## Linux
 - python
 - cmake
+- Ninja
 - gcc
 
 ## ARM compilers
