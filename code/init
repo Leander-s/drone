@@ -1,0 +1,18 @@
+#!/bin/python
+
+import os
+import platform
+
+
+def init():
+    os.system("git submodule update --init --recursive")
+    system = platform.system()
+    if system == "Windows":
+        os.system("./pc/src/gui/SDL_ttf/external/Get-GitModules.ps1")
+    else:
+        os.system("./pc/src/gui/SDL_ttf/external/download.sh")
+        os.system("./pico/install_toolchain")
+
+
+if __name__ == '__main__':
+    init()

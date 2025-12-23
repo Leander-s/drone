@@ -14,7 +14,7 @@ set(ENV{PICO_TOOLCHAIN_PATH} "${TOOLCHAIN_DIR}")
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 include(pico_sdk_import.cmake)
-project(ground_protocol_pico C CXX ASM)
+project(transceiver C CXX ASM)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(PICO_INCLUDES
