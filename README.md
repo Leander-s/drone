@@ -1,30 +1,38 @@
 # Requirements:
-    Windows:
-        python
-        MinGW
-        cmake
-        arm-none-eabi compilers (see raspberrypi pico setup)
-        gcc
-    Linux:
-        python
-        cmake
-        arm-none-eabi compilers (see raspberrypi pico setup)
-        gcc
+## Windows
+python
+MinGW
+cmake
+gcc
+
+## Linux
+python
+cmake
+gcc
+
+## ARM compilers
+The ARM toolchain should be installed automatically by the init script. Should this not work, install it using 
+the raspberry pi pico sdk instructions: https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf
 
 # Init:
-    run init.py
-    (Does not reliably work on windows atm)
+    
+    cd code
+    ./init
+
+(Does not reliably work on windows atm)
 
 # Build:
-    Pico:
-        from "drone/code/general/" directory run "python build.py b" to build the output
-        from "drone/code/general/" directory run "python build.py r" to rebuild the files 
-            (deletes all previously built files and rebuilds them)
+    cd code
+    ./build b
+To rebuild
 
-        3 Output files:
-            drone/code/general/drone/build -> *.uf2 goes in the drones pico
-            drone/code/general/ground/pc/build -> *.exe or a unix executable for pc
-            drone/code/general/ground/pico/build -> *.uf2 goes in pico connected to pc as transceiver
+    cd code
+    ./build r
+Outputs:
+    
+    code/bin/pico_drone/    -> *.uf2 goes in the drones pico
+    code/bin/pico_transceiver/  -> *.uf2 goes in pico connected to pc as transceiver
+    code/bin/pc/    -> *.exe or a unix executable for pc
 
 <!--
 drone/code/pico/*:
