@@ -1,15 +1,15 @@
 [submodule "code/pico/pico-sdk"]
 	path = code/pico/pico-sdk
 	url = git@github.com:raspberrypi/pico-sdk.git
-[submodule "code/general/gui/SDL"]
-	path = code/general/gui/SDL
+[submodule "code/pc/src/gui/SDL"]
+	path = code/pc/src/gui/SDL
 	url = https://github.com/libsdl-org/SDL
 	branch = main
-[submodule "code/general/gui/SDL_ttf"]
-	path = code/general/gui/SDL_ttf
+[submodule "code/pc/src/gui/SDL_ttf"]
+	path = code/pc/src/gui/SDL_ttf
 	url = https://github.com/libsdl-org/SDL_ttf
 	branch = main
-[submodule "code/general/gui/cglm"]
-    path = code/general/gui/cglm
+[submodule "code/pc/src/gui/cglm"]
+    path = code/pc/src/gui/cglm
     url = https://github.com/recp/cglm.git
 	branch = main
