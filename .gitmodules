@@ -10,3 +10,6 @@
 [submodule "code/pc/src/gui/cglm"]
 	path = code/pc/src/gui/cglm
 	url = https://github.com/recp/cglm.git
+[submodule "code/pico/picotool"]
+	path = code/pico/picotool
+	url = https://github.com/raspberrypi/picotool.git

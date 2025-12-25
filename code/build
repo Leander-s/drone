@@ -23,7 +23,7 @@ def build_project(root, path):
         cmake_command += ' -G "MinGW Makefiles"'
         os.system(cmake_command)
     elif linux:
-        make_command = 'ninja'
+        make_command = 'ninja -j8'
         cmake_command += ' -G Ninja'
         os.system(cmake_command)
 
