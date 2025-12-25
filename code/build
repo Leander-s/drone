@@ -75,22 +75,15 @@ def main():
     if not os.path.isdir("bin"):
         os.mkdir("bin")
 
-    if not os.path.isdir("bin/pc"):
-        os.mkdir("bin/pc")
-    if not os.path.isdir("bin/pico_drone"):
-        os.mkdir("bin/pico_drone")
-    if not os.path.isdir("bin/pico_transceiver"):
-        os.mkdir("bin/pico_transceiver")
-
     if linux:
-        shutil.copyfile("./pc/build/pc_app", "bin/pc/pc_app")
+        shutil.copyfile("./pc/build/pc_app", "bin/pc_app")
     else:
-        shutil.copyfile("./pc/build/pc_app.exe", "bin/pc/pc_app.exe")
-    shutil.copyfile("./pico/drone/build/drone.uf2", "bin/pico_drone/drone.uf2")
+        shutil.copyfile("./pc/build/pc_app.exe", "bin/pc_app.exe")
+    shutil.copyfile("./pico/drone/build/drone.uf2", "bin/drone.uf2")
     shutil.copyfile("./pico/transceiver/build/transceiver.uf2",
-                    "bin/pico_transceiver/transceiver.uf2")
+                    "bin/transceiver.uf2")
     if linux:
-        os.system("chmod +x bin/pc/pc_app")
+        os.system("chmod +x bin/pc_app")
 
 
 if __name__ == '__main__':
