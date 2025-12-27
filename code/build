@@ -92,6 +92,12 @@ def build_pc(mode):
         shutil.copyfile("./pc/build/pc_app", "bin/pc_app")
     else:
         shutil.copyfile("./pc/build/pc_app.exe", "bin/pc_app.exe")
+    if os.path.isdir("./shaders"):
+        shutil.rmtree("./shaders")
+    shutil.copytree("./pc/shaders", "./shaders")
+    if os.path.isdir("./fonts"):
+        shutil.rmtree("./fonts")
+    shutil.copytree("./pc/fonts", "./fonts")
     if linux:
         os.system("chmod +x bin/pc_app")
 

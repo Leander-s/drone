@@ -9,3 +9,7 @@
 **SDL_ttf/*
 **cglm/*
 code/bin
+code/shaders
+code/fonts
+code/drone_deploy.sh
+code/trans_deploy.sh
