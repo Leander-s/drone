@@ -9,12 +9,12 @@ windows = platform.system() == 'Windows'
 linux = platform.system() == 'Linux'
 
 
-def init():
+def init(force_reinit):
     root = os.getcwd()
     os.system("git submodule update --init --recursive")
     system = platform.system()
 
-    if os.path.exists("./pico/tools/toolchain/bin/arm-none-eabi-gcc"):
+    if os.path.exists("./pico/tools/toolchain/bin/arm-none-eabi-gcc") and not force_reinit:
         print("Toolchain already installed.")
     else:
         if system == "Windows":
@@ -23,7 +23,7 @@ def init():
         else:
             os.system("./pico/install_toolchain")
 
-    if os.path.exists("./pc/src/gui/SDL_ttf/external/freetype/"):
+    if os.path.exists("./pc/src/gui/SDL_ttf/external/freetype/") and not force_reinit:
         print("SDL_ttf dependencies already installed.")
     else:
         if system == "Windows":
@@ -98,19 +98,25 @@ def build(mode):
 
 
 def main():
-    init()
-
     build_type = ""
+    force_reinit = False
     if len(sys.argv) > 1:
-        arg = sys.argv[1]
-        if arg[0] == 'b':
-            build_type = "b"
-        if arg[0] == 'r':
+        if 'r' in sys.argv:
             build_type = "r"
-    if build_type == "":
-        while build_type != "b" and build_type != "r":
-            build_type = input("Type 'b' for build, 'r' for rebuild\n")
+        else:
+            build_type = "b"
+        if 'i' in sys.argv:
+            force_reinit = True
+        if 'h' in sys.argv:
+            print("Usage: python build.py [r|b] [h]")
+            print("r: rebuild all projects")
+            print("b: build only changed files (default)")
+            print("h: display this help message")
+            return
+    else:
+        build_type = "b"
 
+    init(force_reinit)
     build(build_type)
 
     if not os.path.isdir("bin"):
