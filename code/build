@@ -81,56 +81,91 @@ def rebuild_project(root, path):
     build_project(root, os.getcwd())
 
 
-def build(mode):
+def build_pc(mode):
     root = os.getcwd()
     if mode == "b":
-        build_project(root, "pico/drone")
-        build_project(
-            root, "pc")
-        build_project(
-            root, "pico/transceiver")
+        build_project(root, "pc")
     else:
-        rebuild_project(root, "pico/drone")
-        rebuild_project(
-            root, "pc")
-        rebuild_project(
-            root, "pico/transceiver")
-
-
-def main():
-    build_type = ""
-    force_reinit = False
-    if len(sys.argv) > 1:
-        if 'r' in sys.argv:
-            build_type = "r"
-        else:
-            build_type = "b"
-        if 'i' in sys.argv:
-            force_reinit = True
-        if 'h' in sys.argv:
-            print("Usage: python build.py [r|b] [h]")
-            print("r: rebuild all projects")
-            print("b: build only changed files (default)")
-            print("h: display this help message")
-            return
-    else:
-        build_type = "b"
-
-    init(force_reinit)
-    build(build_type)
-
-    if not os.path.isdir("bin"):
-        os.mkdir("bin")
+        rebuild_project(root, "pc")
 
     if linux:
         shutil.copyfile("./pc/build/pc_app", "bin/pc_app")
     else:
         shutil.copyfile("./pc/build/pc_app.exe", "bin/pc_app.exe")
-    shutil.copyfile("./pico/drone/build/drone.uf2", "bin/drone.uf2")
-    shutil.copyfile("./pico/transceiver/build/transceiver.uf2",
-                    "bin/transceiver.uf2")
     if linux:
         os.system("chmod +x bin/pc_app")
+
+
+def build_drone(mode):
+    root = os.getcwd()
+    if mode == "b":
+        build_project(root, "pico/drone")
+    else:
+        rebuild_project(root, "pico/drone")
+    shutil.copyfile("./pico/drone/build/drone.uf2", "bin/drone.uf2")
+
+
+def build_transceiver(mode):
+    root = os.getcwd()
+    if mode == "b":
+        build_project(root, "pico/transceiver")
+    else:
+        rebuild_project(root, "pico/transceiver")
+    shutil.copyfile("./pico/transceiver/build/transceiver.uf2",
+                    "bin/transceiver.uf2")
+
+
+def build(mode, project):
+    if not os.path.isdir("bin"):
+        os.mkdir("bin")
+    if project["pc"] or project is None:
+        build_pc(mode)
+    if project["drone"] or project is None:
+        build_drone(mode)
+    if project["transceiver"] or project is None:
+        build_transceiver(mode)
+
+
+def main():
+    build_type = ""
+    force_reinit = False
+    project = {"pc": False, "drone": False, "transceiver": False}
+    if len(sys.argv) == 1:
+        build_type = "b"
+        init(force_reinit)
+        build(build_type, None)
+        return
+
+    if 'r' in sys.argv:
+        build_type = "r"
+    else:
+        build_type = "b"
+    if 'i' in sys.argv:
+        force_reinit = True
+    if 'h' in sys.argv:
+        print("Usage: ./build <project> [r] [h] [i]")
+        print("i: force re-initialization of submodules and toolchains")
+        print("r: rebuild all projects")
+        print("h: display this help message")
+        print("project: specify which project to build. Options are 'pc', 'drone', and 'transceiver'.")
+        print("If no project is specified, all projects will be built.")
+        return
+    if 'pc' in sys.argv:
+        project["pc"] = True
+    if 'drone' in sys.argv:
+        project["drone"] = True
+    if 'transceiver' in sys.argv:
+        project["transceiver"] = True
+    if not (project["pc"] or project["drone"] or project["transceiver"]):
+        project["pc"] = True
+        project["drone"] = True
+        project["transceiver"] = True
+    if sys.argv[1] not in ['pc', 'drone', 'transceiver', 'r', 'i', 'h']:
+        print(f"Unknown argument: {sys.argv[1]}. Use 'h' for help.")
+        return
+
+    init(force_reinit)
+    build(build_type, project)
 
 
 if __name__ == '__main__':
