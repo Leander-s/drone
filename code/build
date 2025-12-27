@@ -9,6 +9,45 @@ windows = platform.system() == 'Windows'
 linux = platform.system() == 'Linux'
 
 
+def init():
+    root = os.getcwd()
+    os.system("git submodule update --init --recursive")
+    system = platform.system()
+
+    if os.path.exists("./pico/tools/toolchain/bin/arm-none-eabi-gcc"):
+        print("Toolchain already installed.")
+    else:
+        if system == "Windows":
+            # This does not exist yet so it does not work
+            os.system(".\\pico\\install_toolchain.bat")
+        else:
+            os.system("./pico/install_toolchain")
+
+    if os.path.exists("./pc/src/gui/SDL_ttf/external/freetype/"):
+        print("SDL_ttf dependencies already installed.")
+    else:
+        if system == "Windows":
+            os.system(".\\pc\\src\\gui\\SDL_ttf\\external\\Get-GitModules.ps1")
+        else:
+            os.system("./pc/src/gui/SDL_ttf/external/download.sh")
+
+    os.chdir("pico/picotool")
+    if not os.path.exists("build"):
+        os.mkdir("build")
+    os.chdir("build")
+
+    if system == "Windows":
+        os.system("cmake .. -G \"MinGW Makefiles\" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=..\\..\\tools\\picotool -DCMAKE_FLAT_INSTALL=1")
+        os.system("make")
+        os.sysmtem("make install")
+    else:
+        os.system(
+            "cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../../tools/picotool -DCMAKE_FLAT_INSTALL=1")
+        os.system("ninja -j4")
+        os.system("ninja install")
+    os.chdir(root)
+
+
 def build_project(root, path):
     os.chdir(path)
     if not os.path.isdir("build"):
@@ -59,6 +98,8 @@ def build(mode):
 
 
 def main():
+    init()
+
     build_type = ""
     if len(sys.argv) > 1:
         arg = sys.argv[1]
