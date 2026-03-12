@@ -5,8 +5,8 @@ import platform
 import sys
 import shutil
 
-windows = platform.system() == 'Windows'
-linux = platform.system() == 'Linux'
+windows = platform.system() == "Windows"
+linux = platform.system() == "Linux"
 
 
 def init(force_reinit):
@@ -14,7 +14,10 @@ def init(force_reinit):
     os.system("git submodule update --init --recursive")
     system = platform.system()
 
-    if os.path.exists("./pico/tools/toolchain/bin/arm-none-eabi-gcc") and not force_reinit:
+    if (
+        os.path.exists("./pico/tools/toolchain/bin/arm-none-eabi-gcc")
+        and not force_reinit
+    ):
         print("Toolchain already installed.")
     else:
         if system == "Windows":
@@ -37,12 +40,15 @@ def init(force_reinit):
     os.chdir("build")
 
     if system == "Windows":
-        os.system("cmake .. -G \"MinGW Makefiles\" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=..\\..\\tools\\picotool -DCMAKE_FLAT_INSTALL=1")
+        os.system(
+            'cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=..\\..\\tools\\picotool -DCMAKE_FLAT_INSTALL=1'
+        )
         os.system("make")
         os.sysmtem("make install")
     else:
         os.system(
-            "cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../../tools/picotool -DCMAKE_FLAT_INSTALL=1")
+            "cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../../tools/picotool -DCMAKE_FLAT_INSTALL=1"
+        )
         os.system("ninja -j4")
         os.system("ninja install")
     os.chdir(root)
@@ -54,19 +60,19 @@ def build_project(root, path):
         os.mkdir("build")
     os.chdir("build")
 
-    cmake_command = 'cmake ..'
-    make_command = ''
+    cmake_command = "cmake .."
+    make_command = ""
 
     if windows:
-        make_command = 'make'
+        make_command = "make"
         cmake_command += ' -G "MinGW Makefiles"'
         os.system(cmake_command)
     elif linux:
-        make_command = 'ninja -j8'
-        cmake_command += ' -G Ninja'
+        make_command = "ninja -j8"
+        cmake_command += " -G Ninja"
         os.system(cmake_command)
 
-    if make_command == '':
+    if make_command == "":
         os.chdir(root)
         return
 
@@ -117,18 +123,19 @@ def build_transceiver(mode):
         build_project(root, "pico/transceiver")
     else:
         rebuild_project(root, "pico/transceiver")
-    shutil.copyfile("./pico/transceiver/build/transceiver.uf2",
-                    "bin/transceiver.uf2")
+    shutil.copyfile("./pico/transceiver/build/transceiver.uf2", "bin/transceiver.uf2")
 
 
 def build(mode, project):
     if not os.path.isdir("bin"):
         os.mkdir("bin")
-    if project["pc"] or project is None:
+    if project is None:
+        project = {"pc": True, "drone": True, "transceiver": True}
+    if project["pc"]:
         build_pc(mode)
-    if project["drone"] or project is None:
+    if project["drone"]:
         build_drone(mode)
-    if project["transceiver"] or project is None:
+    if project["transceiver"]:
         build_transceiver(mode)
 
 
@@ -142,31 +149,33 @@ def main():
         build(build_type, None)
         return
 
-    if 'r' in sys.argv:
+    if "r" in sys.argv:
         build_type = "r"
     else:
         build_type = "b"
-    if 'i' in sys.argv:
+    if "i" in sys.argv:
         force_reinit = True
-    if 'h' in sys.argv:
+    if "h" in sys.argv:
         print("Usage: ./build <project> [r] [h] [i]")
         print("i: force re-initialization of submodules and toolchains")
         print("r: rebuild all projects")
         print("h: display this help message")
-        print("project: specify which project to build. Options are 'pc', 'drone', and 'transceiver'.")
+        print(
+            "project: specify which project to build. Options are 'pc', 'drone', and 'transceiver'."
+        )
         print("If no project is specified, all projects will be built.")
         return
-    if 'pc' in sys.argv:
+    if "pc" in sys.argv:
         project["pc"] = True
-    if 'drone' in sys.argv:
+    if "drone" in sys.argv:
         project["drone"] = True
-    if 'transceiver' in sys.argv:
+    if "transceiver" in sys.argv:
         project["transceiver"] = True
     if not (project["pc"] or project["drone"] or project["transceiver"]):
         project["pc"] = True
         project["drone"] = True
         project["transceiver"] = True
-    if sys.argv[1] not in ['pc', 'drone', 'transceiver', 'r', 'i', 'h']:
+    if sys.argv[1] not in ["pc", "drone", "transceiver", "r", "i", "h"]:
         print(f"Unknown argument: {sys.argv[1]}. Use 'h' for help.")
         return
 
@@ -174,5 +183,5 @@ def main():
     build(build_type, project)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
