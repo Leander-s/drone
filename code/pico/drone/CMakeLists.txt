@@ -54,10 +54,9 @@ set(PICO_SDK_PATH "${PICO_SDK_PATH_ABS}")
 set(TOOLCHAIN_DIR "${TOOLCHAIN_DIR}")
 set(picotool_DIR "${PICO_TOOL_DIR}")
 
-set(ENV{PICO_TOOLCHAIN_PATH} "${TOOLCHAIN_DIR}")
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+include(../toolchain.cmake)
 include(pico_sdk_import.cmake)
 project(drone C CXX ASM)
 pico_sdk_init()

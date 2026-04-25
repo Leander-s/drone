@@ -15,16 +15,17 @@
 The ARM toolchain should be installed automatically by the init script. Should this not work, install it using 
 the raspberry pi pico sdk instructions: https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf
 
-# Init:
-    
-    cd code
-    ./init
+## Nix
+If you are using Nix/NixOS, feel free to use the shell.nix by just typing
 
-(Does not reliably work on windows atm)
+    nix-shell
+
+If you then proceed to build, everything should work fine out of the box.
+
 
 # Build:
     cd code
-    ./build b
+    ./build
 To rebuild
 
     cd code
