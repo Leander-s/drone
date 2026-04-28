@@ -4,8 +4,12 @@
 
 pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
+    ninja
     cmake
     pkg-config
+    gnumake
+    python3
+    gcc-arm-embedded
     wayland-scanner
   ];
 

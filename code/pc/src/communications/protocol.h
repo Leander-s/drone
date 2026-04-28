@@ -1,8 +1,8 @@
 #pragma once
 #include <connection.h>
 #include <diagnostics.h>
-#include <encoding.h>
 #include <drone_states.h>
+#include <encoding.h>
 
 typedef struct {
 #ifdef _WIN32
@@ -21,11 +21,12 @@ typedef struct {
 typedef struct {
   const char *path_to_port;
   uint32_t bufferSize;
-  DroneControlState* controlState;
-  DroneSensorState* sensorState;
+  DroneControlState *controlState;
+  DroneSensorState *sensorState;
 } GroundTransceiverCreateInfo;
 
-GroundTransceiver *ground_transceiver_create(GroundTransceiverCreateInfo *info);
+void ground_transceiver_init(GroundTransceiver *transceiver,
+                             GroundTransceiverCreateInfo *info);
 void ground_transceiver_run(GroundTransceiver *transceiver);
 int ground_transceiver_update(GroundTransceiver *transceiver);
 void ground_transceiver_destroy(GroundTransceiver *transceiver);

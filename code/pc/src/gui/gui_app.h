@@ -6,11 +6,6 @@
 // GL
 #include <glad/glad.h>
 
-// standard
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 // mine
 #include <diagnostics.h>
 #include <drone_states.h>
@@ -48,7 +43,7 @@ typedef struct {
   uint8_t keyState[322];
 } GUI;
 
-GUI *gui_create(int width, int height);
+int gui_init(GUI *gui, int width, int height);
 void gui_update(GUI *gui, const GUIData *data);
 void gui_destroy(GUI *gui);
 

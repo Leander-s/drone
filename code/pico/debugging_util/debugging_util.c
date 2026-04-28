@@ -1,4 +1,7 @@
-#include <debugging_util.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "debugging_util.h"
 
 int pico_read(char *readBuffer, int size) {
   int result;

@@ -1,16 +1,15 @@
-#include <general_math.h>
-#include <drone.h>
+#include "drone.h"
+#include "general_math.h"
 
-Drone *drone_start() {
-  Drone *result = (Drone *)malloc(sizeof(Drone));
-  result->sensorState.altitude = 0;
-  result->log.error = 0;
-  result->sensor =
-      (DroneSensor){.state = &result->sensorState, .log = &result->log};
+void drone_start(Drone *drone) {
+  drone->sensorState.altitude = 0;
+  drone->log.error = 0;
+  drone->sensor =
+      (DroneSensor){.state = &drone->sensorState, .log = &drone->log};
 
   // create drone controls
   ControllerCreateInfo controllerInfo =
-      (ControllerCreateInfo){.current = &result->sensor.state->orientation,
+      (ControllerCreateInfo){.current = &drone->sensor.state->orientation,
                              .motor_init = init_throttle,
                              .set_throttle = set_throttle,
                              .servo_init = init_servo,
@@ -19,8 +18,8 @@ Drone *drone_start() {
                              .leftPitchServoIDs[0] = 5,
                              .rightPitchServoIDs[0] = 2,
                              .yawServoIDs[0] = 3};
-  result->controller = controller_create(&controllerInfo);
-  result->state = &result->controller->controlState;
+  controller_init(&drone->controller, &controllerInfo);
+  drone->state = drone->controller.controlState;
 
   // create drone transceiver
   DroneTransceiverCreateInfo createInfo =
@@ -28,24 +27,23 @@ Drone *drone_start() {
                                    .send = nrf24_send,
                                    .recv = nrf24_read,
                                    .bufferSize = 32,
-                                   .log = &result->log,
-                                   .controlState = result->state,
-                                   .sensorState = result->sensor.state};
-  result->transceiver = drone_protocol_init(&createInfo);
-  sensor_init(&result->sensor);
-  return result;
+                                   .log = &drone->log,
+                                   .controlState = &drone->state,
+                                   .sensorState = drone->sensor.state};
+  drone_protocol_init(&drone->transceiver, &createInfo);
+  sensor_init(&drone->sensor);
 }
 
 void drone_update(Drone *drone) {
   // reading from transceiver
-  drone_protocol_update(drone->transceiver);
+  drone_protocol_update(&drone->transceiver);
 
   // check if steering next
   // When steering, keep going
   // When not steering, stabelize drone by getting last rotation and correcting
   // it
-  int steering = (drone->state->yaw != 127) || (drone->state->roll != 127) || 
-                 (drone->state->pitch != 127);
+  int steering = (drone->state.yaw != 127) || (drone->state.roll != 127) ||
+                 (drone->state.pitch != 127);
 
   Quaternion prevRot = (Quaternion){
       .i = drone->sensor.state->orientation.i,
@@ -56,7 +54,7 @@ void drone_update(Drone *drone) {
 
   sensor_update(&drone->sensor);
 
-  controller_update(drone->controller);
+  controller_update(&drone->controller);
 
   /*
    * Automatically stabelizing, not implemented fully yet
@@ -84,7 +82,7 @@ void drone_update(Drone *drone) {
   mult_quat_quat(&relativeRot, &drone->sensor.state->orientation, &temp);
 
   mult_quat_quat(&prevInv, &temp, &localRot);
-  
+
   // still need to correct after this
 
   //  controller_update(drone->controller);
@@ -92,7 +90,6 @@ void drone_update(Drone *drone) {
 }
 
 void drone_end(Drone *drone) {
-  drone_protocol_terminate(drone->transceiver);
-  controller_destroy(drone->controller);
-  free(drone);
+  drone_protocol_terminate(&drone->transceiver);
+  controller_destroy(&drone->controller);
 }

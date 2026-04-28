@@ -1,7 +1,7 @@
-#include <protocol.h>
-#include <gui_app.h>
 #include <connection.h>
 #include <encoding.h>
+#include <gui_app.h>
+#include <protocol.h>
 
 int main() {
   DroneSensorState sensorData;
@@ -24,36 +24,29 @@ int main() {
   createInfo.sensorState = &sensorData;
 
   // might want to do this in a seperate thread in the future
-  GroundTransceiver *link = ground_transceiver_create(&createInfo);
+  GroundTransceiver link;
+  ground_transceiver_init(&link, &createInfo);
 
   GUIData guiData;
-  guiData.log = &link->log;
+  guiData.log = &link.log;
   guiData.sensorState = &sensorData;
   guiData.controlState = &controlState;
 
-  GUI *gui = gui_create(800, 600);
-
-  while (!gui->shouldQuit) {
-    // sending to drone/receiving from drone
-    ground_transceiver_update(link);
-
-    /*
-     * This is printing the decoded sendbuffer so hopefully what is received
-     * by the drone
-    uint8_t sendBufferCopy[64];
-    memcpy(&sendBufferCopy, link->sendBuffer, 64);
-    decode_buffer(sendBufferCopy, 64);
-    printf("[");
-    for(int i = 0; i < 32; i++){
-        printf("%u, ", sendBufferCopy[i]); 
-    }
-    printf("]\n");
-    */
-
-    // updating gui
-    gui_update(gui, &guiData);
+  GUI gui;
+  int result = gui_init(&gui, 800, 600);
+  if (result != 0) {
+    return 1;
   }
 
-  ground_transceiver_destroy(link);
-  gui_destroy(gui);
+  while (!gui.shouldQuit) {
+    // sending to drone/receiving from drone
+    ground_transceiver_update(&link);
+
+    // updating gui
+    gui_update(&gui, &guiData);
+  }
+
+  ground_transceiver_destroy(&link);
+  gui_destroy(&gui);
+  return 0;
 }

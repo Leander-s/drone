@@ -1,8 +1,10 @@
-#include "diagnostics.h"
 #include <pico/time.h>
 #include <protocol.h>
+#include <stdlib.h>
+#include <string.h>
 
-DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
+void drone_protocol_init(DroneTransceiver *transceiver,
+                         DroneTransceiverCreateInfo *createInfo) {
 #ifdef NDEBUG
 #else
   stdio_usb_init();
@@ -20,21 +22,17 @@ DroneTransceiver *drone_protocol_init(DroneTransceiverCreateInfo *createInfo) {
 
   createInfo->init();
 
-  DroneTransceiver *result =
-      (DroneTransceiver *)malloc(sizeof(DroneTransceiver));
-  result->systemLog = createInfo->log;
-  result->sensorState = createInfo->sensorState;
-  result->controlState = createInfo->controlState;
-  result->bufferSize = createInfo->bufferSize;
-  result->readBuffer = malloc(result->bufferSize);
-  result->sendBuffer = malloc(result->bufferSize);
-  result->send = createInfo->send;
-  result->recv = createInfo->recv;
+  transceiver->systemLog = createInfo->log;
+  transceiver->sensorState = createInfo->sensorState;
+  transceiver->controlState = createInfo->controlState;
+  transceiver->bufferSize = createInfo->bufferSize;
+  transceiver->readBuffer = malloc(transceiver->bufferSize);
+  transceiver->sendBuffer = malloc(transceiver->bufferSize);
+  transceiver->send = createInfo->send;
+  transceiver->recv = createInfo->recv;
 
-  drone_flush_rx(result);
-  drone_flush_tx(result);
-
-  return result;
+  drone_flush_rx(transceiver);
+  drone_flush_tx(transceiver);
 }
 
 void drone_protocol_run(DroneTransceiver *transceiver) {
@@ -121,7 +119,6 @@ void drone_protocol_handle_message(DroneTransceiver *transceiver) {
 void drone_protocol_terminate(DroneTransceiver *transceiver) {
   free(transceiver->readBuffer);
   free(transceiver->sendBuffer);
-  free(transceiver);
 }
 
 int drone_send(DroneTransceiver *transceiver) {

@@ -1,7 +1,9 @@
-#include "../include/encoding.h"
+#include <string.h>
 
-void encode_buffer(uint8_t *buffer, int len) {
-  uint8_t *transBuffer = malloc(len);
+#include "encoding.h"
+
+void encode_buffer(uint8_t *buffer, const int len) {
+  uint8_t transBuffer[len];
   memset(transBuffer, 0, len);
   int bitIndex = 0;
   for (int i = 0; i < len; i++) {
@@ -13,11 +15,10 @@ void encode_buffer(uint8_t *buffer, int len) {
     bitIndex += 7;
   }
   memcpy(buffer, transBuffer, len);
-  free(transBuffer);
 }
 
 void decode_buffer(uint8_t *buffer, int len) {
-  uint8_t *transBuffer = malloc(len);
+  uint8_t transBuffer[len];
   memset(transBuffer, 0, len);
   int bitIndex = 0;
   for (int i = 0; i < len - 4; i++) {
@@ -32,5 +33,4 @@ void decode_buffer(uint8_t *buffer, int len) {
     bitIndex += 8;
   }
   memcpy(buffer, transBuffer, len);
-  free(transBuffer);
 }

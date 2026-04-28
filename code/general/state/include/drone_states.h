@@ -1,6 +1,6 @@
 #pragma once
-#include <stdint.h>
 #include <general_math.h>
+#include <stdint.h>
 
 typedef struct {
   uint8_t pitch;
@@ -10,7 +10,7 @@ typedef struct {
 } DroneControlState;
 
 typedef struct {
-    Quaternion orientation;
-    float altitude;
-    uint8_t bytes[8];
+  Quaternion orientation;
+  float altitude;
+  uint8_t bytes[8];
 } DroneSensorState;

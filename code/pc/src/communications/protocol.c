@@ -2,30 +2,24 @@
 #include <general_math.h>
 #include <protocol.h>
 
-GroundTransceiver *
-ground_transceiver_create(GroundTransceiverCreateInfo *info) {
-  GroundTransceiver *result = malloc(sizeof(GroundTransceiver));
-  result->log = (PCSystemLog){
+void ground_transceiver_init(GroundTransceiver *transceiver,
+                             GroundTransceiverCreateInfo *info) {
+  transceiver->log = (PCSystemLog){
       .transmissionsPerSecond = 0,
       .usbDisconnects = 0,
       .picoReadTimeouts = 0,
       .usbReadErrors = 0,
       .usbWriteErrors = 0,
   };
-  result->sendBuffer = malloc(info->bufferSize);
-  result->recvBuffer = malloc(info->bufferSize);
-  result->port = initConnection(info->path_to_port);
-  result->bufferSize = info->bufferSize;
-  result->controlState = info->controlState;
-  DroneControlState initialState =
-      (DroneControlState){.throttle = 0, .pitch = 127, .roll = 127, .yaw = 127};
-  *result->controlState = initialState;
-  result->sensorState = info->sensorState;
+  transceiver->sendBuffer = malloc(info->bufferSize);
+  transceiver->recvBuffer = malloc(info->bufferSize);
+  transceiver->port = initConnection(info->path_to_port);
+  transceiver->bufferSize = info->bufferSize;
+  transceiver->controlState = info->controlState;
+  transceiver->sensorState = info->sensorState;
 
-  ground_transceiver_read(result);
-  printf("%s\n", result->recvBuffer);
-
-  return result;
+  ground_transceiver_read(transceiver);
+  printf("%s\n", transceiver->recvBuffer);
 }
 
 // this is for unit testing and multithreading

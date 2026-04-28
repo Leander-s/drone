@@ -1,4 +1,5 @@
-#include <pico_transceiver.h>
+#include "pico_transceiver.h"
+#include "encoding.h"
 
 void busy_wait_for_connect() {
   while (!stdio_usb_connected()) {
@@ -14,16 +15,14 @@ void busy_wait_for_connect() {
   pico_debug_print("Pico connected", 32);
 }
 
-PicoTransceiver *pico_transceiver_create() {
+void pico_transceiver_init(PicoTransceiver *trans) {
   stdio_usb_init();
   busy_wait_for_connect();
   nrf24_init();
 
-  PicoTransceiver *result = (PicoTransceiver *)malloc(sizeof(PicoTransceiver));
-  result->log.readTimeouts.i = 0;
-  result->log.usbDisconnects.i = 0;
-  result->log.transmissionsPerSecond.f = 0;
-  return result;
+  trans->log.readTimeouts.i = 0;
+  trans->log.usbDisconnects.i = 0;
+  trans->log.transmissionsPerSecond.f = 0;
 }
 
 void pico_transceiver_update(PicoTransceiver *trans) {
@@ -39,7 +38,7 @@ void pico_transceiver_update(PicoTransceiver *trans) {
     busy_wait_for_connect();
     return;
   }
-  // completely disregard any incomplete transmissions 
+  // completely disregard any incomplete transmissions
   if (result < 32) {
     return;
   }
@@ -78,5 +77,3 @@ void pico_transceiver_update(PicoTransceiver *trans) {
   stdio_flush();
   tud_cdc_write_flush();
 }
-
-void pico_transceiver_destroy(PicoTransceiver *trans) { free(trans); }

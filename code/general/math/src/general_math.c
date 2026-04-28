@@ -1,28 +1,36 @@
-#include <general_math.h>
+#include <math.h>
 
-void rotate_point_2D(const float angle, const float x, const float y, float *dstX, float *dstY){
-    float rad = deg_to_rad(angle);
-    *dstX = x * cos(rad) - y * sin(rad);
-    *dstY = y * cos(rad) + x * sin(rad);
+#include "general_math.h"
+
+void rotate_point_2D(const float angle, const float x, const float y,
+                     float *dstX, float *dstY) {
+  float rad = deg_to_rad(angle);
+  *dstX = x * cos(rad) - y * sin(rad);
+  *dstY = y * cos(rad) + x * sin(rad);
 }
 
-int clamp_int(int x, int A, int B){
-    if(x > B) return B;
-    if(x < A) return A;
-    return x;
+int clamp_int(int x, int A, int B) {
+  if (x > B)
+    return B;
+  if (x < A)
+    return A;
+  return x;
 }
 
-float clamp_float(float x, float A, float B){
-    if(x > B) return B;
-    if(x < A) return A;
-    return x;
+float clamp_float(float x, float A, float B) {
+  if (x > B)
+    return B;
+  if (x < A)
+    return A;
+  return x;
 }
 
 float deg_to_rad(float deg) { return deg * M_PI / 180; }
 
 float rad_to_deg(float rad) { return rad * 180 / M_PI; }
 
-void quaternion_set(Quaternion *quat, const vector3 *axis, const float degrees) {
+void quaternion_set(Quaternion *quat, const vector3 *axis,
+                    const float degrees) {
   float angle = deg_to_rad(degrees);
   quat->x = cos(angle / 2);
   quat->i = sin(angle / 2) * axis->x;
@@ -31,7 +39,8 @@ void quaternion_set(Quaternion *quat, const vector3 *axis, const float degrees) 
 }
 
 float quaternion_magnitude(const Quaternion *quat) {
-  return sqrt(pow(quat->x, 2) + pow(quat->i, 2) + pow(quat->j,2) + pow(quat->k, 2));
+  return sqrt(pow(quat->x, 2) + pow(quat->i, 2) + pow(quat->j, 2) +
+              pow(quat->k, 2));
 }
 
 void quaternion_normalize(Quaternion *quat) {
@@ -42,25 +51,25 @@ void quaternion_normalize(Quaternion *quat) {
   quat->x /= magnitude;
 }
 
-EulerAngles quaternion_to_euler(const Quaternion *quat){
-    EulerAngles angles;
+EulerAngles quaternion_to_euler(const Quaternion *quat) {
+  EulerAngles angles;
 
-    float sinr_cosp = 2 * (quat->w * quat->i + quat->j * quat->k);
-    float cosr_cosp = 1 - 2 * (quat->i * quat->i + quat->j * quat->j);
-    angles.roll = atan2f(sinr_cosp, cosr_cosp);
+  float sinr_cosp = 2 * (quat->w * quat->i + quat->j * quat->k);
+  float cosr_cosp = 1 - 2 * (quat->i * quat->i + quat->j * quat->j);
+  angles.roll = atan2f(sinr_cosp, cosr_cosp);
 
-    float sinp = 2 * (quat->w * quat->j - quat->k * quat->i);
-    if(fabsf(sinp) >= 1){
-        angles.pitch = copysignf(M_PI/2, sinp);
-    }else{
-        angles.pitch = asinf(sinp);
-    }
+  float sinp = 2 * (quat->w * quat->j - quat->k * quat->i);
+  if (fabsf(sinp) >= 1) {
+    angles.pitch = copysignf(M_PI / 2, sinp);
+  } else {
+    angles.pitch = asinf(sinp);
+  }
 
-    float siny_cosp = 2 * (quat->w * quat->k + quat->i * quat->j);
-    float cosy_cosp = 1 - 2 * (quat->j * quat->j + quat->k * quat->k);
-    angles.yaw = atan2f(siny_cosp, cosy_cosp);
+  float siny_cosp = 2 * (quat->w * quat->k + quat->i * quat->j);
+  float cosy_cosp = 1 - 2 * (quat->j * quat->j + quat->k * quat->k);
+  angles.yaw = atan2f(siny_cosp, cosy_cosp);
 
-    return angles;
+  return angles;
 }
 
 void mult_vec3_scalar(const vector3 *vec, const float x, vector3 *dstVec) {
@@ -91,26 +100,30 @@ void vec3_cross(const vector3 *vec1, const vector3 *vec2, vector3 *dstVec) {
 
 void mult_quat_quat(const Quaternion *quat1, const Quaternion *quat2,
                     Quaternion *result) {
-    /*
-  vector3 axisPart1;
-  mult_vec3_scalar(&quat1->v, quat2->w, &axisPart1);
-  vector3 axisPart2;
-  mult_vec3_scalar(&quat2->v, quat1->w, &axisPart2);
-  vector3 axisPart3;
-  vec3_add(&axisPart1, &axisPart2, &axisPart3);
-  vector3 axisPart4;
-  vec3_cross(&quat1->v, &quat2->v, &axisPart4);
-  vector3 newV;
-  vec3_add(&axisPart3, &axisPart4, &newV);
-  float newW = quat1->w * quat2->w - vec3_dot(&quat2->v, &quat1->v);
-  result->v = newV;
-  result->w = newW;
-  */
+  /*
+vector3 axisPart1;
+mult_vec3_scalar(&quat1->v, quat2->w, &axisPart1);
+vector3 axisPart2;
+mult_vec3_scalar(&quat2->v, quat1->w, &axisPart2);
+vector3 axisPart3;
+vec3_add(&axisPart1, &axisPart2, &axisPart3);
+vector3 axisPart4;
+vec3_cross(&quat1->v, &quat2->v, &axisPart4);
+vector3 newV;
+vec3_add(&axisPart3, &axisPart4, &newV);
+float newW = quat1->w * quat2->w - vec3_dot(&quat2->v, &quat1->v);
+result->v = newV;
+result->w = newW;
+*/
 
-  result->x = quat1->x * quat2->x - quat1->i * quat2->i - quat1->j * quat2->j - quat1->k * quat2->k;
-  result->i = quat1->x * quat2->i + quat1->i * quat2->x + quat1->j * quat2->k - quat1->k * quat2->j;
-  result->j = quat1->x * quat2->j - quat1->i * quat2->k + quat1->j * quat2->x + quat1->k * quat2->i;
-  result->k = quat1->x * quat2->k + quat1->i * quat2->j - quat1->j * quat2->i + quat1->k * quat2->x;
+  result->x = quat1->x * quat2->x - quat1->i * quat2->i - quat1->j * quat2->j -
+              quat1->k * quat2->k;
+  result->i = quat1->x * quat2->i + quat1->i * quat2->x + quat1->j * quat2->k -
+              quat1->k * quat2->j;
+  result->j = quat1->x * quat2->j - quat1->i * quat2->k + quat1->j * quat2->x +
+              quat1->k * quat2->i;
+  result->k = quat1->x * quat2->k + quat1->i * quat2->j - quat1->j * quat2->i +
+              quat1->k * quat2->x;
   quaternion_normalize(result);
 }
 
@@ -130,7 +143,8 @@ void mult_vec_quat(const vector3 *vec, const Quaternion *quat,
   mult_quat_quat(&vecQ, quat, result);
 }
 
-void rotate_point(const Quaternion *quat, const vector3 *point, vector3 *dstPoint) {
+void rotate_point(const Quaternion *quat, const vector3 *point,
+                  vector3 *dstPoint) {
   if (point->x == 0 && point->y == 0 && point->z == 0) {
     *dstPoint = *point;
     return;
